@@ -10,8 +10,10 @@ export default class QuizBoard extends Component {
     return(
       <div className="">
         <div className="w3-panel w3-padding w3-light-grey w3-border w3-border-grey">
-          <label className="w3-text-grey w3-small"> Section 1 </label> <br />
-          <label> Quiz 15 </label>
+          <div> 
+            <label className="w3-text-grey w3-small"> Section 1 </label>            
+          </div>
+          <label> Quiz 15 </label> <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Answered </label>
           <label className="w3-right w3-text-blue-grey"> 20pt </label>
         </div>
         <div>
