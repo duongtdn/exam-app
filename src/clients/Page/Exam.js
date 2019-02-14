@@ -7,6 +7,7 @@ import { xhttp } from 'authenform-utils'
 import Header from './Widgets/Header'
 import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
+import QuizBoard from './Widgets/QuizBoard'
 
 export default class Exam extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ export default class Exam extends Component {
                     today = {this.state.today}
             />
             <StatusBar />
+            <QuizBoard />
           </div>          
           {/* <button onClick={() => this.requestNewSession()}> New Session </button> */}
         </div>    
