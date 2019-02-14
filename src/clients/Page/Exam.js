@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 
 import { xhttp } from 'authenform-utils'
 
+import Header from './Widgets/Header'
+
 export default class Exam extends Component {
   constructor(props) {
     super(props)
@@ -29,8 +31,14 @@ export default class Exam extends Component {
     } else {
       return (
         <div>
-          <h2> EXAM / {this.state.courseId} </h2>
-          <button onClick={() => this.requestNewSession()}> New Session </button>
+          <Header />
+          <div className="w3-container">
+            <p> 
+              <label className="w3-text-blue w3-large" style={{fontWeight:'bold'}}> <span className="w3-text-black"> Course: </span>{this.state.course} ({this.state.type}) </label> <br />
+              <label className="w3-text-grey w3-small"> Date: </label>
+            </p>            
+          </div>
+          {/* <button onClick={() => this.requestNewSession()}> New Session </button> */}
         </div>    
       )
     }
