@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-export default class Exam extends Component {
+export default class Header extends Component {
   constructor(props) {
     super(props)
   }
