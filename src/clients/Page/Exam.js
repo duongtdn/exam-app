@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import { xhttp } from 'authenform-utils'
 
 import Header from './Widgets/Header'
+import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
 
 export default class Exam extends Component {
@@ -35,12 +36,12 @@ export default class Exam extends Component {
         <div>
           <Header />
           <div className="w3-container">
-            <div style={{marginTop: '10px'}}> 
-              <label className="w3-text-blue w3-large" style={{fontWeight:'bold'}}> <span className="w3-text-black"> Course: </span>{this.state.course} ({this.state.type}) </label> <br />
-              <label className="w3-text-grey w3-small"> {this.state.today}</label>
-            </div>      
+            <Title  course = {this.state.course}
+                    type = {this.state.type}
+                    today = {this.state.today}
+            />
             <StatusBar />
-          </div>
+          </div>          
           {/* <button onClick={() => this.requestNewSession()}> New Session </button> */}
         </div>    
       )
