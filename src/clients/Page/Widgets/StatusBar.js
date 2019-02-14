@@ -22,7 +22,7 @@ export default class StatusBar extends Component {
           <div className="">
             {
               [...Array(100).keys()].map( i => (
-                <div class="w3-blue" key={i} style={{height: '25px', width: '25px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer'}}> 
+                <div className="w3-blue" key={i} style={{height: '25px', width: '25px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer'}}> 
                   <span className="w3-small"> {i+1} </span>
                 </div>
               ))
@@ -35,7 +35,7 @@ export default class StatusBar extends Component {
             <hr />
             {
               [...Array(10).keys()].map( i => (
-                <div class="w3-blue" key={i} style={{height: '25px', width: '25px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer'}}> 
+                <div className="w3-blue" key={i} style={{height: '25px', width: '25px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer'}}> 
                   <span className="w3-small"> {i+1} </span>
                 </div>
               ))
