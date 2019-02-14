@@ -7,12 +7,17 @@ import { xhttp } from 'authenform-utils'
 export default class Exam extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      course: undefined,
+      type: undefined,
+      error: null
+    }
   }
 
   componentWillMount() {
-    const courseId = getCourseIdFromHref(window.location.href)
-    if (courseId) {
-      this.setState({ courseId })
+    const { course, type } = getCourseIdFromHref(window.location.href)
+    if (course) {
+      this.setState({ course, type })
     } else {
       this.setState({ error: '400 Bad Request' })
     }
@@ -40,5 +45,8 @@ export default class Exam extends Component {
 }
 
 function getCourseIdFromHref(href) {
-  return href.split('?')[1].split('=')[1]
+  const query = href.split('?')[1]
+  const course= query.split('&')[0].split('=')[1]
+  const type= query.split('&')[1].split('=')[1]
+  return { course, type }
 }
