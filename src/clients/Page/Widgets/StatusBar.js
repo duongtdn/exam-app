@@ -2,6 +2,20 @@
 
 import React, { Component } from 'react'
 
+class CircleTag extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    const i = this.props.value
+    return (
+      <div className="w3-blue" key={i} style={{height: '30px', width: '30px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer', padding: '2px 0px'}}> 
+        <span className="w3-small"> {i+1} </span>
+      </div>
+    )
+  } 
+}
+
 export default class StatusBar extends Component {
   constructor(props) {
     super(props)
@@ -17,14 +31,12 @@ export default class StatusBar extends Component {
           <div className="w3-text-yellow w3-small"> Time Left </div>
           <div className="w3-text-yellow w3-large" style={{fontWeight: 'bold', marginTop: '6px'}}> 01:05:56 </div> 
         </div> 
-        <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 300px)'}}>
+        <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 295px)'}}>
           <div className="w3-text-blue w3-small">Saved Quiz </div>   
           <div className="">
             {
-              [...Array(100).keys()].map( i => (
-                <div className="w3-blue" key={i} style={{height: '25px', width: '25px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer'}}> 
-                  <span className="w3-small"> {i+1} </span>
-                </div>
+              [...Array(10).keys()].map( i => (
+                <CircleTag value = {i} />
               ))
             }
           </div>            
@@ -35,9 +47,7 @@ export default class StatusBar extends Component {
             <hr />
             {
               [...Array(10).keys()].map( i => (
-                <div className="w3-blue" key={i} style={{height: '25px', width: '25px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer'}}> 
-                  <span className="w3-small"> {i+1} </span>
-                </div>
+                <CircleTag value = {i} />
               ))
             }
           </div>            
