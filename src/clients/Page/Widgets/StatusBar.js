@@ -23,20 +23,20 @@ export default class StatusBar extends Component {
   render() {
     return(
       <div className="" style={{margin: '8px 0'}}>
-        <div className="w3-cell w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 8px 0 0'}}>
+        <div className="w3-cell w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '154px'}}>
           <div className="w3-text-green w3-small"> Completion (15%) </div>
-          <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: '6px'}}> 15/100 </div>
+          <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: '10px'}}> 15/100 </div>
         </div>  
-        <div className="w3-cell w3-pale-yellow w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 8px 0 0'}}>
+        <div className="w3-cell w3-pale-yellow w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '124px'}}>
           <div className="w3-text-yellow w3-small"> Time Left </div>
-          <div className="w3-text-yellow w3-large" style={{fontWeight: 'bold', marginTop: '6px'}}> 01:05:56 </div> 
+          <div className="w3-text-yellow w3-large" style={{fontWeight: 'bold', marginTop: '10px'}}> 01:05:56 </div> 
         </div> 
-        <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 295px)'}}>
+        <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 286px)'}}>
           <div className="w3-text-blue w3-small">Saved Quiz </div>   
           <div className="">
             {
               [...Array(10).keys()].map( i => (
-                <CircleTag value = {i} />
+                <CircleTag key={i} value = {i} />
               ))
             }
           </div>            
@@ -47,7 +47,7 @@ export default class StatusBar extends Component {
             <hr />
             {
               [...Array(10).keys()].map( i => (
-                <CircleTag value = {i} />
+                <CircleTag key={i} value = {i} />
               ))
             }
           </div>            
