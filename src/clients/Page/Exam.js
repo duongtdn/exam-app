@@ -65,7 +65,16 @@ export default class Exam extends Component {
     })
   }
   startEslapsedTimer() {
-    this._timer = setInterval(() => { this.setState({ eslapsedTime: this.state.eslapsedTime + 1 })}, 1000)
+    this._timer = setInterval(() => { 
+      const eslapsedTime = this.state.eslapsedTime + 1      
+      this.setState({ eslapsedTime })
+      if (eslapsedTime === this.state.testDuration) {
+        // later, handle more for timeout event rather than stopTimer only,
+        // for example, submit last question, show popup, lock test...
+        this.stopEslapsedTimer()
+        console.log('timeout')
+      }
+    }, 1000)
   }
   stopEslapsedTimer() {
     clearInterval(this._timer)
