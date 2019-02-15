@@ -21,6 +21,7 @@ export default class StatusBar extends Component {
     super(props)
   }
   render() {
+    const remainingTime = this.props.testDuration - this.props.eslapsedTime
     return(
       <div className="" style={{margin: '8px 0'}}>
         <div className="w3-cell w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '154px'}}>
@@ -29,7 +30,7 @@ export default class StatusBar extends Component {
         </div>  
         <div className="w3-cell w3-pale-yellow w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '124px'}}>
           <div className="w3-text-yellow w3-small"> Time Left </div>
-          <div className="w3-text-yellow w3-large" style={{fontWeight: 'bold', marginTop: '10px'}}> 01:05:56 </div> 
+          <div className="w3-text-yellow w3-large" style={{fontWeight: 'bold', marginTop: '10px'}}> {formatTime(remainingTime)} </div> 
         </div> 
         <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 286px)'}}>
           <div className="w3-text-blue w3-small">Saved Quiz </div>
@@ -55,4 +56,11 @@ export default class StatusBar extends Component {
       </div>
     )
   }
+}
+
+function formatTime(time) {
+  const hh = Math.floor(time/3600)
+  const mm = Math.floor((time%3600)/60)
+  const ss = time - hh*3600 - mm*60
+  return `${("00"+hh).slice(-2)}:${("00"+mm).slice(-2)}:${("00"+ss).slice(-2)}`
 }

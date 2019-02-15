@@ -15,8 +15,11 @@ export default class Exam extends Component {
     this.state = {
       course: undefined,
       type: undefined,
-      error: null
+      error: null,
+      eslapsedTime: 0,  // ms
+      testDuration: 0   // ms
     }
+    this._timer = null
   }
 
   componentWillMount() {
@@ -27,6 +30,9 @@ export default class Exam extends Component {
     } else {
       this.setState({ error: '400 Bad Request' })
     }
+    // later set testDuration and start timer after recieved data from server
+    this.setState({ testDuration: 3671 }) // tested value 3671
+    this.startEslapsedTimer()
   }
 
   render() {
@@ -41,7 +47,9 @@ export default class Exam extends Component {
                     type = {this.state.type}
                     today = {this.state.today}
             />
-            <StatusBar />
+            <StatusBar  testDuration = {this.state.testDuration}
+                        eslapsedTime = {this.state.eslapsedTime}
+            />
             <QuizBoard />
           </div>          
           {/* <button onClick={() => this.requestNewSession()}> New Session </button> */}
@@ -55,6 +63,12 @@ export default class Exam extends Component {
       console.log(status)
       console.log(response)
     })
+  }
+  startEslapsedTimer() {
+    this._timer = setInterval(() => { this.setState({ eslapsedTime: this.state.eslapsedTime + 1 })}, 1000)
+  }
+  stopEslapsedTimer() {
+    clearInterval(this._timer)
   }
 }
 
