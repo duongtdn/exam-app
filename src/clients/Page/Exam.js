@@ -16,7 +16,7 @@ export default class Exam extends Component {
       course: undefined,
       type: undefined,
       error: null,
-      eslapsedTime: 0,  // ms
+      eslapsedTime: 2445,  // ms
       testDuration: 0   // ms
     }
     this._timer = null

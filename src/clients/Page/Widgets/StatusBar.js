@@ -22,15 +22,16 @@ export default class StatusBar extends Component {
   }
   render() {
     const remainingTime = this.props.testDuration - this.props.eslapsedTime
+    const timerColor = (this.props.testDuration/remainingTime > 3) ? 'red' : 'yellow'
     return(
       <div className="" style={{margin: '8px 0'}}>
         <div className="w3-cell w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '154px'}}>
           <div className="w3-text-green w3-small"> Completion (15%) </div>
           <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: '10px'}}> 15/100 </div>
         </div>  
-        <div className="w3-cell w3-pale-yellow w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '124px'}}>
-          <div className="w3-text-yellow w3-small"> Time Left </div>
-          <div className="w3-text-yellow w3-large" style={{fontWeight: 'bold', marginTop: '10px'}}> {formatTime(remainingTime)} </div> 
+        <div className={`w3-cell w3-pale-${timerColor} w3-padding`} style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '124px'}}>
+          <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
+          <div className={`w3-text-${timerColor} w3-large`} style={{fontWeight: 'bold', marginTop: '10px'}}> {formatTime(remainingTime)} </div> 
         </div> 
         <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 286px)'}}>
           <div className="w3-text-blue w3-small">Saved Quiz </div>
