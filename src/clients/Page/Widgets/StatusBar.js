@@ -32,10 +32,10 @@ export default class StatusBar extends Component {
           <div className="w3-text-yellow w3-large" style={{fontWeight: 'bold', marginTop: '10px'}}> 01:05:56 </div> 
         </div> 
         <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 286px)'}}>
-          <div className="w3-text-blue w3-small">Saved Quiz </div>   
-          <div className="">
+          <div className="w3-text-blue w3-small">Saved Quiz </div>
+          <div className="" style={{minHeight: '37px'}}>
             {
-              [...Array(10).keys()].map( i => (
+              [...Array(0).keys()].map( i => (
                 <CircleTag key={i} value = {i} />
               ))
             }
@@ -46,7 +46,7 @@ export default class StatusBar extends Component {
           <div className="w3-show">
             <hr />
             {
-              [...Array(10).keys()].map( i => (
+              [...Array(0).keys()].map( i => (
                 <CircleTag key={i} value = {i} />
               ))
             }
