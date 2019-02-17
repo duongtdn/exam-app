@@ -92,7 +92,7 @@ export default class Exam extends Component {
       error: null,
       eslapsedTime: 0,  // ms
       testDuration: 0,   // ms
-      currentQuizIndex: 0
+      currentIndex: 0
     }
     this._timer = null
     this.myTest = null
@@ -127,9 +127,10 @@ export default class Exam extends Component {
             <StatusBar  testDuration = {this.state.testDuration}
                         eslapsedTime = {this.state.eslapsedTime}
             />
-            <QuizBoard />
+            <QuizBoard  questions = {this.myTest.questions} 
+                        currentIndex = {this.state.currentIndex}
+            />
           </div>          
-          {/* <button onClick={() => this.requestNewSession()}> New Session </button> */}
         </div>    
       )
     }

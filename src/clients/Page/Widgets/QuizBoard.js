@@ -7,22 +7,20 @@ export default class QuizBoard extends Component {
     super(props)
   }
   render() {
+    const quiz = this.props.questions[this.props.currentIndex]
     return(
       <div className="">
         <div className="w3-panel w3-padding w3-light-grey w3-border w3-border-grey">
           <div> 
-            <label className="w3-text-grey w3-small"> Section 1: The title of section here </label>            
+            <label className="w3-text-grey w3-small"> Section: {quiz.section + 1} </label>            
           </div>
-          <label> Quiz 15 </label> <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Answer Submitted </label>
-          <label className="w3-right w3-text-blue-grey"> 20pt </label>
+          <label> Quiz {this.props.currentIndex + 1} </label> 
+          <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Answer Submitted </label>
+          <label className="w3-right w3-text-blue-grey"> {quiz.score}pt </label>
         </div>
         <div>
           <div>
-            Dispatched entreaties boisterous say why stimulated. Certain forbade picture now prevent carried she get see sitting. Up twenty limits as months. Inhabit so perhaps of in to certain. Sex excuse chatty was seemed warmth. Nay add far few immediate sweetness earnestly dejection. 
-
-            Improved own provided blessing may peculiar domestic. Sight house has sex never. No visited raising gravity outward subject my cottage mr be. Hold do at tore in park feet near my case. Invitation at understood occasional sentiments insipidity inhabiting in. Off melancholy alteration principles old. Is do speedily kindness properly oh. Respect article painted cottage he is offices parlors. 
-
-            To sure calm much most long me mean. Able rent long in do we. Uncommonly no it announcing melancholy an in. Mirth learn it he given. Secure shy favour length all twenty denote. He felicity no an at packages answered opinions juvenile. 
+             {quiz.problem} 
           </div>
           <hr />          
           <div>
