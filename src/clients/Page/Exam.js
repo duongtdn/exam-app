@@ -109,7 +109,7 @@ export default class Exam extends Component {
     // TBD: set testDuration and start timer after recieved data from server
     this.myTest = myTest
     this.setState({ testDuration: this.myTest.duration * 60 }) // tested value 3671
-    this.startEslapsedTimer()
+    // this.startEslapsedTimer()
   }
 
   render() {
