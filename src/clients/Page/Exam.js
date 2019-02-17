@@ -9,6 +9,80 @@ import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
 import QuizBoard from './Widgets/QuizBoard'
 
+/* Data using for dev only, will replace later */
+const myTest = {
+  testId: 'my-test-id',
+  createdAt: new Date(),
+  submittedAt: undefined,
+  duration: 30,
+  sections: [
+    {
+      title: 'Datatype of C',
+      description: 'This section test the overral knowledge and your undestand of Datatype used in C',
+      score: 40,
+      question: 4
+    },
+    {
+      title: 'Pointer in C',
+      description: 'This section test the overral knowledge and your undestand of pointer used in C',
+      score: 60,
+      question: 6
+    }
+  ],
+  questions: [
+    {
+      section: 0,
+      problem: 'Problem statement of question 1: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 0,
+      problem: 'Problem statement of question 2: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 0,
+      problem: 'Problem statement of question 3: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 0,
+      problem: 'Problem statement of question 4: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 1,
+      problem: 'Problem statement of question 5: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 1,
+      problem: 'Problem statement of question 6: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 1,
+      problem: 'Problem statement of question 7: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 1,
+      problem: 'Problem statement of question 8: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 1,
+      problem: 'Problem statement of question 9: bla bla bla....',
+      score: 10
+    },
+    {
+      section: 1,
+      problem: 'Problem statement of question 10: bla bla bla....',
+      score: 10
+    }
+  ]
+}
+
 export default class Exam extends Component {
   constructor(props) {
     super(props)
@@ -16,10 +90,12 @@ export default class Exam extends Component {
       course: undefined,
       type: undefined,
       error: null,
-      eslapsedTime: 2445,  // ms
-      testDuration: 0   // ms
+      eslapsedTime: 0,  // ms
+      testDuration: 0,   // ms
+      currentQuizIndex: 0
     }
     this._timer = null
+    this.myTest = null
   }
 
   componentWillMount() {
@@ -30,8 +106,9 @@ export default class Exam extends Component {
     } else {
       this.setState({ error: '400 Bad Request' })
     }
-    // later set testDuration and start timer after recieved data from server
-    this.setState({ testDuration: 3671 }) // tested value 3671
+    // TBD: set testDuration and start timer after recieved data from server
+    this.myTest = myTest
+    this.setState({ testDuration: this.myTest.duration * 60 }) // tested value 3671
     this.startEslapsedTimer()
   }
 
