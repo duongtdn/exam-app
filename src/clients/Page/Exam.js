@@ -97,7 +97,7 @@ export default class Exam extends Component {
     }
     this._timer = null
     this.myTest = null
-    const bindMethods = ['nextQuiz', 'previousQuiz', 'saveQuiz']
+    const bindMethods = ['nextQuiz', 'previousQuiz', 'saveQuiz', 'unsaveQuiz']
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
 
@@ -136,6 +136,7 @@ export default class Exam extends Component {
                         next = {this.nextQuiz}
                         previous = {this.previousQuiz}
                         saveQuiz = {this.saveQuiz}
+                        unsaveQuiz = {this.unsaveQuiz}
                         savedQuizs = {this.state.savedQuizs}
             />
           </div>          
@@ -188,6 +189,12 @@ export default class Exam extends Component {
       savedQuizs.push(index)
       this.setState({ savedQuizs })
     }    
+  }
+  unsaveQuiz(index) {
+    const savedQuizs = this.state.savedQuizs.filter( _index => {
+      return (index !== _index)
+    })
+    this.setState({ savedQuizs })
   }
 }
 
