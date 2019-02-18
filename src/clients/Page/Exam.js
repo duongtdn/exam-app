@@ -136,6 +136,7 @@ export default class Exam extends Component {
                         next = {this.nextQuiz}
                         previous = {this.previousQuiz}
                         saveQuiz = {this.saveQuiz}
+                        savedQuizs = {this.state.savedQuizs}
             />
           </div>          
         </div>    
