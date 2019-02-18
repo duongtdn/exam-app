@@ -16,6 +16,23 @@ class CircleTag extends Component {
   } 
 }
 
+class SavedQuizsList extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    return (
+      <div>
+        {
+          this.props.savedQuizs.map( i => (
+            <CircleTag key={i} value = {i} />
+          ))
+        }
+      </div>
+    )
+  }
+}
+
 export default class StatusBar extends Component {
   constructor(props) {
     super(props)
@@ -36,22 +53,14 @@ export default class StatusBar extends Component {
         <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 286px)'}}>
           <div className="w3-text-blue w3-small">Saved Quiz </div>
           <div className="" style={{minHeight: '37px'}}>
-            {
-              [...Array(0).keys()].map( i => (
-                <CircleTag key={i} value = {i} />
-              ))
-            }
+            <SavedQuizsList savedQuizs={this.props.savedQuizs} />
           </div>            
         </div>     
         <div className="w3-cell w3-pale-blue w3-padding  w3-hide-medium w3-hide-large" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: '100%'}}>
           <div className="w3-text-blue w3-small"> Saved Quiz <i className = "fa fa-sort-down w3-large" style={{margin: '0 8px'}} /> </div>   
           <div className="w3-show">
             <hr />
-            {
-              [...Array(0).keys()].map( i => (
-                <CircleTag key={i} value = {i} />
-              ))
-            }
+            <SavedQuizsList savedQuizs={this.props.savedQuizs} />
           </div>            
         </div>
       </div>
