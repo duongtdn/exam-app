@@ -92,11 +92,12 @@ export default class Exam extends Component {
       error: null,
       eslapsedTime: 0,  // ms
       testDuration: 0,   // ms
-      currentIndex: 0
+      currentIndex: 0,
+      savedQuizs: []
     }
     this._timer = null
     this.myTest = null
-    const bindMethods = ['nextQuiz', 'previousQuiz']
+    const bindMethods = ['nextQuiz', 'previousQuiz', 'saveQuiz']
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
 
@@ -128,11 +129,13 @@ export default class Exam extends Component {
             />
             <StatusBar  testDuration = {this.state.testDuration}
                         eslapsedTime = {this.state.eslapsedTime}
+                        savedQuizs = {this.state.savedQuizs}
             />
             <QuizBoard  questions = {this.myTest.questions} 
                         currentIndex = {this.state.currentIndex}
                         next = {this.nextQuiz}
                         previous = {this.previousQuiz}
+                        saveQuiz = {this.saveQuiz}
             />
           </div>          
         </div>    
@@ -177,6 +180,13 @@ export default class Exam extends Component {
     if (currentIndex > 0) {
       this.moveToQuiz(currentIndex-1)
     }
+  }
+  saveQuiz(index) {
+    const savedQuizs = this.state.savedQuizs
+    if (savedQuizs.indexOf(index) === -1) {
+      savedQuizs.push(index)
+      this.setState({ savedQuizs })
+    }    
   }
 }
 

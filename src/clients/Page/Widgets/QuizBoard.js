@@ -38,7 +38,7 @@ export default class QuizBoard extends Component {
           <div className="w3-row">
             <div className="w3-col" style={{width: '60px'}}> <button className="w3-button w3-blue"> Submit </button> </div>
             <div className="w3-rest" style = {{textAlign: 'right'}}>
-              <button className="w3-button w3-text-orange"> Save Quiz </button>
+              <button className="w3-button w3-text-orange" onClick={() => this.props.saveQuiz(this.props.currentIndex)}> Save Quiz </button>
               <button className="w3-button" onClick={this.props.previous} > <i className="fa fa-arrow-left" /> </button>
               <button className="w3-button" onClick={this.props.next} > <i className="fa fa-arrow-right" /> </button>
             </div>
