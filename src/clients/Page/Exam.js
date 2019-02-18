@@ -96,6 +96,8 @@ export default class Exam extends Component {
     }
     this._timer = null
     this.myTest = null
+    const bindMethods = ['nextQuiz', 'previousQuiz']
+    bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
 
   componentWillMount() {
@@ -129,6 +131,8 @@ export default class Exam extends Component {
             />
             <QuizBoard  questions = {this.myTest.questions} 
                         currentIndex = {this.state.currentIndex}
+                        next = {this.nextQuiz}
+                        previous = {this.previousQuiz}
             />
           </div>          
         </div>    
@@ -156,6 +160,23 @@ export default class Exam extends Component {
   }
   stopEslapsedTimer() {
     clearInterval(this._timer)
+  }
+  moveToQuiz(index) {
+    this.setState({ currentIndex: index })
+  }
+  nextQuiz() {
+    const currentIndex = this.state.currentIndex    
+    if (currentIndex < this.myTest.questions.length-1) {
+      this.moveToQuiz(currentIndex+1)
+    } else {
+      console.log('Reach end of test')
+    }
+  }
+  previousQuiz() {
+    const currentIndex = this.state.currentIndex
+    if (currentIndex > 0) {
+      this.moveToQuiz(currentIndex-1)
+    }
   }
 }
 
