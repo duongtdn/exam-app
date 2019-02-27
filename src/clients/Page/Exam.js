@@ -32,12 +32,12 @@ const myTest = {
   questions: [
     {
       section: 0,
-      problem: 'Problem statement of question 1: bla bla bla....',
+      problem: '{"props":{"updateAnswers":true},"type":"DragZone","children":[{"type":"div","props":{"className":"w3-cell-row"},"children":[{"type":"div","props":{"className":"w3-cell"},"children":[{"type":"p","props":{},"children":[" Drag and drop your answer to the box in right side "]},{"type":"DragHolder","props":{"id":"$0","width":"300px","height":"100px","style":{"verticalAlign":"top"},"dropEffect":"copy"},"children":[{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"morning"},"children":[{"type":"label","props":{"className":"w3-tag w3-round w3-blue"},"children":[" Morning "]}]},{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"noon"},"children":[{"type":"label","props":{"className":"w3-tag w3-round w3-orange"},"children":[" Noon "]}]},{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"night"},"children":[{"type":"label","props":{"className":"w3-tag w3-round w3-purple"},"children":[" Night "]}]}]}]},{"type":"div","props":{"className":"w3-cell"},"children":[{"type":"p","props":{},"children":["  Match the label to correct holder "]},{"type":"div","props":{},"children":[{"type":"DragHolder","props":{"id":"$1","answerable":true,"dropLimit":1,"width":"100px","height":"50px","className":"w3-container w3-border w3-border-blue w3-padding","style":{"verticalAlign":"top"}}},{"type":"label","props":{},"children":[" 8:00 am "]}]},{"type":"div","props":{},"children":[{"type":"DragHolder","props":{"id":"$2","answerable":true,"dropLimit":1,"width":"100px","height":"50px","className":"w3-container w3-border w3-border-blue w3-padding","style":{"verticalAlign":"top"}}},{"type":"label","props":{},"children":[" 12:00 pm "]}]},{"type":"div","props":{},"children":[{"type":"DragHolder","props":{"id":"$3","answerable":true,"dropLimit":1,"width":"100px","height":"50px","className":"w3-container w3-border w3-border-blue w3-padding","style":{"verticalAlign":"top"}}},{"type":"label","props":{},"children":[" 10:00 pm "]}]}]}]}]}',
       score: 10
     },
     {
       section: 0,
-      problem: 'Problem statement of question 2: bla bla bla....',
+      problem: '{"props":{},"type":"div","children":[{"type":"DragZone","props":{"updateAnswers":true},"children":[{"type":"DragHolder","props":{"id":"$1","dropLimit":2,"answerable":true,"width":"400px","height":"200px","className":"w3-container w3-border w3-border-blue w3-padding","style":{"verticalAlign":"top"}}}," ",{"type":"DragHolder","props":{"id":"$2","width":"400px","height":"200px","answerable":true,"className":"w3-container w3-border w3-border-red w3-padding","style":{"verticalAlign":"top"}}},{"type":"hr","props":{}},{"type":"DragHolder","props":{"id":"$3","width":"900px","height":"200px","answerable":false,"style":{"verticalAlign":"top"},"dropEffect":"copy"},"children":[{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"morning"},"children":[{"type":"img","props":{"src":"https://i.ytimg.com/vi/-ABRpxQKpiI/maxresdefault.jpg","className":"w3-circle","width":"60px","height":"60px"}},{"type":"label","props":{},"children":[" Morning "]}]},{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"noon"},"children":[{"type":"img","props":{"src":"https://ak8.picdn.net/shutterstock/videos/12530228/thumb/11.jpg","className":"w3-circle","width":"60px","height":"60px"}},"Noon"]},{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"night"},"children":[{"type":"img","props":{"src":"https://static-2.gumroad.com/res/gumroad/3846839948920/asset_previews/ce091808afdcf672e4cd27b826868d2a/retina/Night_20Night_20Lullaby.bmp","className":"w3-circle","width":"60px","height":"60px"}},"Night"]}]}]}]}',
       score: 10
     },
     {
@@ -138,6 +138,7 @@ export default class Exam extends Component {
                         saveQuiz = {this.saveQuiz}
                         unsaveQuiz = {this.unsaveQuiz}
                         savedQuizs = {this.state.savedQuizs}
+                        updateAnswers = { ans => console.log(ans) }
             />
           </div>          
         </div>    

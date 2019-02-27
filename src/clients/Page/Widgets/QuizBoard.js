@@ -2,6 +2,9 @@
 
 import React, { Component } from 'react'
 
+import Quiz from 'react-quizy'
+import addons from 'react-quizy/dist/addons'
+
 export default class QuizBoard extends Component {
   constructor(props) {
     super(props)
@@ -23,22 +26,12 @@ export default class QuizBoard extends Component {
           <label className="w3-right w3-text-blue-grey"> {quiz.score}pt </label>
         </div>
         <div>
+          {/* render Quiz here */}
           <div>
-             {quiz.problem} 
-          </div>
-          <hr />          
-          <div>
-            <input className="w3-radio" type="radio" name="answer" value="good" />
-            <label>It could be a good answer</label>
-            <br />
-            <input className="w3-radio" type="radio" name="answer" value="confuse" />
-            <label>It is really confuse me</label>
-            <br />
-            <input className="w3-radio" type="radio" name="answer" value="wrong"  />
-            <label>Absolutely wrong answer</label> 
-            <br />
+            <Quiz data={quiz} addons={addons} updateAnswers = { this.props.updateAnswers } />
           </div>
           <hr />
+          {/* render action buttons */}
           <div className="w3-row">
             <div className="w3-col" style={{width: '60px'}}> <button className="w3-button w3-blue"> Submit </button> </div>
             <div className="w3-rest" style = {{textAlign: 'right'}}>
