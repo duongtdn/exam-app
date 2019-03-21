@@ -20,69 +20,29 @@ const myTest = {
       title: 'Datatype of C',
       description: 'This section test the overral knowledge and your undestand of Datatype used in C',
       score: 40,
-      question: 4
+      question: 1
     },
     {
       title: 'Pointer in C',
       description: 'This section test the overral knowledge and your undestand of pointer used in C',
       score: 60,
-      question: 6
+      question: 1
     }
   ],
   questions: [
     {
       section: 0,
-      problem: '{"props":{"updateAnswers":true},"type":"DragZone","children":[{"type":"div","props":{"className":"w3-cell-row"},"children":[{"type":"div","props":{"className":"w3-cell"},"children":[{"type":"p","props":{},"children":[" Drag and drop your answer to the box in right side "]},{"type":"DragHolder","props":{"id":"$0","width":"300px","height":"100px","style":{"verticalAlign":"top"},"dropEffect":"copy"},"children":[{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"morning"},"children":[{"type":"label","props":{"className":"w3-tag w3-round w3-blue"},"children":[" Morning "]}]},{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"noon"},"children":[{"type":"label","props":{"className":"w3-tag w3-round w3-orange"},"children":[" Noon "]}]},{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"night"},"children":[{"type":"label","props":{"className":"w3-tag w3-round w3-purple"},"children":[" Night "]}]}]}]},{"type":"div","props":{"className":"w3-cell"},"children":[{"type":"p","props":{},"children":["  Match the label to correct holder "]},{"type":"div","props":{},"children":[{"type":"DragHolder","props":{"id":"$1","answerable":true,"dropLimit":1,"width":"100px","height":"50px","className":"w3-container w3-border w3-border-blue w3-padding","style":{"verticalAlign":"top"}}},{"type":"label","props":{},"children":[" 8:00 am "]}]},{"type":"div","props":{},"children":[{"type":"DragHolder","props":{"id":"$2","answerable":true,"dropLimit":1,"width":"100px","height":"50px","className":"w3-container w3-border w3-border-blue w3-padding","style":{"verticalAlign":"top"}}},{"type":"label","props":{},"children":[" 12:00 pm "]}]},{"type":"div","props":{},"children":[{"type":"DragHolder","props":{"id":"$3","answerable":true,"dropLimit":1,"width":"100px","height":"50px","className":"w3-container w3-border w3-border-blue w3-padding","style":{"verticalAlign":"top"}}},{"type":"label","props":{},"children":[" 10:00 pm "]}]}]}]}]}',
-      score: 10
-    },
-    {
-      section: 0,
-      problem: '{"props":{},"type":"div","children":[{"type":"DragZone","props":{"updateAnswers":true},"children":[{"type":"DragHolder","props":{"id":"$1","dropLimit":2,"answerable":true,"width":"400px","height":"200px","className":"w3-container w3-border w3-border-blue w3-padding","style":{"verticalAlign":"top"}}}," ",{"type":"DragHolder","props":{"id":"$2","width":"400px","height":"200px","answerable":true,"className":"w3-container w3-border w3-border-red w3-padding","style":{"verticalAlign":"top"}}},{"type":"hr","props":{}},{"type":"DragHolder","props":{"id":"$3","width":"900px","height":"200px","answerable":false,"style":{"verticalAlign":"top"},"dropEffect":"copy"},"children":[{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"morning"},"children":[{"type":"img","props":{"src":"https://i.ytimg.com/vi/-ABRpxQKpiI/maxresdefault.jpg","className":"w3-circle","width":"60px","height":"60px"}},{"type":"label","props":{},"children":[" Morning "]}]},{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"noon"},"children":[{"type":"img","props":{"src":"https://ak8.picdn.net/shutterstock/videos/12530228/thumb/11.jpg","className":"w3-circle","width":"60px","height":"60px"}},"Noon"]},{"type":"DragItem","props":{"style":{"margin":"8px"},"value":"night"},"children":[{"type":"img","props":{"src":"https://static-2.gumroad.com/res/gumroad/3846839948920/asset_previews/ce091808afdcf672e4cd27b826868d2a/retina/Night_20Night_20Lullaby.bmp","className":"w3-circle","width":"60px","height":"60px"}},"Night"]}]}]}]}',
-      score: 10
-    },
-    {
-      section: 0,
-      problem: 'Problem statement of question 3: bla bla bla....',
-      score: 10
-    },
-    {
-      section: 0,
-      problem: 'Problem statement of question 4: bla bla bla....',
+      problem: '{"props":{"className":"w3-container w3-border w3-border-grey w3-padding","width":"700px","height":"500px","updateAnswers":true,"getSavedAnswers":true},"type":"DragZone","children":[{"type":"div","props":{},"children":[{"type":"DragItem","props":{"id":"$1"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-red","style":{"width":"100px","height":"100px"}},"children":[" Drag Me "]}," "]},{"type":"DragItem","props":{"id":"$2","left":"120px"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-blue","style":{"width":"150px","height":"100px"}},"children":[" Drag Me "]}," "]},{"type":"DragItem","props":{"id":"$3","left":"280px"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-green","style":{"width":"100px","height":"100px"}},"children":[" Drag Me "]}," "]}]},{"type":"DropHolder","props":{"layout":{"spacing":{"top":10,"left":20}},"width":"190px","height":"120px","top":"150px","left":"10px","dropLimit":1}},{"type":"DropHolder","props":{"width":"390px","height":"120px","top":"300px","left":"10px","dropLimit":2}},{"type":"DropHolder","props":{"layout":{"type":"stack","spacing":{"top":20,"left":10}},"width":"170px","height":"380px","top":"50px","left":"500px"}}]}',
       score: 10
     },
     {
       section: 1,
-      problem: 'Problem statement of question 5: bla bla bla....',
-      score: 10
-    },
-    {
-      section: 1,
-      problem: 'Problem statement of question 6: bla bla bla....',
-      score: 10
-    },
-    {
-      section: 1,
-      problem: 'Problem statement of question 7: bla bla bla....',
-      score: 10
-    },
-    {
-      section: 1,
-      problem: 'Problem statement of question 8: bla bla bla....',
-      score: 10
-    },
-    {
-      section: 1,
-      problem: 'Problem statement of question 9: bla bla bla....',
-      score: 10
-    },
-    {
-      section: 1,
-      problem: 'Problem statement of question 10: bla bla bla....',
+      problem: '{"props":{"className":"w3-container w3-border w3-border-grey w3-padding","width":"700px","height":"500px","updateAnswers":true,"getSavedAnswers":true},"type":"DragZone","children":[{"type":"div","props":{},"children":[{"type":"DragItem","props":{"id":"$1"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-red","style":{"width":"100px","height":"100px"}},"children":[" Drag Me "]}," "]},{"type":"DragItem","props":{"id":"$2","left":"120px"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-orange","style":{"width":"150px","height":"100px"}},"children":[" Drag Me "]}," "]},{"type":"DragItem","props":{"id":"$3","left":"280px"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-yellow","style":{"width":"100px","height":"100px"}},"children":[" Drag Me "]}," "]}]},{"type":"DropHolder","props":{"layout":{"spacing":{"top":10,"left":20}},"width":"190px","height":"120px","top":"150px","left":"10px","dropLimit":1}},{"type":"DropHolder","props":{"width":"390px","height":"120px","top":"300px","left":"10px","dropLimit":2}},{"type":"DropHolder","props":{"layout":{"type":"stack","spacing":{"top":20,"left":10}},"width":"170px","height":"380px","top":"50px","left":"500px"}}]}',
       score: 10
     }
   ]
 }
-
+const answers = {} // temp for dev
 export default class Exam extends Component {
   constructor(props) {
     super(props)
@@ -138,7 +98,8 @@ export default class Exam extends Component {
                         saveQuiz = {this.saveQuiz}
                         unsaveQuiz = {this.unsaveQuiz}
                         savedQuizs = {this.state.savedQuizs}
-                        updateAnswers = { ans => console.log(ans) }
+                        updateAnswers = { ans =>answers[this.state.currentIndex] = ans }
+                        getSavedAnswers = { () => answers[this.state.currentIndex]}
             />
           </div>          
         </div>    

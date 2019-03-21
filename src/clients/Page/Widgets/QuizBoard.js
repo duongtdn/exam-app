@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 
-import Quiz from 'react-quizy'
-import addons from 'react-quizy/dist/addons'
+import Quiz from 'react-quiz'
+import addons from 'react-quiz/dist/addons'
 
 export default class QuizBoard extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ export default class QuizBoard extends Component {
         <div>
           {/* render Quiz here */}
           <div>
-            <Quiz data={quiz} addons={addons} updateAnswers = { this.props.updateAnswers } />
+            <Quiz data={quiz} addons={addons} updateAnswers = {this.props.updateAnswers} getSavedAnswers = {this.props.getSavedAnswers} />
           </div>
           <hr />
           {/* render action buttons */}
