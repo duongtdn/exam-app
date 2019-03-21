@@ -8,9 +8,11 @@ export default class Title extends Component {
   }
   render() {
     return(      
-      <div style={{marginTop: '10px'}}> 
-        <label className="w3-text-blue w3-large" style={{fontWeight:'bold'}}> <span className="w3-text-black"> Course: </span>{this.props.course} ({this.props.type}) </label> <br />
-        <label className="w3-text-grey w3-small"> {this.props.today}</label>
+      <div className="w3-cell-row" style={{marginTop: '10px'}}> 
+        <div className="w3-text-blue w3-large w3-cell" style={{fontWeight:'bold'}}> 
+          <span className="w3-text-black"> Course: </span>{this.props.course} ({this.props.type}) 
+        </div>
+        <div className="w3-text-grey w3-small w3-cell" style={{textAlign: 'right'}}> {this.props.today}</div>
       </div>              
     )
   }
