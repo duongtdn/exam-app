@@ -41,29 +41,45 @@ export default class StatusBar extends Component {
     const remainingTime = this.props.testDuration - this.props.eslapsedTime
     const timerColor = (this.props.testDuration/remainingTime > 3) ? 'red' : 'yellow'
     return(
-      <div className="" style={{margin: '8px 0'}}>
-        <div className="w3-cell w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '154px'}}>
-          <div className="w3-text-green w3-small"> Completion (15%) </div>
-          <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: '10px'}}> 15/100 </div>
-        </div>  
-        <div className={`w3-cell w3-pale-${timerColor} w3-padding`} style={{display: 'inline-block', textAlign: 'center', margin: '4px 4px 0 0', width: '124px'}}>
-          <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
-          <div className={`w3-text-${timerColor} w3-large`} style={{fontWeight: 'bold', marginTop: '10px'}}> {formatTime(remainingTime)} </div> 
-        </div> 
-        <div className="w3-cell w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: 'calc(100% - 286px)'}}>
-          <div className="w3-text-blue w3-small">Saved Quiz </div>
-          <div className="" style={{minHeight: '37px'}}>
-            <SavedQuizsList savedQuizs={this.props.savedQuizs} />
-          </div>            
-        </div>     
-        <div className="w3-cell w3-pale-blue w3-padding  w3-hide-medium w3-hide-large" style={{display: 'inline-block', textAlign: 'left', margin: '4px 0', width: '100%'}}>
-          <div className="w3-text-blue w3-small"> Saved Quiz <i className = "fa fa-sort-down w3-large" style={{margin: '0 8px'}} /> </div>   
-          <div className="w3-show">
-            <hr />
-            <SavedQuizsList savedQuizs={this.props.savedQuizs} />
-          </div>            
+      <div style={{margin: '8px 0'}}>
+        {/* for medium screen */}
+        <div className="w3-hide-large w3-hide-small" >
+          <div className="w3-pale-green w3-padding" style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
+            <div className="w3-text-green w3-small"> Completion (15%) </div>
+            <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> 15/100 </div>
+          </div>  
+          <div className={`w3-pale-${timerColor} w3-padding`} style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
+            <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
+            <div className={`w3-text-${timerColor} w3-large`} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </div> 
+          </div> 
+          <div className="w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{ textAlign: 'left', margin: '4px 0', width: '154px'}}>
+            <div className="w3-text-blue w3-small">Saved Quiz </div>
+            <div className="" style={{minHeight: '37px'}}>
+              <SavedQuizsList savedQuizs={this.props.savedQuizs} />
+            </div>            
+          </div>     
+        </div>
+        {/* for large screen */}
+        <div className="w3-hide-medium w3-hide-small">
+          <div style={{ width: '310px', marginBottom: '6px'}}>
+            <div className="w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', width: '154px', marginRight: '2px'}}>
+              <div className="w3-text-green w3-small"> Completion (15%) </div>
+              <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> 15/100 </div>
+            </div>  
+            <div className={`w3-pale-${timerColor} w3-padding`} style={{display: 'inline-block', textAlign: 'center', width: '154px'}}>
+              <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
+              <div className={`w3-text-${timerColor} w3-large`} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </div> 
+            </div> 
+          </div>
+          <div className="w3-pale-blue w3-padding w3-cell-top" style={{ textAlign: 'left', margin: '4px 0', width: '310px'}}>
+            <div className="w3-text-blue w3-small">Saved Quiz </div>
+            <div className="" style={{minHeight: '37px'}}>
+              <SavedQuizsList savedQuizs={this.props.savedQuizs} />
+            </div>            
+          </div>     
         </div>
       </div>
+      
     )
   }
 }
