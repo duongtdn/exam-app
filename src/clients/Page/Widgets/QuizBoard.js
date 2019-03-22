@@ -28,7 +28,13 @@ export default class QuizBoard extends Component {
         <div>
           {/* render Quiz here */}
           <div>
-            <Quiz data={quiz} addons={addons} updateAnswers = {this.props.updateAnswers} getSavedAnswers = {this.props.getSavedAnswers} />
+            <Quiz data={quiz} 
+                  addons={addons} 
+                  updateAnswers = {this.props.updateAnswers} 
+                  getSavedAnswers = {this.props.getSavedAnswers}
+                  updateInternalState = {this.props.updateInternalState}
+                  getSavedInternalState = {this.props.getSavedInternalState}
+            />
           </div>
           <hr />
           {/* render action buttons */}
