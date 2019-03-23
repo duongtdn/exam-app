@@ -130,6 +130,7 @@ export default class Exam extends Component {
                 <StatusBar  testDuration = {this.state.testDuration}
                             eslapsedTime = {this.state.eslapsedTime}
                             savedQuizs = {this.state.savedQuizs}
+                            moveToQuiz = {index => this.moveToQuiz(index)}
                 />
               </div>
             </div>

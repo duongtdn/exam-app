@@ -9,7 +9,9 @@ class CircleTag extends Component {
   render() {
     const i = this.props.value
     return (
-      <div className="w3-blue" key={i} style={{height: '30px', width: '30px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer', padding: '2px 0px'}}> 
+      <div  className="w3-blue" key={i} 
+            style={{height: '30px', width: '30px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer', padding: '2px 0px'}}
+            onClick = {this.props.onClick}> 
         <span className="w3-small"> {i+1} </span>
       </div>
     )
@@ -25,7 +27,7 @@ class SavedQuizsList extends Component {
       <div>
         {
           this.props.savedQuizs.map( i => (
-            <CircleTag key={i} value = {i} />
+            <CircleTag key={i} value = {i} onClick={ e => this.props.moveToQuiz(i)} />
           ))
         }
       </div>
@@ -55,7 +57,7 @@ export default class StatusBar extends Component {
           <div className="w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{ textAlign: 'left', margin: '4px 0', width: '154px'}}>
             <div className="w3-text-blue w3-small">Saved Quiz </div>
             <div className="" style={{minHeight: '37px'}}>
-              <SavedQuizsList savedQuizs={this.props.savedQuizs} />
+              <SavedQuizsList savedQuizs={this.props.savedQuizs} moveToQuiz={this.props.moveToQuiz} />
             </div>            
           </div>     
         </div>
@@ -74,7 +76,7 @@ export default class StatusBar extends Component {
           <div className="w3-pale-blue w3-padding w3-cell-top" style={{ textAlign: 'left', margin: '4px 0', width: '310px'}}>
             <div className="w3-text-blue w3-small">Saved Quiz </div>
             <div className="" style={{minHeight: '37px'}}>
-              <SavedQuizsList savedQuizs={this.props.savedQuizs} />
+              <SavedQuizsList savedQuizs={this.props.savedQuizs} moveToQuiz={this.props.moveToQuiz} />
             </div>            
           </div>     
         </div>
