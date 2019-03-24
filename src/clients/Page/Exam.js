@@ -9,6 +9,8 @@ import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
 import QuizBoard from './Widgets/QuizBoard'
 
+const QUIZSKEY = '__$quizs__'
+
 /* Data using for dev only, will replace later */
 const myTest = {
   testId: 'my-test-id',
@@ -62,8 +64,7 @@ const myTest = {
     }
   ]
 }
-const answers = {} // temp for dev
-const state = {} // temp for dev
+
 
 export default class Exam extends Component {
   constructor(props) {
@@ -79,7 +80,7 @@ export default class Exam extends Component {
     }
     this._timer = null
     this.myTest = null
-    const bindMethods = ['nextQuiz', 'previousQuiz', 'saveQuiz', 'unsaveQuiz']
+    const bindMethods = ['nextQuiz', 'previousQuiz', 'saveQuiz', 'unsaveQuiz', 'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState']
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
 
@@ -120,10 +121,10 @@ export default class Exam extends Component {
                             saveQuiz = {this.saveQuiz}
                             unsaveQuiz = {this.unsaveQuiz}
                             savedQuizs = {this.state.savedQuizs}
-                            updateAnswers = { ans => answers[this.state.currentIndex] = ans }
-                            getSavedAnswers = { () => answers[this.state.currentIndex]}
-                            updateInternalState = { s => state[this.state.currentIndex] = s }
-                            getSavedInternalState = { () => state[this.state.currentIndex] }
+                            updateAnswers = {this.updateAnswers}
+                            getSavedAnswers = {this.getSavedAnswers}
+                            updateInternalState = {this.updateInternalState}
+                            getSavedInternalState = {this.getSavedInternalState}
                 />
               </div>
               <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
@@ -192,6 +193,44 @@ export default class Exam extends Component {
       return (index !== _index)
     })
     this.setState({ savedQuizs })
+  }
+  _getQuizFromStorage(index) {
+    const quizs = JSON.parse(localStorage.getItem(QUIZSKEY))
+    if (quizs) {
+      return quizs[index] || {}
+    } else {
+      return {}
+    }
+  }
+  _saveQuizToStorage(index, quiz) {
+    const quizs = JSON.parse(localStorage.getItem(QUIZSKEY)) || {}
+    quizs[index] = quiz
+    localStorage.setItem(QUIZSKEY, JSON.stringify(quizs))
+  }
+  _clearAllQuizsFromStorage() {
+    localStorage.removeItem(QUIZSKEY)
+  }
+  updateAnswers(answers) {
+    const index = this.state.currentIndex
+    const quiz = this._getQuizFromStorage(index)
+    quiz.answers = answers
+    this._saveQuizToStorage(index, quiz)
+  }
+  getSavedAnswers() {
+    const index = this.state.currentIndex
+    const quiz = this._getQuizFromStorage(index)
+    return quiz.answers
+  }
+  updateInternalState(state) {
+    const index = this.state.currentIndex
+    const quiz = this._getQuizFromStorage(index)
+    quiz.state = state
+    this._saveQuizToStorage(index, quiz)
+  }
+  getSavedInternalState() {
+    const index = this.state.currentIndex
+    const quiz = this._getQuizFromStorage(index)
+    return quiz.state
   }
 }
 
