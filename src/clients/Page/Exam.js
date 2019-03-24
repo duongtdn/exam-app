@@ -105,7 +105,7 @@ export default class Exam extends Component {
       return (
         <div>
           <Header />
-          <div className="w3-container">
+          <div className="w3-container" style={{maxWidth: '1200px', margin: 'auto'}}>
 
             <Title  course = {this.state.course}
                     type = {this.state.type}
