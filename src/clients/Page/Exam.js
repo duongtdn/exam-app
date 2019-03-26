@@ -73,6 +73,7 @@ export default class Exam extends Component {
       course: undefined,
       type: undefined,
       error: null,
+      loading: true,
       eslapsedTime: 0,  // ms
       testDuration: 0,   // ms
       currentIndex: 0,
@@ -84,69 +85,81 @@ export default class Exam extends Component {
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const today = getToday();
     const { course, type } = getCourseIdFromHref(window.location.href)
-    if (course) {
-      this.setState({ course, type, today })
+    if (course && type) {
+      this.requestNewSession( (err, response) => {
+        if (err) {
+          this.setState({ error: err, loading: false })
+        } else {
+          console.log(response)
+          this.myTest = myTest
+          this.setState({ course, type, today, loading: false, testDuration: this.myTest.duration * 60 })
+          this.startEslapsedTimer()
+        }
+      })
     } else {
-      this.setState({ error: '400 Bad Request' })
+      this.setState({ error: '400 Bad Request', loading: false })
     }
-    // TBD: set testDuration and start timer after recieved data from server
-    this.myTest = myTest
-    this.setState({ testDuration: this.myTest.duration * 60 }) // tested value 3671
-    // this.startEslapsedTimer()
   }
 
   render() {
+    if (this.state.loading) {
+      return (<div className="w3-container"> LOADING... </div>)
+    }
+
     if (this.state.error) {
       return (<div className="w3-container"> {this.state.error} </div>)
-    } else {
-      return (
-        <div>
-          <Header />
-          <div className="w3-container" style={{maxWidth: '1200px', margin: 'auto'}}>
-
-            <Title  course = {this.state.course}
-                    type = {this.state.type}
-                    today = {this.state.today}
-            />
-
-            <div className="w3-cell-row">
-              <div className="w3-cell" style={{verticalAlign: 'top'}}>
-                <QuizBoard  questions = {this.myTest.questions} 
-                            currentIndex = {this.state.currentIndex}
-                            next = {this.nextQuiz}
-                            previous = {this.previousQuiz}
-                            saveQuiz = {this.saveQuiz}
-                            unsaveQuiz = {this.unsaveQuiz}
-                            savedQuizs = {this.state.savedQuizs}
-                            updateAnswers = {this.updateAnswers}
-                            getSavedAnswers = {this.getSavedAnswers}
-                            updateInternalState = {this.updateInternalState}
-                            getSavedInternalState = {this.getSavedInternalState}
-                />
-              </div>
-              <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
-                <StatusBar  testDuration = {this.state.testDuration}
-                            eslapsedTime = {this.state.eslapsedTime}
-                            savedQuizs = {this.state.savedQuizs}
-                            moveToQuiz = {index => this.moveToQuiz(index)}
-                />
-              </div>
-            </div>
-           
-            
-          </div>          
-        </div>    
-      )
     }
+
+    return (
+      <div>
+        <Header />
+        <div className="w3-container" style={{maxWidth: '1200px', margin: 'auto'}}>
+
+          <Title  course = {this.state.course}
+                  type = {this.state.type}
+                  today = {this.state.today}
+          />
+
+          <div className="w3-cell-row">
+            <div className="w3-cell" style={{verticalAlign: 'top'}}>
+              <QuizBoard  questions = {this.myTest.questions} 
+                          currentIndex = {this.state.currentIndex}
+                          next = {this.nextQuiz}
+                          previous = {this.previousQuiz}
+                          saveQuiz = {this.saveQuiz}
+                          unsaveQuiz = {this.unsaveQuiz}
+                          savedQuizs = {this.state.savedQuizs}
+                          updateAnswers = {this.updateAnswers}
+                          getSavedAnswers = {this.getSavedAnswers}
+                          updateInternalState = {this.updateInternalState}
+                          getSavedInternalState = {this.getSavedInternalState}
+              />
+            </div>
+            <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
+              <StatusBar  testDuration = {this.state.testDuration}
+                          eslapsedTime = {this.state.eslapsedTime}
+                          savedQuizs = {this.state.savedQuizs}
+                          moveToQuiz = {index => this.moveToQuiz(index)}
+              />
+            </div>
+          </div>
+          
+          
+        </div>          
+      </div>    
+    )
   }
-  requestNewSession() {
+  requestNewSession(done) {
     const urlBasePath = this.props.urlBasePath || ''
     xhttp.post(`${urlBasePath}/exam/session`, {course: ''}, (status, response) => {
-      console.log(status)
-      console.log(response)
+      if (status === 200) {
+        done(null, response)
+      } else {
+        done(status, null)
+      }
     })
   }
   startEslapsedTimer() {
