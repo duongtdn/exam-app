@@ -74,8 +74,7 @@ export default class Exam extends Component {
       type: undefined,
       error: null,
       loading: true,
-      eslapsedTime: 0,  // ms
-      testDuration: 0,   // ms
+      timerOnOff: 'off',
       currentIndex: 0,
       savedQuizs: []
     }
@@ -95,8 +94,7 @@ export default class Exam extends Component {
         } else {
           console.log(response)
           this.myTest = myTest
-          this.setState({ course, type, today, loading: false, testDuration: this.myTest.duration * 60 })
-          this.startEslapsedTimer()
+          this.setState({ course, type, today, loading: false, timerOnOff: 'on' })
         }
       })
     } else {
@@ -139,8 +137,8 @@ export default class Exam extends Component {
               />
             </div>
             <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
-              <StatusBar  testDuration = {this.state.testDuration}
-                          eslapsedTime = {this.state.eslapsedTime}
+              <StatusBar  testDuration = {this.myTest.duration * 60}
+                          timerOnOff = {this.state.timerOnOff}
                           savedQuizs = {this.state.savedQuizs}
                           moveToQuiz = {index => this.moveToQuiz(index)}
               />
@@ -161,21 +159,6 @@ export default class Exam extends Component {
         done(status, null)
       }
     })
-  }
-  startEslapsedTimer() {
-    this._timer = setInterval(() => { 
-      const eslapsedTime = this.state.eslapsedTime + 1      
-      this.setState({ eslapsedTime })
-      if (eslapsedTime === this.state.testDuration) {
-        // later, handle more for timeout event rather than stopTimer only,
-        // for example, submit last question, show popup, lock test...
-        this.stopEslapsedTimer()
-        console.log('timeout')
-      }
-    }, 1000)
-  }
-  stopEslapsedTimer() {
-    clearInterval(this._timer)
   }
   moveToQuiz(index) {
     this.setState({ currentIndex: index })

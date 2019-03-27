@@ -38,9 +38,22 @@ class SavedQuizsList extends Component {
 export default class StatusBar extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      eslapsedTime: 0
+    }
+  }
+  componentDidMount() {
+    if (this.props.timerOnOff === 'on') {
+      this.startEslapsedTimer()
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.timerOnOff === 'on' && prevProps.timerOnOff === 'off') {
+      this.startEslapsedTimer()
+    }
   }
   render() {
-    const remainingTime = this.props.testDuration - this.props.eslapsedTime
+    const remainingTime = this.props.testDuration - this.state.eslapsedTime
     const timerColor = (this.props.testDuration/remainingTime > 3) ? 'red' : 'yellow'
     return(
       <div style={{margin: '8px 0'}}>
@@ -83,6 +96,22 @@ export default class StatusBar extends Component {
       </div>
       
     )
+  }
+  startEslapsedTimer() {
+    this._timer = setInterval(() => { 
+      const eslapsedTime = this.state.eslapsedTime + 1      
+      this.setState({ eslapsedTime })
+      if (eslapsedTime === this.props.testDuration) {
+        // later, handle more for timeout event rather than stopTimer only,
+        // for example, submit last question, show popup, lock test...
+        this.stopEslapsedTimer()
+        console.log('timeout')
+      }
+    }, 1000)
+  }
+  stopEslapsedTimer() {
+    clearInterval(this._timer)
+    this.props.onTimeout && this.props.onTimeout()
   }
 }
 
