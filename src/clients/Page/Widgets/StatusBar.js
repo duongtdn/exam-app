@@ -18,7 +18,7 @@ class CircleTag extends Component {
   } 
 }
 
-class SavedQuizsList extends Component {
+class PinnedQuizesList extends Component {
   constructor(props) {
     super(props)
   }
@@ -26,7 +26,7 @@ class SavedQuizsList extends Component {
     return (
       <div>
         {
-          this.props.savedQuizs.map( i => (
+          this.props.pinnedQuizes.map( i => (
             <CircleTag key={i} value = {i} onClick={ e => this.props.moveToQuiz(i)} />
           ))
         }
@@ -68,9 +68,9 @@ export default class StatusBar extends Component {
             <div className={`w3-text-${timerColor} w3-large`} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </div> 
           </div> 
           <div className="w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{ textAlign: 'left', margin: '4px 0', width: '154px'}}>
-            <div className="w3-text-blue w3-small">Saved Quiz </div>
+            <div className="w3-text-blue w3-small"> Pinned questions </div>
             <div className="" style={{minHeight: '37px'}}>
-              <SavedQuizsList savedQuizs={this.props.savedQuizs} moveToQuiz={this.props.moveToQuiz} />
+              <PinnedQuizesList pinnedQuizes={this.props.pinnedQuizes} moveToQuiz={this.props.moveToQuiz} />
             </div>            
           </div>     
         </div>
@@ -87,9 +87,9 @@ export default class StatusBar extends Component {
             </div> 
           </div>
           <div className="w3-pale-blue w3-padding w3-cell-top" style={{ textAlign: 'left', margin: '4px 0', width: '310px'}}>
-            <div className="w3-text-blue w3-small">Saved Quiz </div>
+            <div className="w3-text-blue w3-small"> Pinned questions </div>
             <div className="" style={{minHeight: '37px'}}>
-              <SavedQuizsList savedQuizs={this.props.savedQuizs} moveToQuiz={this.props.moveToQuiz} />
+              <PinnedQuizesList pinnedQuizes={this.props.pinnedQuizes} moveToQuiz={this.props.moveToQuiz} />
             </div>            
           </div>     
         </div>

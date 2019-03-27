@@ -20,8 +20,8 @@ export default class QuizBoard extends Component {
             </div>
             <label> Quiz {this.props.currentIndex + 1} </label> 
             {/* <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Answer Submitted </label> */}
-            { this.props.savedQuizs.indexOf(this.props.currentIndex) !== -1 ? 
-                <label className="w3-tag w3-blue w3-small" style={{fontStyle: 'italic'}}> Saved </label>
+            { this.props.pinnedQuizes.indexOf(this.props.currentIndex) !== -1 ? 
+                <label className="w3-tag w3-blue w3-small" style={{fontStyle: 'italic'}}> Pinned </label>
                 : null
             }
           </div>
@@ -52,14 +52,17 @@ export default class QuizBoard extends Component {
           </div>
           
           {/* render action buttons */}
-          <div className="w3-row w3-panel w3-padding w3-border-top w3-border-grey">
-            <div className="w3-col" style={{width: '60px'}}> <button className="w3-button w3-blue"> Submit </button> </div>
-            <div className="w3-rest" style = {{textAlign: 'right'}}>
-              { this.props.savedQuizs.indexOf(this.props.currentIndex) === -1 ?
-                <button className="w3-button w3-text-orange" onClick={() => this.props.saveQuiz(this.props.currentIndex)}> Save Quiz </button>
+          <div className="w3-cell-row w3-panel w3-padding w3-border-top w3-border-grey">
+            <div className="w3-cell" > 
+              <button className="w3-button w3-blue"> Submit </button> 
+              {' '}
+              { this.props.pinnedQuizes.indexOf(this.props.currentIndex) === -1 ?
+                <button className="w3-button w3-text-orange" onClick={() => this.props.pinQuiz(this.props.currentIndex)}> Pin this question </button>
                 :
-                <button className="w3-button w3-text-orange" onClick={() => this.props.unsaveQuiz(this.props.currentIndex)}> Unsave </button>
+                <button className="w3-button w3-text-orange" onClick={() => this.props.unpinQuiz(this.props.currentIndex)}> Unpin </button>
               }
+            </div>
+            <div className="w3-cell" style = {{textAlign: 'right'}}>
               <button className="w3-button" onClick={this.props.previous} > 
                 <i className="fa fa-arrow-left" /> <span className="w3-hide-small" > Back </span>
               </button>

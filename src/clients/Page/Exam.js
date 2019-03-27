@@ -9,7 +9,7 @@ import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
 import QuizBoard from './Widgets/QuizBoard'
 
-const QUIZSKEY = '__$quizs__'
+const QUIZESKEY = '__$quizes__'
 
 /* Data using for dev only, will replace later */
 const myTest = {
@@ -76,11 +76,11 @@ export default class Exam extends Component {
       loading: true,
       timerOnOff: 'off',
       currentIndex: 0,
-      savedQuizs: []
+      pinnedQuizes: []
     }
     this._timer = null
     this.myTest = null
-    const bindMethods = ['nextQuiz', 'previousQuiz', 'saveQuiz', 'unsaveQuiz', 'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState']
+    const bindMethods = ['nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz', 'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState']
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
 
@@ -127,9 +127,9 @@ export default class Exam extends Component {
                           currentIndex = {this.state.currentIndex}
                           next = {this.nextQuiz}
                           previous = {this.previousQuiz}
-                          saveQuiz = {this.saveQuiz}
-                          unsaveQuiz = {this.unsaveQuiz}
-                          savedQuizs = {this.state.savedQuizs}
+                          pinQuiz = {this.pinQuiz}
+                          unpinQuiz = {this.unpinQuiz}
+                          pinnedQuizes = {this.state.pinnedQuizes}
                           updateAnswers = {this.updateAnswers}
                           getSavedAnswers = {this.getSavedAnswers}
                           updateInternalState = {this.updateInternalState}
@@ -139,7 +139,7 @@ export default class Exam extends Component {
             <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
               <StatusBar  testDuration = {this.myTest.duration * 60}
                           timerOnOff = {this.state.timerOnOff}
-                          savedQuizs = {this.state.savedQuizs}
+                          pinnedQuizes = {this.state.pinnedQuizes}
                           moveToQuiz = {index => this.moveToQuiz(index)}
               />
             </div>
@@ -177,40 +177,40 @@ export default class Exam extends Component {
       this.moveToQuiz(currentIndex-1)
     }
   }
-  saveQuiz(index) {
-    const savedQuizs = this.state.savedQuizs
-    if (savedQuizs.indexOf(index) === -1) {
-      savedQuizs.push(index)
-      this.setState({ savedQuizs })
+  pinQuiz(index) {
+    const pinnedQuizes = this.state.pinnedQuizes
+    if (pinnedQuizes.indexOf(index) === -1) {
+      pinnedQuizes.push(index)
+      this.setState({ pinnedQuizes })
     }    
   }
-  unsaveQuiz(index) {
-    const savedQuizs = this.state.savedQuizs.filter( _index => {
+  unpinQuiz(index) {
+    const pinnedQuizes = this.state.pinnedQuizes.filter( _index => {
       return (index !== _index)
     })
-    this.setState({ savedQuizs })
+    this.setState({ pinnedQuizes })
   }
   _getQuizFromStorage(index) {
-    const quizs = JSON.parse(localStorage.getItem(QUIZSKEY))
-    if (quizs) {
-      return quizs[index] || {}
+    const quizes = JSON.parse(localStorage.getItem(QUIZESKEY))
+    if (quizes) {
+      return quizes[index] || {}
     } else {
       return {}
     }
   }
-  _saveQuizToStorage(index, quiz) {
-    const quizs = JSON.parse(localStorage.getItem(QUIZSKEY)) || {}
-    quizs[index] = quiz
-    localStorage.setItem(QUIZSKEY, JSON.stringify(quizs))
+  _storeQuizToStorage(index, quiz) {
+    const quizes = JSON.parse(localStorage.getItem(QUIZESKEY)) || {}
+    quizes[index] = quiz
+    localStorage.setItem(QUIZESKEY, JSON.stringify(quizes))
   }
   _clearAllQuizsFromStorage() {
-    localStorage.removeItem(QUIZSKEY)
+    localStorage.removeItem(QUIZESKEY)
   }
   updateAnswers(answers) {
     const index = this.state.currentIndex
     const quiz = this._getQuizFromStorage(index)
     quiz.answers = answers
-    this._saveQuizToStorage(index, quiz)
+    this._storeQuizToStorage(index, quiz)
   }
   getSavedAnswers() {
     const index = this.state.currentIndex
@@ -221,7 +221,7 @@ export default class Exam extends Component {
     const index = this.state.currentIndex
     const quiz = this._getQuizFromStorage(index)
     quiz.state = state
-    this._saveQuizToStorage(index, quiz)
+    this._storeQuizToStorage(index, quiz)
   }
   getSavedInternalState() {
     const index = this.state.currentIndex
