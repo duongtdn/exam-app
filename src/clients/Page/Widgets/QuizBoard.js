@@ -52,7 +52,7 @@ export default class QuizBoard extends Component {
           </div>
           
           {/* render action buttons */}
-          <div className="w3-row w3-panel w3-padding w3-border w3-border-grey">
+          <div className="w3-row w3-panel w3-padding w3-border-top w3-border-grey">
             <div className="w3-col" style={{width: '60px'}}> <button className="w3-button w3-blue"> Submit </button> </div>
             <div className="w3-rest" style = {{textAlign: 'right'}}>
               { this.props.savedQuizs.indexOf(this.props.currentIndex) === -1 ?
