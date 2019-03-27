@@ -27,13 +27,13 @@ export default class QuizBoard extends Component {
           </div>
           
           <div className="w3-right" style={{display: 'inline-block', textAlign: 'center'}}>
-            <button className='w3-hover-blue' style={{border: 'none', background:'none', cursor: 'pointer'}} onClick={this.props.previous} > 
+            {/* <button className='w3-hover-blue' style={{border: 'none', background:'none', cursor: 'pointer'}} onClick={this.props.previous} > 
               <i className="fa fa-arrow-left" />
             </button>
             |
             <button className='w3-hover-blue' style={{border: 'none', background:'none', cursor: 'pointer'}} onClick={this.props.next} > 
               <i className="fa fa-arrow-right" /> 
-            </button>
+            </button> */}
             <br />
             <label className="w3-text-blue-grey"> {quiz.score}pt </label>
           </div>
