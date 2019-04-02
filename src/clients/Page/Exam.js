@@ -86,14 +86,16 @@ export default class Exam extends Component {
 
   componentDidMount() {
     const today = getToday();
-    const { course, type } = getCourseIdFromHref(window.location.href)
-    if (course && type) {
-      this.requestNewSession( (err, response) => {
+    const testId = getTestIdFromHref(window.location.href)
+    if (testId) {
+      this.requestNewSession(testId, (err, response) => {
         if (err) {
           this.setState({ error: err, loading: false })
         } else {
-          console.log(response)
-          this.myTest = myTest
+          this.myTest = JSON.parse(response)
+          console.log(this.myTest)
+          const course = this.myTest.courseId
+          const type = this.myTest.type
           this.setState({ course, type, today, loading: false, timerOnOff: 'on' })
         }
       })
@@ -123,7 +125,7 @@ export default class Exam extends Component {
 
           <div className="w3-cell-row">
             <div className="w3-cell" style={{verticalAlign: 'top'}}>
-              <QuizBoard  questions = {this.myTest.questions} 
+              <QuizBoard  questions = {this.myTest.content.questions}
                           currentIndex = {this.state.currentIndex}
                           next = {this.nextQuiz}
                           previous = {this.previousQuiz}
@@ -150,9 +152,9 @@ export default class Exam extends Component {
       </div>    
     )
   }
-  requestNewSession(done) {
+  requestNewSession(testId, done) {
     const urlBasePath = this.props.urlBasePath || ''
-    xhttp.post(`${urlBasePath}/exam/session`, {course: ''}, (status, response) => {
+    xhttp.post(`${urlBasePath}/exam/session`, {testId}, (status, response) => {
       if (status === 200) {
         done(null, response)
       } else {
@@ -165,7 +167,7 @@ export default class Exam extends Component {
   }
   nextQuiz() {
     const currentIndex = this.state.currentIndex    
-    if (currentIndex < this.myTest.questions.length-1) {
+    if (currentIndex < this.myTest.content.questions.length-1) {
       this.moveToQuiz(currentIndex+1)
     } else {
       console.log('Reach end of test')
@@ -230,11 +232,10 @@ export default class Exam extends Component {
   }
 }
 
-function getCourseIdFromHref(href) {
+function getTestIdFromHref(href) {
   const query = href.split('?')[1]
-  const course= query.split('&')[0].split('=')[1]
-  const type= query.split('&')[1].split('=')[1]
-  return { course, type }
+  const testId= query.split('=')[1]
+  return testId
 }
 
 function getToday() {

@@ -21,8 +21,8 @@ const html = ({ title, script, data }) => `
 
 function redirect() {
   return function(req, res) {
-    const course = req.query.c
-    if (course) {
+    const testId = req.query.t
+    if (testId) {
       res.writeHead( 200, { "Content-Type": "text/html" } )
       res.end(html({title: 'Error', script: `${process.env.CDN}/exam.js`}))
     } else {

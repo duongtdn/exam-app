@@ -6,12 +6,31 @@ const api = require('../src/api/main')
 
 const Tests = [
   {
-    userId: 'awesome-dev',
+    assignedTo: ['awesome-dev'],
     testId: 'test-id',
-    courseId: 'emb-01',
-    type: 'final',
+    examId: 'emb-01',
     duration: 30,
     createdAt: new Date(),
+    content: {
+      sections: [
+        {id: 'sc1', title: 'Section 1', description: 'Here is the section 1'},
+        {id: 'sc2', title: 'Section 2', description: 'Here is the section 2'}
+      ],
+      questions: [
+        {
+          problem: '{"props":{"className":"w3-container w3-padding","width":"700px","height":"450px","updateAnswers":true,"getSavedAnswers":true,"updateInternalState":true,"getSavedInternalState":true},"type":"DragZone","children":[{"type":"div","props":{},"children":[{"type":"DragItem","props":{"id":"$1"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-red","style":{"width":"100px","height":"100px"}},"children":[" Drag Me "]}," "]},{"type":"DragItem","props":{"id":"$2","left":"120px"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-blue","style":{"width":"150px","height":"100px"}},"children":[" Drag Me "]}," "]},{"type":"DragItem","props":{"id":"$3","left":"280px"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-green","style":{"width":"100px","height":"100px"}},"children":[" Drag Me "]}," "]}]},{"type":"DropHolder","props":{"id":"$dh_1","layout":{"spacing":{"top":10,"left":20}},"width":"190px","height":"120px","top":"150px","left":"10px","dropLimit":1}},{"type":"DropHolder","props":{"id":"$dh_2","width":"390px","height":"120px","top":"300px","left":"10px","dropLimit":2}},{"type":"DropHolder","props":{"id":"$dh_3","layout":{"type":"stack","spacing":{"top":20,"left":10}},"width":"170px","height":"380px","top":"50px","left":"500px"}}]}',
+          section: 'sc1',
+          answer: '',
+          score: 10
+        },
+        {
+          problem: '{"props":{"className":"w3-container w3-padding","width":"700px","height":"450px","updateAnswers":true,"getSavedAnswers":true,"updateInternalState":true,"getSavedInternalState":true},"type":"DragZone","children":[{"type":"div","props":{},"children":[{"type":"DragItem","props":{"id":"$1"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-deep-orange","style":{"width":"100px","height":"100px"}},"children":[" Drag Me "]}," "]},{"type":"DragItem","props":{"id":"$2","left":"120px"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-pink","style":{"width":"150px","height":"100px"}},"children":[" Drag Me "]}," "]},{"type":"DragItem","props":{"id":"$3","left":"280px"},"children":[" ",{"type":"div","props":{"className":"w3-container w3-indigo","style":{"width":"100px","height":"100px"}},"children":[" Drag Me "]}," "]}]},{"type":"DropHolder","props":{"id":"$dh_1","layout":{"spacing":{"top":10,"left":20}},"width":"190px","height":"120px","top":"150px","left":"10px","dropLimit":1}},{"type":"DropHolder","props":{"id":"$dh_2","width":"390px","height":"120px","top":"300px","left":"10px","dropLimit":2}},{"type":"DropHolder","props":{"id":"$dh_3","layout":{"type":"stack","spacing":{"top":20,"left":10}},"width":"170px","height":"380px","top":"50px","left":"500px"}}]}',
+          section: 'sc1',
+          answer: '',
+          score: 10
+        },
+      ]
+    }
   }
 ]
 
@@ -52,12 +71,27 @@ const Qbanks = [
 api.helpers({
   Collections: {
     Tests: {
-      find({userId, testId, done}) {
+      find({userId, testId}, done) {
         setTimeout(() => {
           done && done(Tests.filter( _test => _test.userId === userId && _test.testId === testId))
         }, 500)
         return this
-      } 
+      },
+      update({ testId, ...props }, done) {
+        setTimeout(() => {
+          console.log('Update for ' + testId)
+          Tests.forEach(test => {
+            if (test.testId === testId) {
+              for (let key in props) {
+                test[key] = props[key]
+              }
+            }
+          })
+          console.log(Tests)
+          done && done(null, props)
+        }, 500)
+        return this
+      }
     },
     Exams: {
       find({courseId, type}, done) {
@@ -67,9 +101,10 @@ api.helpers({
         return this
       }
     },
-    QBANKS: {
-      find(qbankId) {
-
+    Qbanks: {
+      find({qbankList}, done) {
+        done && done(Qbanks[0].questions)
+        return this
       }
     }
   }
