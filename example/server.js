@@ -36,17 +36,19 @@ const Tests = [
 
 const Exams = [
   {
-    courseId: 'emb-01',
-    type: 'final',
+    examId: 'emb-01-final-exam',
+    title: 'Final Test',
+    description: 'This exam test your knowledge and skill after course Embedded ARM Programming for Beginner',
     sections: [
       {id: 'sc1', title: 'Section 1', description: 'Here is the section 1'},
       {id: 'sc2', title: 'Section 2', description: 'Here is the section 2'}
     ],
     questions: [
-      {ref: 'qb1', number: 2, score: 10, section: 'sc1'},
-      {ref: 'qb2', number: 1, score: 10, section: 'sc1'},
-      {ref: 'qb3', number: 2, score: 10, section: 'sc2'},
-    ]
+      {qbankId: 'qb1', number: 2, score: 10, section: 'sc1'},
+      {qbankId: 'qb2', number: 1, score: 10, section: 'sc1'},
+      {qbankId: 'qb3', number: 2, score: 10, section: 'sc2'},
+    ],
+    duration: 30
   }
 ]
 
@@ -80,13 +82,18 @@ api.helpers({
       update({ testId, ...props }, done) {
         setTimeout(() => {
           console.log('Update for ' + testId)
+          const updated = false
           Tests.forEach(test => {
             if (test.testId === testId) {
               for (let key in props) {
                 test[key] = props[key]
               }
+              updated = true
             }
           })
+          if (!updated) {
+            Tests.push({ testId, ...props })
+          }
           console.log(Tests)
           done && done(null, props)
         }, 500)
@@ -94,15 +101,15 @@ api.helpers({
       }
     },
     Exams: {
-      find({courseId, type}, done) {
+      find({ examId }, done) {
         setTimeout(() => {
-          done && done(Exams.filter( _exam => _exam.courseId === courseId && _exam.type === type))
+          done && done(Exams.filter( _exam => _exam.examId === examId))
         }, 500)
         return this
       }
     },
     Qbanks: {
-      find({qbankList}, done) {
+      find({qbankIds}, done) {
         done && done(Qbanks[0].questions)
         return this
       }
