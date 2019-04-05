@@ -15,6 +15,20 @@ function authen() {
   }
 }
 
+function validateAttachedSession() {
+  return function(req, res, next) {
+    if (req.body.session) {
+      _validateSession({
+        session: req.body.session, 
+        onSuccess: next,
+        onFailure: err=> res.status(403).json(err)
+      })
+    } else {
+      next()
+    }
+  }
+}
+
 function getTestData(helpers) {
   return function(req, res, next) {
     jwt.verify(req.body.testId, process.env.PRIVATE_TEST_KEY, (err, decoded) => {
@@ -39,15 +53,13 @@ function getTestData(helpers) {
   }
 }
 
-function validateSession() {
+function validateStoredSession() {
   return function(req, res, next) {
     if (req.testData.session) {
-      jwt.verify(req.testData.session, process.env.PRIVATE_SESSION_KEY, (err, decoded) => {
-        if (err) {
-          res.status(403).json({ explaination: 'Forbidden - Session expired'})
-        } else {
-          next()
-        }
+      _validateSession({
+        session: req.testData.session, 
+        onSuccess: next,
+        onFailure: err=> res.status(403).json(err)
       })
     } else {
       next()
@@ -83,6 +95,16 @@ function response() {
     }
     res.status(200).json(data)
   }
+}
+
+function _validateSession({session, onSuccess, onFailure}) {
+  jwt.verify(session, process.env.PRIVATE_SESSION_KEY, (err, decoded) => {
+    if (err) {
+      onFailure && onFailure({ explaination: 'Forbidden - Session expired'})
+    } else {
+      onSuccess && onSuccess()
+    }
+  })
 }
 
 module.exports = [authen, getTestData, signSessionToken, response]
