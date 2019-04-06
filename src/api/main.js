@@ -13,4 +13,8 @@ api.add('/exam/session', {
   post: require('./exam/new-session')
 })
 
+api.add('/register/exam', {
+  post: require('./exam/register-new-test')
+})
+
 module.exports = api
