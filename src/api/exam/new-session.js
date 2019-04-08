@@ -4,26 +4,32 @@ const jwt = require('jsonwebtoken')
 
 function authen() {
   return function(req, res, next) {
-    jwt.verify(req.body.uid, process.env.PRIVATE_AUTH_KEY, (err, decoded) => {
-      if (err) {
-        res.status(401).json({ explaination: 'Unauthorized' })
-      } else {
-        req.uid = decoded.uid
-        next()
-      }
-    })
+    console.log('authen: hit')
+    // jwt.verify(req.body.uid, process.env.PRIVATE_AUTH_KEY, (err, decoded) => {
+    //   if (err) {
+    //     res.status(401).json({ explaination: 'Unauthorized' })
+    //   } else {
+    //     req.uid = decoded.uid
+    //     next()
+    //   }
+    // })
+    req.uid = 'awesome-dev'
+    next()
   }
 }
 
 function validateAttachedSession() {
   return function(req, res, next) {
+    console.log('validateAttachedSession: hit')
     if (req.body.session) {
+      console.log('   ... request attached a session. verifying ->')
       _validateSession({
         session: req.body.session, 
         onSuccess: next,
         onFailure: err=> res.status(403).json(err)
       })
     } else {
+      console.log('   ... no attached session. skip ->')
       next()
     }
   }
@@ -31,9 +37,14 @@ function validateAttachedSession() {
 
 function getTestData(helpers) {
   return function(req, res, next) {
+    console.log('getTestData: hit')
+    if (!req.body.testId) {
+      res.status(400).json({ explaination: 'MIssing testId' })
+      return
+    }
     jwt.verify(req.body.testId, process.env.PRIVATE_TEST_KEY, (err, decoded) => {
       if (err) {
-        res.status(403).json({ explaination: 'Forbidden - Test expired'})
+        res.status(403).json({ explaination: 'Forbidden - Invalid testId or Test has been expired'})
       } else {
         req.testId = decoded.testId
         helpers.Collections.Tests.find({ testId: req.testId }, (testData) => {
@@ -55,13 +66,16 @@ function getTestData(helpers) {
 
 function validateStoredSession() {
   return function(req, res, next) {
+    console.log('validateStoredSession: hit')
     if (req.testData.session) {
+      console.log('   ... found stored session. verifying ->')
       _validateSession({
         session: req.testData.session, 
         onSuccess: next,
         onFailure: err=> res.status(403).json(err)
       })
     } else {
+      console.log('   ... no stored session. skip ->')
       next()
     }
   }
@@ -69,9 +83,12 @@ function validateStoredSession() {
 
 function signSessionToken(helpers) {
   return function(req, res, next) {
+    console.log('signSessionToken: hit')
     if (req.testData.session) {
+      console.log('   ... session already created. skip ->')
       next()
     } else {
+      console.log('   ... generating session ->')
       const testId = req.testId
       const token = jwt.sign({ testId }, process.env.PRIVATE_SESSION_KEY)
       req.testData.session = token
@@ -88,6 +105,7 @@ function signSessionToken(helpers) {
 
 function response() {
   return function (req, res) {
+    console.log('response: hit')
     const data = {
       content: req.testData.content,
       session: req.testData.session,
@@ -107,4 +125,4 @@ function _validateSession({session, onSuccess, onFailure}) {
   })
 }
 
-module.exports = [authen, getTestData, signSessionToken, response]
+module.exports = [authen, validateAttachedSession, getTestData, validateStoredSession, signSessionToken, response]

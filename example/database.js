@@ -40,9 +40,9 @@ const Qbanks = [
 
 module.exports = {
     Tests: {
-      find({userId, testId}, done) {
+      find({ testId }, done) {
         setTimeout(() => {
-          done && done(Tests.filter( _test => _test.userId === userId && _test.testId === testId))
+          done && done(Tests.filter( _test => _test.testId === testId))
         }, 500)
         return this
       },
