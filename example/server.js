@@ -11,6 +11,7 @@ const app = express()
 
 const path = require('path')
 app.use('/assets', express.static(path.join(__dirname, '../build')))
+app.use('/quizes', express.static(path.join(__dirname, 'quizes')))
 
 app.use('/', api.generate())
 
