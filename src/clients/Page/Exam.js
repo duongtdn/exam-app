@@ -38,7 +38,6 @@ export default class Exam extends Component {
           this.setState({ error: err, loading: false })
         } else {
           this.myTest = JSON.parse(response)
-          console.log(this.myTest)
           this.loadAssets( () => {
             const course = this.myTest.courseId
             const type = this.myTest.type
@@ -113,14 +112,21 @@ export default class Exam extends Component {
   loadAssets(done) {
     const promises = []
     this.myTest.content.questions.forEach( (question) => {
-      promises.push(this._loadQuestionProblem(question.problem))
+      promises.push(this._loadQuestionProblem(question))
     })
     Promise.all(promises).then(done)
   }
-  _loadQuestionProblem(problem) {
+  _loadQuestionProblem(question) {
+    const urlQuizzesBasePath = this.props.urlQuizzesBasePath || ''
     return new Promise((resolve, reject) => {
-      console.log(problem)
-      resolve()
+      xhttp.get(`${urlQuizzesBasePath}/${question.problem}`, (status, response) => {
+        if (status === 200) {
+          question.problem = response
+          resolve()
+        } else {
+          reject(status)
+        }
+      })
     })
   }
   moveToQuiz(index) {
