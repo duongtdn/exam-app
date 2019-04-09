@@ -1,6 +1,28 @@
 "use strict"
 
-const Tests = []
+const Tests = [
+  {
+    testId: 'test-01',
+    assignedTo: ['awesome-dev'],
+    examId: 'emb-01-final-exam',
+    createAt: new Date(),
+    duration: 30,
+    content: {
+      sections: [
+        {id: 'sc1', title: 'Section 1', description: 'Here is the section 1'},
+        {id: 'sc2', title: 'Section 2', description: 'Here is the section 2'}
+      ],
+      questions: [
+        {
+          problem: 'dragdrop.1', answer: '', score: 10, section: 'sc1'
+        },
+        {
+          problem: 'dragdrop.2', answer: '', score: 10, section: 'sc1'
+        },
+      ]
+    }
+  }
+]
 
 const Exams = [
   {
