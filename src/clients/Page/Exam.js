@@ -71,7 +71,7 @@ export default class Exam extends Component {
 
           <div className="w3-cell-row">
             <div className="w3-cell" style={{verticalAlign: 'top'}}>
-              <QuizBoard  questions = {this.myTest.content.questions}
+              <QuizBoard  tests = {this.myTest}
                           currentIndex = {this.state.currentIndex}
                           next = {this.nextQuiz}
                           previous = {this.previousQuiz}

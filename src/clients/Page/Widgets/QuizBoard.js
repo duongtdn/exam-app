@@ -10,13 +10,15 @@ export default class QuizBoard extends Component {
     super(props)
   }
   render() {
-    const quiz = this.props.questions[this.props.currentIndex]
+    const tests = this.props.tests
+    const quiz = tests.content.questions[this.props.currentIndex]
+    const section = tests.content.sections.findIndex( _section => _section.id === quiz.section)
     return(
       <div className="">
         <div className="w3-panel w3-padding w3-light-grey w3-border w3-border-grey">
           <div className="w3-" style={{display: 'inline-block'}} >
             <div> 
-              <label className="w3-text-grey w3-small"> Section: {quiz.section + 1} </label>            
+              <label className="w3-text-grey w3-small"> Section: {section + 1} </label>            
             </div>
             <label> Quiz {this.props.currentIndex + 1} </label> 
             {/* <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Answer Submitted </label> */}
