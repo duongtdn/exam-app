@@ -37,14 +37,14 @@ function getExamStructure(helpers) {
   }
 }
 
-function getQuizes(helpers) {
+function getQuizzes(helpers) {
   return function(req, res, next) {
     const qbankIds = req.exam.questions.map(question => {
       return question.qbankId
     })
-    helpers.Collections.Qbanks.find({ qbankIds }, quizes => {
-      if (quizes.length > 0) {
-        req.quizes = quizes
+    helpers.Collections.Qbanks.find({ qbankIds }, quizzes => {
+      if (quizzes.length > 0) {
+        req.quizzes = quizzes
         next()
       } else {
         res.status(404).json({ explaination: 'No quiz found. Access to QBANKS may be failed'})
@@ -58,7 +58,7 @@ function generateQuestions() {
     const questions = []
     let err = ''
     req.exam.questions.forEach(question => {
-      const quiz = req.quizes.filter( _quiz => _quiz.qbankId === question.qbankId)[0]
+      const quiz = req.quizzes.filter( _quiz => _quiz.qbankId === question.qbankId)[0]
       // the number alternative questions of each qbank must be greater then or equal to required rand number
       // otherwise, cannot make random questions
       if (question.number > quiz.questions.length) {
@@ -139,4 +139,4 @@ function _rand(length) {
   return Math.floor(Math.random() * length)
 }
 
-module.exports = [authen, getExamStructure, getQuizes, generateQuestions, generateTest, signTokenTestId, response]
+module.exports = [authen, getExamStructure, getQuizzes, generateQuestions, generateTest, signTokenTestId, response]

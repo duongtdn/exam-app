@@ -9,7 +9,7 @@ import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
 import QuizBoard from './Widgets/QuizBoard'
 
-const QUIZESKEY = '__$quizes__'
+const QUIZZESKEY = '__$quizzes__'
 
 /* Data using for dev only, will replace later */
 const myTest = {
@@ -193,20 +193,20 @@ export default class Exam extends Component {
     this.setState({ pinnedQuizes })
   }
   _getQuizFromStorage(index) {
-    const quizes = JSON.parse(localStorage.getItem(QUIZESKEY))
-    if (quizes) {
-      return quizes[index] || {}
+    const quizzes = JSON.parse(localStorage.getItem(QUIZZESKEY))
+    if (quizzes) {
+      return quizzes[index] || {}
     } else {
       return {}
     }
   }
   _storeQuizToStorage(index, quiz) {
-    const quizes = JSON.parse(localStorage.getItem(QUIZESKEY)) || {}
-    quizes[index] = quiz
-    localStorage.setItem(QUIZESKEY, JSON.stringify(quizes))
+    const quizzes = JSON.parse(localStorage.getItem(QUIZZESKEY)) || {}
+    quizzes[index] = quiz
+    localStorage.setItem(QUIZZESKEY, JSON.stringify(quizzes))
   }
   _clearAllQuizsFromStorage() {
-    localStorage.removeItem(QUIZESKEY)
+    localStorage.removeItem(QUIZZESKEY)
   }
   updateAnswers(answers) {
     const index = this.state.currentIndex
