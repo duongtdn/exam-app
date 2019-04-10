@@ -19,6 +19,7 @@ export default class Exam extends Component {
       type: undefined,
       error: null,
       loading: true,
+      loadContext: 'Tests',
       timerOnOff: 'off',
       currentIndex: 0,
       pinnedQuizes: []
@@ -37,6 +38,7 @@ export default class Exam extends Component {
         if (err) {
           this.setState({ error: err, loading: false })
         } else {
+          this.setState({ loadContext: 'Assets' })
           this.myTest = JSON.parse(response)
           this.loadAssets( () => {
             const course = this.myTest.courseId
@@ -52,7 +54,7 @@ export default class Exam extends Component {
 
   render() {
     if (this.state.loading) {
-      return (<div className="w3-container"> LOADING... </div>)
+      return (<div className="w3-container"> LOADING {this.state.loadContext}... </div>)
     }
 
     if (this.state.error) {
