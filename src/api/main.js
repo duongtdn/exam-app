@@ -17,4 +17,8 @@ api.add('/register/exam', {
   post: require('./exam/register-new-test')
 })
 
+api.add ('/exam/solution', {
+  put: require('./exam/update-answers')
+})
+
 module.exports = api
