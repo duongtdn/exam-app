@@ -5,4 +5,4 @@ import { render } from 'react-dom'
 
 import Exam from '../Page/Exam'
 
-render(<Exam />, document.getElementById('root'))
+render(<Exam urlBasePath = {__data.urlBasePath} urlQuizzesBasePath = {__data.urlQuizzesBasePath} />, document.getElementById('root'))
