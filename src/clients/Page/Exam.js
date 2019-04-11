@@ -22,11 +22,15 @@ export default class Exam extends Component {
       loadContext: 'Tests',
       timerOnOff: 'off',
       currentIndex: 0,
-      pinnedQuizes: []
+      pinnedQuizzes: [],
+      submittedQuizzes: []
     }
     this._timer = null
     this.myTest = null
-    const bindMethods = ['nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz', 'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState']
+    const bindMethods = [
+      'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
+      'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', 'submitAnswers'
+    ]
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
 
@@ -40,6 +44,7 @@ export default class Exam extends Component {
         } else {
           this.setState({ loadContext: 'Assets' })
           this.myTest = JSON.parse(response)
+          console.log(this.myTest)
           this.loadAssets( () => {
             const course = this.myTest.courseId
             const type = this.myTest.type
@@ -79,17 +84,19 @@ export default class Exam extends Component {
                           previous = {this.previousQuiz}
                           pinQuiz = {this.pinQuiz}
                           unpinQuiz = {this.unpinQuiz}
-                          pinnedQuizes = {this.state.pinnedQuizes}
+                          pinnedQuizzes = {this.state.pinnedQuizzes}
+                          submittedQuizzes = {this.state.submittedQuizzes}
                           updateAnswers = {this.updateAnswers}
                           getSavedAnswers = {this.getSavedAnswers}
                           updateInternalState = {this.updateInternalState}
                           getSavedInternalState = {this.getSavedInternalState}
+                          submitAnswers = {this.submitAnswers}
               />
             </div>
             <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
               <StatusBar  testDuration = {this.myTest.duration * 60}
                           timerOnOff = {this.state.timerOnOff}
-                          pinnedQuizes = {this.state.pinnedQuizes}
+                          pinnedQuizzes = {this.state.pinnedQuizzes}
                           moveToQuiz = {index => this.moveToQuiz(index)}
               />
             </div>
@@ -149,17 +156,17 @@ export default class Exam extends Component {
     }
   }
   pinQuiz(index) {
-    const pinnedQuizes = this.state.pinnedQuizes
-    if (pinnedQuizes.indexOf(index) === -1) {
-      pinnedQuizes.push(index)
-      this.setState({ pinnedQuizes })
+    const pinnedQuizzes = this.state.pinnedQuizzes
+    if (pinnedQuizzes.indexOf(index) === -1) {
+      pinnedQuizzes.push(index)
+      this.setState({ pinnedQuizzes })
     }    
   }
   unpinQuiz(index) {
-    const pinnedQuizes = this.state.pinnedQuizes.filter( _index => {
+    const pinnedQuizzes = this.state.pinnedQuizzes.filter( _index => {
       return (index !== _index)
     })
-    this.setState({ pinnedQuizes })
+    this.setState({ pinnedQuizzes })
   }
   _getQuizFromStorage(index) {
     const quizzes = JSON.parse(localStorage.getItem(QUIZZESKEY))
@@ -198,6 +205,26 @@ export default class Exam extends Component {
     const index = this.state.currentIndex
     const quiz = this._getQuizFromStorage(index)
     return quiz.state
+  }
+  submitAnswers() {
+    console.log('submitting answers')
+    const index = this.state.currentIndex
+    const userAnswers = this._getQuizFromStorage(index).answers
+    const session = this.myTest.session
+    console.log({ session, index, userAnswers })
+    const urlBasePath = this.props.urlBasePath || ''
+    xhttp.put(`${urlBasePath}/exam/solution`, { session, index, userAnswers }, (status, response) => {
+      if (status === 200) {
+        const submittedQuizzes = this.state.submittedQuizzes
+        if (submittedQuizzes.indexOf(index) === -1) {
+          submittedQuizzes.push(index)
+          this.setState({ submittedQuizzes })
+        }
+        this.nextQuiz()
+      } else {
+        this.setState({err: response})
+      }
+    })
   }
 }
 

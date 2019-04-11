@@ -22,7 +22,7 @@ export default class QuizBoard extends Component {
             </div>
             <label> Quiz {this.props.currentIndex + 1} </label> 
             {/* <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Answer Submitted </label> */}
-            { this.props.pinnedQuizes.indexOf(this.props.currentIndex) !== -1 ? 
+            { this.props.pinnedQuizzes.indexOf(this.props.currentIndex) !== -1 ?
                 <label className="w3-tag w3-blue w3-small" style={{fontStyle: 'italic'}}> Pinned </label>
                 : null
             }
@@ -56,9 +56,9 @@ export default class QuizBoard extends Component {
           {/* render action buttons */}
           <div className="w3-cell-row w3-panel w3-padding w3-border-top w3-border-grey">
             <div className="w3-cell" > 
-              <button className="w3-button w3-blue"> Submit </button> 
+              <button className="w3-button w3-blue" onClick={this.props.submitAnswers}> Submit </button>
               {' '}
-              { this.props.pinnedQuizes.indexOf(this.props.currentIndex) === -1 ?
+              { this.props.pinnedQuizzes.indexOf(this.props.currentIndex) === -1 ?
                 <button className="w3-button w3-text-orange" onClick={() => this.props.pinQuiz(this.props.currentIndex)}> Pin this question </button>
                 :
                 <button className="w3-button w3-text-orange" onClick={() => this.props.unpinQuiz(this.props.currentIndex)}> Unpin </button>
