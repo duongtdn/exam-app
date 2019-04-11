@@ -23,11 +23,13 @@ function decodeSession() {
     console.log('decodeSession: hit')
     if (req.body.session) {
       console.log('   ... request attached a session. verifying ->')
-      jwt.verify(session, process.env.PRIVATE_SESSION_KEY, (err, decoded) => {
+      jwt.verify(req.body.session, process.env.PRIVATE_SESSION_KEY, (err, decoded) => {
         if (err) {
+          console.log(err)
           res.status(403).json({ explaination: 'Forbidden - Session expired'})
         } else {
           req.testId = decoded.testId
+          console.log('   ... testId: ' + req.testId)
           next()
         }
       })
@@ -41,9 +43,20 @@ function decodeSession() {
 
 function updateAnswers(helpers) {
   return function(req, res, next) {
-    console.log('updated')
-    res.status(200).json({ message: 'ok' })
+    console.log('updatupdateAnswers: hit')
+    console.log(req.body)
+    helpers.Collections.Tests.updateUserAnswers({
+      testId: req.testId,
+      questionIndex: req.body.index,
+      userAnswers: req.body.userAnswers
+    }, (err) => {
+      if (err) {
+        res.status(500).json({ explaination: 'Access DB failed'})
+      } else {
+        res.status(200).json({ message: 'ok' })
+      }
+    })
   }
 }
 
-module.exports = [authen, decodeSession]
+module.exports = [authen, decodeSession, updateAnswers]

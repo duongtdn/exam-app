@@ -85,6 +85,18 @@ module.exports = {
           done && done(null, props)
         }, 500)
         return this
+      },
+      updateUserAnswers({ testId, questionIndex, userAnswers }, done) {
+        setTimeout(() => {
+          Tests.forEach(test => {
+            if (test.testId === testId) {
+              const question = test.content.questions[questionIndex]
+              question.userAnswers = userAnswers
+            }
+          })
+          done && done(null)
+          console.log(JSON.stringify(Tests))
+        },500)
       }
     },
     Exams: {
