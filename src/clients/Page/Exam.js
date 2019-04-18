@@ -9,6 +9,8 @@ import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
 import QuizBoard from './Widgets/QuizBoard'
 
+import Loading from './Loading'
+
 const QUIZZESKEY = '__$quizzes__'
 
 export default class Exam extends Component {
@@ -59,7 +61,7 @@ export default class Exam extends Component {
 
   render() {
     if (this.state.loading) {
-      return (<div className="w3-container"> LOADING {this.state.loadContext}... </div>)
+      return (<Loading loadContext = {this.state.loadContext} />)
     }
 
     if (this.state.error) {
