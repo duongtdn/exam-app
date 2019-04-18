@@ -5,6 +5,8 @@ const Tests = [
     testId: 'test-01',
     assignedTo: ['awesome-dev'],
     examId: 'emb-01-final-exam',
+    title: 'Embedded - 01: Final Exam',
+    description: 'Final Test for course Embedded - 01',
     createAt: new Date(),
     duration: 30,
     content: {

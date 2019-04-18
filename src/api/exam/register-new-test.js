@@ -89,12 +89,14 @@ function generateTest(helpers) {
       testId: req.testId,
       assignedTo: [req.uid],
       examId: req.examId,
-      createAt: new Date(),
+      title: req.exam.title,
+      description: req.exam.description,
       duration: req.exam.duration,
       content: {
         sections: req.exam.sections,
         questions: req.questions
-      }
+      },
+      createAt: new Date()
     }
     helpers.Collections.Tests.update(test, (err) => {
       if (err) {
