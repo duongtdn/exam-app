@@ -86,12 +86,14 @@ module.exports = {
         }, 500)
         return this
       },
-      updateUserAnswers({ testId, questionIndex, userAnswers }, done) {
+      updateUserAnswers({ testId, questions }, done) {
         setTimeout(() => {
           Tests.forEach(test => {
             if (test.testId === testId) {
-              const question = test.content.questions[questionIndex]
-              question.userAnswers = userAnswers
+              questions.forEach( q => {
+                const question = test.content.questions[q.index]
+                question.userAnswers = q.userAnswers
+              })
             }
           })
           done && done(null)

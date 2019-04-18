@@ -213,7 +213,7 @@ export default class Exam extends Component {
     const session = this.myTest.session
     console.log({ session, index, userAnswers })
     const urlBasePath = this.props.urlBasePath || ''
-    xhttp.put(`${urlBasePath}/exam/solution`, { session, index, userAnswers }, (status, response) => {
+    xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: [{index, userAnswers}] }, (status, response) => {
       if (status === 200) {
         const submittedQuizzes = this.state.submittedQuizzes
         if (submittedQuizzes.indexOf(index) === -1) {

@@ -47,8 +47,7 @@ function updateAnswers(helpers) {
     console.log(req.body)
     helpers.Collections.Tests.updateUserAnswers({
       testId: req.testId,
-      questionIndex: req.body.index,
-      userAnswers: req.body.userAnswers
+      questions: req.body.questions
     }, (err) => {
       if (err) {
         res.status(500).json({ explaination: 'Access DB failed'})
