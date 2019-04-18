@@ -107,6 +107,8 @@ function response() {
   return function (req, res) {
     console.log('response: hit')
     const data = {
+      title: req.testData.title,
+      description: req.testData.description,
       content: req.testData.content,
       session: req.testData.session,
       duration: req.testData.duration
