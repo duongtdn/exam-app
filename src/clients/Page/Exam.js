@@ -12,6 +12,8 @@ import QuizBoard from './Widgets/QuizBoard'
 import Loading from './Loading'
 
 const QUIZZESKEY = '__$quizzes__'
+const PINNEDKEY = '__$pinned__'
+const SUBMITTEDKEY = '__$submitted__'
 
 export default class Exam extends Component {
   constructor(props) {
@@ -50,7 +52,8 @@ export default class Exam extends Component {
           this.loadAssets( () => {
             const course = this.myTest.courseId
             const type = this.myTest.type
-            this.setState({ course, type, today, loading: false, timerOnOff: 'on' })
+            const pinnedQuizzes = this._getPinnedFromStorage()
+            this.setState({ course, type, today, loading: false, timerOnOff: 'on', pinnedQuizzes })
           })
         }
       })
@@ -161,6 +164,7 @@ export default class Exam extends Component {
     if (pinnedQuizzes.indexOf(index) === -1) {
       pinnedQuizzes.push(index)
       this.setState({ pinnedQuizzes })
+      this._storePinnedToStorage(pinnedQuizzes)
     }    
   }
   unpinQuiz(index) {
@@ -168,6 +172,18 @@ export default class Exam extends Component {
       return (index !== _index)
     })
     this.setState({ pinnedQuizzes })
+    this._storePinnedToStorage(pinnedQuizzes)
+  }
+  _getPinnedFromStorage() {
+    const pinned = localStorage.getItem(PINNEDKEY)
+    if (pinned && pinned.length > 0) {
+      return JSON.parse(pinned)
+    } else {
+      return []
+    }
+  }
+  _storePinnedToStorage(pinned) {
+    localStorage.setItem(PINNEDKEY, JSON.stringify(pinned))
   }
   _getQuizFromStorage(index) {
     const quizzes = JSON.parse(localStorage.getItem(QUIZZESKEY))
