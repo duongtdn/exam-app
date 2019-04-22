@@ -21,7 +21,11 @@ export default class QuizBoard extends Component {
               <label className="w3-text-grey w3-small"> Section: {section + 1} </label>            
             </div>
             <label> Quiz {this.props.currentIndex + 1} </label> 
-            {/* <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Answer Submitted </label> */}
+            {
+              this.props.submittedQuizzes.indexOf(this.props.currentIndex) !== -1 ?
+                <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Submitted </label>
+                : null
+            }
             { this.props.pinnedQuizzes.indexOf(this.props.currentIndex) !== -1 ?
                 <label className="w3-tag w3-blue w3-small" style={{fontStyle: 'italic'}}> Pinned </label>
                 : null

@@ -53,7 +53,8 @@ export default class Exam extends Component {
             const course = this.myTest.courseId
             const type = this.myTest.type
             const pinnedQuizzes = this._getPinnedFromStorage()
-            this.setState({ course, type, today, loading: false, timerOnOff: 'on', pinnedQuizzes })
+            const submittedQuizzes = this._getSubmittedFromStorage()
+            this.setState({ course, type, today, loading: false, timerOnOff: 'on', pinnedQuizzes, submittedQuizzes })
           })
         }
       })
@@ -188,7 +189,7 @@ export default class Exam extends Component {
   _getQuizFromStorage(index) {
     const quizzes = JSON.parse(localStorage.getItem(QUIZZESKEY))
     if (quizzes) {
-      return quizzes[index] || {}
+      return index !== undefined ? quizzes[index] || {} : quizzes
     } else {
       return {}
     }
@@ -225,23 +226,44 @@ export default class Exam extends Component {
   }
   submitAnswers() {
     console.log('submitting answers')
-    const index = this.state.currentIndex
-    const userAnswers = this._getQuizFromStorage(index).answers
+    const storedQuizzes = this._getQuizFromStorage()
+    const submitted = this._getSubmittedFromStorage()
+    // current quiz and quizzes that are in local storage but not in submitted list will be submitting
+    const submitting = []
+    for (let key in storedQuizzes) {
+       if (submitted.indexOf(parseInt(key)) === -1 || parseInt(key) === this.state.currentIndex) {
+        submitting.push({ index: parseInt(key), userAnswers: storedQuizzes[key].answers})
+       }
+    }
     const session = this.myTest.session
-    console.log({ session, index, userAnswers })
     const urlBasePath = this.props.urlBasePath || ''
-    xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: [{index, userAnswers}] }, (status, response) => {
+    xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: submitting }, (status, response) => {
       if (status === 200) {
         const submittedQuizzes = this.state.submittedQuizzes
-        if (submittedQuizzes.indexOf(index) === -1) {
-          submittedQuizzes.push(index)
-          this.setState({ submittedQuizzes })
-        }
-        this.nextQuiz()
+        // submitting qill be submitted after completed
+        submitting.forEach(q => {
+          if (submittedQuizzes.indexOf(q.index) === -1) {
+            submittedQuizzes.push(q.index)
+          }
+        })
+        this.setState({ submittedQuizzes })
+        this._storeSubmittedToStorage(submittedQuizzes)
+        // this.nextQuiz()
       } else {
         this.setState({err: response})
       }
     })
+  }
+  _getSubmittedFromStorage() {
+    const submitted = localStorage.getItem(SUBMITTEDKEY)
+    if (submitted && submitted.length > 0) {
+      return JSON.parse(submitted)
+    } else {
+      return []
+    }
+  }
+  _storeSubmittedToStorage(submitted) {
+    localStorage.setItem(SUBMITTEDKEY, JSON.stringify(submitted))
   }
 }
 
