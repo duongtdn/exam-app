@@ -55,13 +55,14 @@ export default class StatusBar extends Component {
   render() {
     const remainingTime = this.props.testDuration - this.state.eslapsedTime
     const timerColor = (this.props.testDuration/remainingTime > 3) ? 'red' : 'yellow'
+    const completion = (this.props.submittedQuizzes.length / this.props.totalQuizzes) * 100
     return(
       <div style={{margin: '8px 0'}}>
         {/* for medium screen */}
         <div className="w3-hide-large w3-hide-small" >
           <div className="w3-pale-green w3-padding" style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
-            <div className="w3-text-green w3-small"> Completion (15%) </div>
-            <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> 15/100 </div>
+            <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
+            <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.props.submittedQuizzes.length}/{this.props.totalQuizzes} </div>
           </div>  
           <div className={`w3-pale-${timerColor} w3-padding`} style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
             <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
@@ -78,8 +79,8 @@ export default class StatusBar extends Component {
         <div className="w3-hide-medium w3-hide-small">
           <div style={{ width: '310px', marginBottom: '6px'}}>
             <div className="w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', width: '154px', marginRight: '2px'}}>
-              <div className="w3-text-green w3-small"> Completion (15%) </div>
-              <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> 15/100 </div>
+              <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
+              <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.props.submittedQuizzes.length}/{this.props.totalQuizzes} </div>
             </div>  
             <div className={`w3-pale-${timerColor} w3-padding`} style={{display: 'inline-block', textAlign: 'center', width: '154px'}}>
               <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>

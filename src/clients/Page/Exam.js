@@ -103,6 +103,8 @@ export default class Exam extends Component {
                           timerOnOff = {this.state.timerOnOff}
                           pinnedQuizzes = {this.state.pinnedQuizzes}
                           moveToQuiz = {index => this.moveToQuiz(index)}
+                          submittedQuizzes = {this.state.submittedQuizzes}
+                          totalQuizzes = {this.myTest.content.questions.length}
               />
             </div>
           </div>
