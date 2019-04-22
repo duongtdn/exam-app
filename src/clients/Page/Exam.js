@@ -9,8 +9,8 @@ import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
 import QuizBoard from './Widgets/QuizBoard'
 import EndPopup from './EndPopup'
-
 import Loading from './Loading'
+import ResultPage from './ResultPage'
 
 const QUIZZESKEY = '__$quizzes__'
 const PINNEDKEY = '__$pinned__'
@@ -30,7 +30,8 @@ export default class Exam extends Component {
       pinnedQuizzes: [],
       submittedQuizzes: [],
       showEndPopup: false,
-      timeout: false
+      timeout: false,
+      finish: false
     }
     this._timer = null
     this.myTest = null
@@ -75,7 +76,9 @@ export default class Exam extends Component {
     if (this.state.error) {
       return (<div className="w3-container"> {this.state.error} </div>)
     }
-
+    if (this.state.finish) {
+      return (<ResultPage />)
+    }
     return (
       <div>
         <EndPopup show = {this.state.showEndPopup}
@@ -83,6 +86,7 @@ export default class Exam extends Component {
                   submittedQuizzes = {this.state.submittedQuizzes}
                   totalQuizzes = {this.myTest.content.questions.length}
                   timeout = {this.state.timeout}
+                  finish = {e => this.setState({ finish: true })}
         />
         <Header endgame = {evt => this.setState({ showEndPopup: true })}
         />
