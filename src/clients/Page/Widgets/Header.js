@@ -13,10 +13,8 @@ export default class Header extends Component {
             <div className="w3-bar-item">
               Test Room
             </div>
-            <div className="w3-right">
-              <button className="w3-bar-item w3-button" onClick={evt => this.props.accountClient.signup()}> Sign up</button>
-              <button className="w3-bar-item w3-button" onClick={evt => this.props.accountClient.signin()}> Sign in</button>
-              <button className="w3-bar-item w3-button" onClick={evt => this.props.accountClient.signout()}> Sign out</button>
+            <div className="w3-right w3-container">
+              <button className="w3-bar-item w3-button" onClick={this.props.endgame}> Finish </button>
             </div>
         </div>
          

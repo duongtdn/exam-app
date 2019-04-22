@@ -8,6 +8,7 @@ import Header from './Widgets/Header'
 import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
 import QuizBoard from './Widgets/QuizBoard'
+import EndPopup from './EndPopup'
 
 import Loading from './Loading'
 
@@ -27,13 +28,16 @@ export default class Exam extends Component {
       timerOnOff: 'off',
       currentIndex: 0,
       pinnedQuizzes: [],
-      submittedQuizzes: []
+      submittedQuizzes: [],
+      showEndPopup: false,
+      timeout: false
     }
     this._timer = null
     this.myTest = null
     const bindMethods = [
       'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
-      'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', 'submitAnswers'
+      'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', 'submitAnswers',
+      'timeout'
     ]
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
@@ -74,7 +78,14 @@ export default class Exam extends Component {
 
     return (
       <div>
-        <Header />
+        <EndPopup show = {this.state.showEndPopup}
+                  close = {evt => this.setState({ showEndPopup: false })}
+                  submittedQuizzes = {this.state.submittedQuizzes}
+                  totalQuizzes = {this.myTest.content.questions.length}
+                  timeout = {this.state.timeout}
+        />
+        <Header endgame = {evt => this.setState({ showEndPopup: true })}
+        />
         <div className="w3-container" style={{maxWidth: '1200px', margin: 'auto'}}>
 
           <Title  title = {this.myTest.title}
@@ -99,12 +110,13 @@ export default class Exam extends Component {
               />
             </div>
             <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
-              <StatusBar  testDuration = {this.myTest.duration * 60}
+              <StatusBar  testDuration = {this.myTest.duration * 0.60}
                           timerOnOff = {this.state.timerOnOff}
                           pinnedQuizzes = {this.state.pinnedQuizzes}
                           moveToQuiz = {index => this.moveToQuiz(index)}
                           submittedQuizzes = {this.state.submittedQuizzes}
                           totalQuizzes = {this.myTest.content.questions.length}
+                          onTimeout = {this.timeout}
               />
             </div>
           </div>
@@ -266,6 +278,11 @@ export default class Exam extends Component {
   }
   _storeSubmittedToStorage(submitted) {
     localStorage.setItem(SUBMITTEDKEY, JSON.stringify(submitted))
+  }
+  timeout() {
+    // later, handle more for timeout event rather than stopTimer and show end popup only,
+    // for example, submit last question, show popup, lock test...
+    this.setState({ timeout: true, showEndPopup: true })
   }
 }
 

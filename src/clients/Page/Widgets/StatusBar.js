@@ -103,10 +103,8 @@ export default class StatusBar extends Component {
       const eslapsedTime = this.state.eslapsedTime + 1      
       this.setState({ eslapsedTime })
       if (eslapsedTime === this.props.testDuration) {
-        // later, handle more for timeout event rather than stopTimer only,
-        // for example, submit last question, show popup, lock test...
         this.stopEslapsedTimer()
-        console.log('timeout')
+        this.props.onTimeout && this.props.onTimeout()
       }
     }, 1000)
   }
