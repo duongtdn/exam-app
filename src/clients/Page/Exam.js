@@ -31,14 +31,15 @@ export default class Exam extends Component {
       submittedQuizzes: [],
       showEndPopup: false,
       timeout: false,
-      finish: false
+      finish: false,
+      toast: ''
     }
     this._timer = null
     this.myTest = null
     const bindMethods = [
       'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
       'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', 'submitAnswers',
-      'timeout'
+      'timeout', 'finishTest'
     ]
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
@@ -86,7 +87,7 @@ export default class Exam extends Component {
                   submittedQuizzes = {this.state.submittedQuizzes}
                   totalQuizzes = {this.myTest.content.questions.length}
                   timeout = {this.state.timeout}
-                  finish = {e => this.setState({ finish: true })}
+                  finish = {this.finishTest}
         />
         <Header endgame = {evt => this.setState({ showEndPopup: true })}
         />
@@ -242,34 +243,44 @@ export default class Exam extends Component {
     const quiz = this._getQuizFromStorage(index)
     return quiz.state
   }
-  submitAnswers() {
+  submitAnswers({ override = true }) {
     console.log('submitting answers')
-    const storedQuizzes = this._getQuizFromStorage()
-    const submitted = this._getSubmittedFromStorage()
-    // current quiz and quizzes that are in local storage but not in submitted list will be submitting
-    const submitting = []
-    for (let key in storedQuizzes) {
-       if (submitted.indexOf(parseInt(key)) === -1 || parseInt(key) === this.state.currentIndex) {
-        submitting.push({ index: parseInt(key), userAnswers: storedQuizzes[key].answers})
-       }
-    }
-    const session = this.myTest.session
-    const urlBasePath = this.props.urlBasePath || ''
-    xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: submitting }, (status, response) => {
-      if (status === 200) {
-        const submittedQuizzes = this.state.submittedQuizzes
-        // submitting qill be submitted after completed
-        submitting.forEach(q => {
-          if (submittedQuizzes.indexOf(q.index) === -1) {
-            submittedQuizzes.push(q.index)
-          }
-        })
-        this.setState({ submittedQuizzes })
-        this._storeSubmittedToStorage(submittedQuizzes)
-        // this.nextQuiz()
-      } else {
-        this.setState({err: response})
+    return new Promise((resolve, reject) => {
+      const storedQuizzes = this._getQuizFromStorage()
+      const submitted = this._getSubmittedFromStorage()
+      // current quiz and quizzes that are in local storage but not in submitted list will be submitting
+      const submitting = []
+      for (let key in storedQuizzes) {
+        if (submitted.indexOf(parseInt(key)) === -1 || (override && parseInt(key) === this.state.currentIndex)) {
+          submitting.push({ index: parseInt(key), userAnswers: storedQuizzes[key].answers})
+        }
       }
+      console.log(submitting)
+      if (submitting.length === 0) {
+        console.log('all answers has been submitted')
+        resolve()
+        return
+      }
+      const session = this.myTest.session
+      const urlBasePath = this.props.urlBasePath || ''
+      xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: submitting }, (status, response) => {
+        if (status === 200) {
+          const submittedQuizzes = this.state.submittedQuizzes
+          // submitting qill be submitted after completed
+          submitting.forEach(q => {
+            if (submittedQuizzes.indexOf(q.index) === -1) {
+              submittedQuizzes.push(q.index)
+            }
+          })
+          this.setState({ submittedQuizzes })
+          this._storeSubmittedToStorage(submittedQuizzes)
+          console.log('submitted answers')
+          resolve()
+        } else {
+          this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted later'})
+          reject()
+        }
+      })
     })
   }
   _getSubmittedFromStorage() {
@@ -284,9 +295,10 @@ export default class Exam extends Component {
     localStorage.setItem(SUBMITTEDKEY, JSON.stringify(submitted))
   }
   timeout() {
-    // later, handle more for timeout event rather than stopTimer and show end popup only,
-    // for example, submit last question, show popup, lock test...
     this.setState({ timeout: true, showEndPopup: true })
+  }
+  finishTest(e) {
+    this.submitAnswers({ override: false }).then( () => this.setState({ finish: true }) )
   }
 }
 

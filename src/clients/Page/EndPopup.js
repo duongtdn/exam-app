@@ -22,7 +22,7 @@ export default class EndPopup extends Component {
 
             <div> You have run out of time </div>
 
-            <div> <button className="w3-button w3-blue" onClick = {this.props.finish}> Finish </button> </div>
+            <div> <button className="w3-button w3-blue" onClick = {this.props.finish}> Submit all left answers & Finish </button> </div>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default class EndPopup extends Component {
             <br />
             <div> <button className="w3-button w3-blue" onClick = {this.props.close}> Cancel </button> </div>
             <br />
-            <div> <button className="w3-button w3-blue" onClick = {this.props.finish}> Finish </button> </div>
+            <div> <button className="w3-button w3-blue" onClick = {this.props.finish}> Submit all left answers & Finish </button> </div>
           </div>
         </div>
       </div>              
