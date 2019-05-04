@@ -52,6 +52,9 @@ export default class StatusBar extends Component {
       this.startEslapsedTimer()
     }
   }
+  componentWillUnmount() {
+    this.stopEslapsedTimer()
+  }
   render() {
     const remainingTime = this.props.testDuration - this.state.eslapsedTime
     const timerColor = (this.props.testDuration/remainingTime > 3) ? 'red' : 'yellow'

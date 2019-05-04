@@ -114,7 +114,7 @@ export default class Exam extends Component {
               />
             </div>
             <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
-              <StatusBar  testDuration = {this.myTest.duration * 0.60}
+              <StatusBar  testDuration = {this.myTest.duration * 60}
                           timerOnOff = {this.state.timerOnOff}
                           pinnedQuizzes = {this.state.pinnedQuizzes}
                           moveToQuiz = {index => this.moveToQuiz(index)}
