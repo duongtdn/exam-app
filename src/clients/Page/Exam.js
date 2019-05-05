@@ -11,6 +11,7 @@ import QuizBoard from './Widgets/QuizBoard'
 import EndPopup from './EndPopup'
 import Loading from './Loading'
 import ResultPage from './ResultPage'
+import Toast from './Toast'
 
 const QUIZZESKEY = '__$quizzes__'
 const PINNEDKEY = '__$pinned__'
@@ -88,6 +89,10 @@ export default class Exam extends Component {
                   totalQuizzes = {this.myTest.content.questions.length}
                   timeout = {this.state.timeout}
                   finish = {this.finishTest}
+        />
+        <Toast  show = { this.state.toast.length > 0 }
+                toast = {this.state.toast}
+                close = { () => this.setState({ toast: '' }) }
         />
         <Header endgame = {evt => this.setState({ showEndPopup: true })}
         />
