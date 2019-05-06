@@ -10,7 +10,7 @@ export default class Toast extends Component {
   }
   componentDidUpdate(prevProps) {
     if (!prevProps.show && this.props.show) {
-      this._startTimeout(2000)
+      this._startTimeout(3000)
     }
   }
   componentWillUnmount() {
@@ -18,7 +18,7 @@ export default class Toast extends Component {
   }
   render() {
     const style = {
-      position: 'absolute',
+      position: 'fixed',
       width: '100%',
       display: 'none'
     }
@@ -31,7 +31,7 @@ export default class Toast extends Component {
       style.bottom = 0
     }
     return (
-      <div className="w3-red w3-padding" style={style}>
+      <div className="w3-red w3-padding w3-animate-bottom" style={style}>
         <span onClick={this._close} className="w3-button w3-display-topright"> X </span>
         <p className="w3-container"> {this.props.toast} </p> 
       </div>
