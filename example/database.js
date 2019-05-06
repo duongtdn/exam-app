@@ -9,6 +9,7 @@ const Tests = [
     description: 'Final Test for course Embedded - 01',
     createAt: new Date(),
     duration: 30,
+    // session: 'session',
     content: {
       sections: [
         {id: 'sc1', title: 'Section 1', description: 'Here is the section 1'},

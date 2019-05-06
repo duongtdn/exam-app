@@ -26,7 +26,7 @@ function validateAttachedSession() {
       _validateSession({
         session: req.body.session, 
         onSuccess: next,
-        onFailure: err=> res.status(403).json(err)
+        onFailure: err=> res.status(403).json({ explaination: 'Session is invalid or expired'})
       })
     } else {
       console.log('   ... no attached session. skip ->')
@@ -69,11 +69,13 @@ function validateStoredSession() {
     console.log('validateStoredSession: hit')
     if (req.testData.session) {
       console.log('   ... found stored session. verifying ->')
-      _validateSession({
-        session: req.testData.session, 
-        onSuccess: next,
-        onFailure: err=> res.status(403).json(err)
-      })
+      if (req.body.session && req.body.session === req.testData.session) {
+        console.log('      --> Session identical')
+        next()
+      } else {
+        console.log('      --> Session mismatch')
+        res.status(403).json({ explaination: 'Session mismatch'})
+      }
     } else {
       console.log('   ... no stored session. skip ->')
       next()

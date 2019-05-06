@@ -12,10 +12,12 @@ import EndPopup from './EndPopup'
 import Loading from './Loading'
 import ResultPage from './ResultPage'
 import Toast from './Toast'
+import ErrorPage from './ErrorPage'
 
 const QUIZZESKEY = '__$quizzes__'
 const PINNEDKEY = '__$pinned__'
 const SUBMITTEDKEY = '__$submitted__'
+const SESSIONKEY = '__$sss__'
 
 export default class Exam extends Component {
   constructor(props) {
@@ -40,7 +42,7 @@ export default class Exam extends Component {
     const bindMethods = [
       'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
       'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', 'submitAnswers',
-      'timeout', 'finishTest'
+      'timeout', 'finishTest', '_clearLocalStorage'
     ]
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
@@ -51,11 +53,17 @@ export default class Exam extends Component {
     if (testId) {
       this.requestNewSession(testId, (err, response) => {
         if (err) {
-          this.setState({ error: err, loading: false })
+          if (err === 403) {
+            this._clearLocalStorage()
+            this.setState({ error: {code: err, title: 'Invalid Test Session', message: 'Invalid Test or this Test has been expired'}, loading: false })
+          } else {
+            this.setState({ error: {code: err, title: err, message: 'Error found when requesting new Test session'}, loading: false })
+          }
         } else {
           this.setState({ loadContext: 'Assets' })
           this.myTest = JSON.parse(response)
           console.log(this.myTest)
+          this._storeSession(this.myTest.session)
           this.loadAssets( () => {
             const course = this.myTest.courseId
             const type = this.myTest.type
@@ -66,7 +74,7 @@ export default class Exam extends Component {
         }
       })
     } else {
-      this.setState({ error: '400 Bad Request', loading: false })
+      this.setState({ error: {code: 400, title: '400 Bad Request', message: 'Invalid Test session'}, loading: false })
     }
   }
 
@@ -76,7 +84,7 @@ export default class Exam extends Component {
     }
 
     if (this.state.error) {
-      return (<div className="w3-container"> {this.state.error} </div>)
+      return (<ErrorPage error = {this.state.error} />)
     }
     if (this.state.finish) {
       return (<ResultPage />)
@@ -139,7 +147,8 @@ export default class Exam extends Component {
   requestNewSession(testId, done) {
     const urlBasePath = this.props.urlBasePath || ''
     const uid = 'awesome-dev' // fake uid for dev only
-    xhttp.post(`${urlBasePath}/exam/session`, {uid, testId}, (status, response) => {
+    const session = this._getSession()
+    xhttp.post(`${urlBasePath}/exam/session`, {uid, testId, session}, (status, response) => {
       if (status === 200) {
         done(null, response)
       } else {
@@ -209,6 +218,9 @@ export default class Exam extends Component {
   }
   _storePinnedToStorage(pinned) {
     localStorage.setItem(PINNEDKEY, JSON.stringify(pinned))
+  }
+  _clearAllPinnedFromStorage() {
+    localStorage.removeItem(PINNEDKEY)
   }
   _getQuizFromStorage(index) {
     const quizzes = JSON.parse(localStorage.getItem(QUIZZESKEY))
@@ -299,11 +311,29 @@ export default class Exam extends Component {
   _storeSubmittedToStorage(submitted) {
     localStorage.setItem(SUBMITTEDKEY, JSON.stringify(submitted))
   }
+  _clearAllSubmittedFromStorage() {
+    localStorage.removeItem(SUBMITTEDKEY)
+  }
   timeout() {
     this.setState({ timeout: true, showEndPopup: true })
   }
   finishTest(e) {
     this.submitAnswers({ override: false }).then( () => this.setState({ finish: true }) )
+  }
+  _storeSession(session) {
+    localStorage.setItem(SESSIONKEY, session)
+  }
+  _getSession() {
+    return localStorage.getItem(SESSIONKEY)
+  }
+  _clearSession() {
+    localStorage.removeItem(SESSIONKEY)
+  }
+  _clearLocalStorage() {
+    this._clearAllQuizsFromStorage()
+    this._clearAllPinnedFromStorage()
+    this._clearAllSubmittedFromStorage()
+    this._clearSession()
   }
 }
 
