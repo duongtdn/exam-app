@@ -92,7 +92,7 @@ function signSessionToken(helpers) {
     } else {
       console.log('   ... generating session ->')
       const testId = req.testId
-      const token = jwt.sign({ testId }, process.env.PRIVATE_SESSION_KEY)
+      const token = jwt.sign({ testId }, process.env.PRIVATE_SESSION_KEY, {expiresIn: `${req.testData.duration}m`})
       req.testData.session = token
       helpers.Collections.Tests.update({ testId, session: token, takenAt: new Date() }, (err) => {
         if (err) {
