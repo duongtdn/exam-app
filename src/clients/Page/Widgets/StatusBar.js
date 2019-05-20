@@ -44,6 +44,7 @@ export default class StatusBar extends Component {
   }
   componentDidMount() {
     if (this.props.timerOnOff === 'on') {
+      this.setState({ eslapsedTime : this.props.startAt })
       this.startEslapsedTimer()
     }
   }

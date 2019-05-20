@@ -94,6 +94,7 @@ function signSessionToken(helpers) {
       const testId = req.testId
       const token = jwt.sign({ testId }, process.env.PRIVATE_SESSION_KEY, {expiresIn: `${req.testData.duration}m`})
       req.testData.session = token
+      req.testData.startAt = new Date()
       helpers.Collections.Tests.update({ testId, session: token, takenAt: new Date() }, (err) => {
         if (err) {
           res.status(500).json({ explaination: 'Failed to create session' })
@@ -113,7 +114,8 @@ function response() {
       description: req.testData.description,
       content: req.testData.content,
       session: req.testData.session,
-      duration: req.testData.duration
+      duration: req.testData.duration,
+      startAt: req.testData.startAt
     }
     res.status(200).json(data)
   }

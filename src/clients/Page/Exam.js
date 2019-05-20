@@ -39,6 +39,7 @@ export default class Exam extends Component {
     }
     this._timer = null
     this.myTest = null
+    this.startAt = 0
     const bindMethods = [
       'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
       'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', 'submitAnswers',
@@ -71,11 +72,19 @@ export default class Exam extends Component {
             const submittedQuizzes = this._getSubmittedFromStorage()
             this.setState({ course, type, today, loading: false, timerOnOff: 'on', pinnedQuizzes, submittedQuizzes })
           })
+          this.startAt = this._elapsedTimeBefore()
         }
       })
     } else {
       this.setState({ error: {code: 400, title: '400 Bad Request', message: 'Invalid Test session'}, loading: false })
     }
+  }
+
+  _elapsedTimeBefore() {
+    const now = new Date()
+    const startAt = new Date(this.myTest.startAt)
+    const diff = (now.getTime() - startAt.getTime())/1000
+    return parseInt(diff)
   }
 
   render() {
@@ -129,6 +138,7 @@ export default class Exam extends Component {
             </div>
             <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
               <StatusBar  testDuration = {this.myTest.duration * 60}
+                          startAt = {this.startAt}
                           timerOnOff = {this.state.timerOnOff}
                           pinnedQuizzes = {this.state.pinnedQuizzes}
                           moveToQuiz = {index => this.moveToQuiz(index)}
