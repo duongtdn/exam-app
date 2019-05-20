@@ -13,6 +13,7 @@ import Loading from './Loading'
 import ResultPage from './ResultPage'
 import Toast from './Toast'
 import ErrorPage from './ErrorPage'
+import Intro from './Intro'
 
 const QUIZZESKEY = '__$quizzes__'
 const PINNEDKEY = '__$pinned__'
@@ -26,7 +27,8 @@ export default class Exam extends Component {
       course: undefined,
       type: undefined,
       error: null,
-      loading: true,
+      intro: true,
+      loading: false,
       loadContext: 'Tests',
       timerOnOff: 'off',
       currentIndex: 0,
@@ -43,41 +45,56 @@ export default class Exam extends Component {
     const bindMethods = [
       'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
       'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', 'submitAnswers',
-      'timeout', 'finishTest', '_clearLocalStorage'
+      'timeout', 'finishTest', '_clearLocalStorage', 'loadTest', '_loadTest'
     ]
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
 
   componentDidMount() {
+    if (this._getSession()) {
+      this.loadTest()
+    }
+  }
+
+  loadTest() {
+    this._loadTest()
+        .then(state => this.setState(state))
+        .catch( e => this.setState({...e, loading: false }))
+  }
+
+  _loadTest() {
     const today = getToday();
     const testId = getTestIdFromHref(window.location.href)
-    if (testId) {
-      this.requestNewSession(testId, (err, response) => {
-        if (err) {
-          if (err === 403) {
-            this._clearLocalStorage()
-            this.setState({ error: {code: err, title: 'Invalid Test Session', message: 'Invalid Test or this Test has been expired'}, loading: false })
+    return new Promise((resolve, reject) => {
+      if (testId) {
+        this.setState({ loading: true, intro: false})
+        this.requestNewSession(testId, (err, response) => {
+          if (err) {
+            if (err === 403) {
+              this._clearLocalStorage()
+              reject({ error: {code: err, title: 'Invalid Test Session', message: 'Invalid Test or this Test has been expired'}})
+            } else {
+              reject({ error: {code: err, title: err, message: 'Error found when requesting new Test session'}})
+            }
           } else {
-            this.setState({ error: {code: err, title: err, message: 'Error found when requesting new Test session'}, loading: false })
+            this.setState({ loadContext: 'Assets' })
+            this.myTest = JSON.parse(response)
+            console.log(this.myTest)
+            this._storeSession(this.myTest.session)
+            this.loadAssets( () => {
+              const course = this.myTest.courseId
+              const type = this.myTest.type
+              const pinnedQuizzes = this._getPinnedFromStorage()
+              const submittedQuizzes = this._getSubmittedFromStorage()
+              resolve({ course, type, today, loading: false, timerOnOff: 'on', pinnedQuizzes, submittedQuizzes })
+            })
+            this.startAt = this._elapsedTimeBefore()
           }
-        } else {
-          this.setState({ loadContext: 'Assets' })
-          this.myTest = JSON.parse(response)
-          console.log(this.myTest)
-          this._storeSession(this.myTest.session)
-          this.loadAssets( () => {
-            const course = this.myTest.courseId
-            const type = this.myTest.type
-            const pinnedQuizzes = this._getPinnedFromStorage()
-            const submittedQuizzes = this._getSubmittedFromStorage()
-            this.setState({ course, type, today, loading: false, timerOnOff: 'on', pinnedQuizzes, submittedQuizzes })
-          })
-          this.startAt = this._elapsedTimeBefore()
-        }
-      })
-    } else {
-      this.setState({ error: {code: 400, title: '400 Bad Request', message: 'Invalid Test session'}, loading: false })
-    }
+        })
+      } else {
+        reject({ error: {code: 400, title: '400 Bad Request', message: 'Invalid Test session'}})
+      }
+    })
   }
 
   _elapsedTimeBefore() {
@@ -88,10 +105,12 @@ export default class Exam extends Component {
   }
 
   render() {
+    if (this.state.intro) {
+      return (<Intro enterTest={this.loadTest} />)
+    }
     if (this.state.loading) {
       return (<Loading loadContext = {this.state.loadContext} />)
     }
-
     if (this.state.error) {
       return (<ErrorPage error = {this.state.error} />)
     }
