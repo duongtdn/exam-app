@@ -210,7 +210,7 @@ export default class Exam extends Component {
     })
   }
   moveToQuiz(index) {
-    this.setState({ currentIndex: index })
+    this.setState({ currentIndex: index, lockSubmitBtn: false })
   }
   nextQuiz() {
     const currentIndex = this.state.currentIndex    
