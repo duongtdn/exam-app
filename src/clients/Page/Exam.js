@@ -155,7 +155,7 @@ export default class Exam extends Component {
                           getSavedAnswers = {this.getSavedAnswers}
                           updateInternalState = {this.updateInternalState}
                           getSavedInternalState = {this.getSavedInternalState}
-                          submitAnswers = {this.submitAnswers}
+                          submitAnswers = {this.submitAllAnswers}
                           lockSubmitBtn = {this.state.lockSubmitBtn}
               />
             </div>
@@ -297,7 +297,7 @@ export default class Exam extends Component {
     const session = this.myTest.session
     const urlBasePath = this.props.urlBasePath || ''
     const _to = setTimeout( () => {
-      this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted later'})
+      this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted next time'})
       done({returnedStatus: 408})
     }, 5000)
     xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: answers }, (status, response) => {
@@ -314,7 +314,7 @@ export default class Exam extends Component {
         clearTimeout(_to)
         done(null)
       } else {
-        this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted later'})
+        this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted next time'})
         clearTimeout(_to)
         done({returnedStatus: status})
       }
@@ -348,6 +348,7 @@ export default class Exam extends Component {
         return
       }
       this._sendAnswers(submitting, (err) => {
+        this.setState({ lockSubmitBtn: false })
         if (err) {
           reject(err)
         } else {
