@@ -31,7 +31,7 @@ export default class Toast extends Component {
       style.bottom = 0
     }
     return (
-      <div className="w3-red w3-padding w3-animate-bottom" style={style}>
+      <div className={`w3-red w3-padding ${this.props.top? 'w3-animate-top' : 'w3-animate-bottom'}`} style={style}>
         <span onClick={this._close} className="w3-button w3-display-topright"> X </span>
         <p className="w3-container"> {this.props.toast} </p> 
       </div>

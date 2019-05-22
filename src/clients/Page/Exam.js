@@ -131,6 +131,7 @@ export default class Exam extends Component {
         <Toast  show = { this.state.toast.length > 0 }
                 toast = {this.state.toast}
                 close = { () => this.setState({ toast: '' }) }
+                top
         />
         <Header endgame = {evt => this.setState({ showEndPopup: true })}
         />
@@ -295,6 +296,10 @@ export default class Exam extends Component {
   _sendAnswers(answers, done) {
     const session = this.myTest.session
     const urlBasePath = this.props.urlBasePath || ''
+    const _to = setTimeout( () => {
+      this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted later'})
+      done({returnedStatus: 408})
+    }, 5000)
     xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: answers }, (status, response) => {
       if (status === 200) {
         const submittedQuizzes = this.state.submittedQuizzes
@@ -306,10 +311,11 @@ export default class Exam extends Component {
         })
         this.setState({ submittedQuizzes })
         this._storeSubmittedToStorage(submittedQuizzes)
-        console.log('submitted answers')
+        clearTimeout(_to)
         done(null)
       } else {
         this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted later'})
+        clearTimeout(_to)
         done({returnedStatus: status})
       }
     })
@@ -338,7 +344,6 @@ export default class Exam extends Component {
       }
       console.log(submitting)
       if (submitting.length === 0) {
-        console.log('all answers has been submitted')
         resolve()
         return
       }
