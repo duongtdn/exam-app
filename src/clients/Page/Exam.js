@@ -37,14 +37,16 @@ export default class Exam extends Component {
       showEndPopup: false,
       timeout: false,
       finish: false,
-      toast: ''
+      toast: '',
+      lockSubmitBtn: false
     }
     this._timer = null
     this.myTest = null
     this.startAt = 0
     const bindMethods = [
       'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
-      'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', 'submitAnswers',
+      'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState',
+      'submitAllAnswers', 'submitAnswers', '_sendAnswers',
       'timeout', 'finishTest', '_clearLocalStorage', 'loadTest', '_loadTest'
     ]
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
@@ -153,6 +155,7 @@ export default class Exam extends Component {
                           updateInternalState = {this.updateInternalState}
                           getSavedInternalState = {this.getSavedInternalState}
                           submitAnswers = {this.submitAnswers}
+                          lockSubmitBtn = {this.state.lockSubmitBtn}
               />
             </div>
             <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
@@ -289,8 +292,40 @@ export default class Exam extends Component {
     const quiz = this._getQuizFromStorage(index)
     return quiz.state
   }
-  submitAnswers({ override = true }) {
-    console.log('submitting answers')
+  _sendAnswers(answers, done) {
+    const session = this.myTest.session
+    const urlBasePath = this.props.urlBasePath || ''
+    xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: answers }, (status, response) => {
+      if (status === 200) {
+        const submittedQuizzes = this.state.submittedQuizzes
+        // submitting will be submitted after completed
+        answers.forEach(q => {
+          if (submittedQuizzes.indexOf(q.index) === -1) {
+            submittedQuizzes.push(q.index)
+          }
+        })
+        this.setState({ submittedQuizzes })
+        this._storeSubmittedToStorage(submittedQuizzes)
+        console.log('submitted answers')
+        done(null)
+      } else {
+        this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted later'})
+        done({returnedStatus: status})
+      }
+    })
+  }
+  submitAnswers() {
+    const storedQuizzes = this._getQuizFromStorage()
+    const index = this.state.currentIndex
+    const submitting = [{
+      index, userAnswers: storedQuizzes[index].answers
+    }]
+    this.setState({ lockSubmitBtn: true })
+    this._sendAnswers(submitting, (err) => {
+      this.setState({ lockSubmitBtn: false })
+    })
+  }
+  submitAllAnswers({ override = true }) {
     return new Promise((resolve, reject) => {
       const storedQuizzes = this._getQuizFromStorage()
       const submitted = this._getSubmittedFromStorage()
@@ -307,24 +342,11 @@ export default class Exam extends Component {
         resolve()
         return
       }
-      const session = this.myTest.session
-      const urlBasePath = this.props.urlBasePath || ''
-      xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: submitting }, (status, response) => {
-        if (status === 200) {
-          const submittedQuizzes = this.state.submittedQuizzes
-          // submitting qill be submitted after completed
-          submitting.forEach(q => {
-            if (submittedQuizzes.indexOf(q.index) === -1) {
-              submittedQuizzes.push(q.index)
-            }
-          })
-          this.setState({ submittedQuizzes })
-          this._storeSubmittedToStorage(submittedQuizzes)
-          console.log('submitted answers')
-          resolve()
+      this._sendAnswers(submitting, (err) => {
+        if (err) {
+          reject(err)
         } else {
-          this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted later'})
-          reject()
+          resolve()
         }
       })
     })
@@ -347,7 +369,7 @@ export default class Exam extends Component {
     this.setState({ timeout: true, showEndPopup: true })
   }
   finishTest(e) {
-    this.submitAnswers({ override: false }).then( () => this.setState({ finish: true }) )
+    this.submitAllAnswers({ override: false }).then( () => this.setState({ finish: true }) )
   }
   _storeSession(session) {
     localStorage.setItem(SESSIONKEY, session)

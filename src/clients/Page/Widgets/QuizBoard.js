@@ -60,7 +60,7 @@ export default class QuizBoard extends Component {
           {/* render action buttons */}
           <div className="w3-cell-row w3-panel w3-padding w3-border-top w3-border-grey">
             <div className="w3-cell" > 
-              <button className="w3-button w3-blue" onClick={this.props.submitAnswers}> Submit </button>
+              <button className="w3-button w3-blue" onClick={this.props.submitAnswers} disabled={this.props.lockSubmitBtn}> Submit </button>
               {' '}
               { this.props.pinnedQuizzes.indexOf(this.props.currentIndex) === -1 ?
                 <button className="w3-button w3-text-orange" onClick={() => this.props.pinQuiz(this.props.currentIndex)}> Pin this question </button>
