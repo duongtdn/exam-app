@@ -20,6 +20,9 @@ const Tests = [
           problem: 'dragdrop.1', answer: '', score: 10, section: 'sc1'
         },
         {
+          problem: 'choices.1', answer: '', score: 10, section: 'sc1'
+        },
+        {
           problem: 'dragdrop.2', answer: '', score: 10, section: 'sc1'
         },
       ]
