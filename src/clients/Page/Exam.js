@@ -38,7 +38,9 @@ export default class Exam extends Component {
       timeout: false,
       finish: false,
       toast: '',
-      lockSubmitBtn: false
+      lockSubmitBtn: false,
+      lockBackBtn: true,
+      lockNextBtn: false
     }
     this._timer = null
     this.myTest = null
@@ -157,6 +159,8 @@ export default class Exam extends Component {
                           getSavedInternalState = {this.getSavedInternalState}
                           submitAnswers = {this.submitAllAnswers}
                           lockSubmitBtn = {this.state.lockSubmitBtn}
+                          lockNextBtn = {this.state.lockNextBtn}
+                          lockBackBtn = {this.state.lockBackBtn}
               />
             </div>
             <div className="w3-cell w3-hide-small" style={{verticalAlign: 'top', padding:'8px 0 8px 16px', width: '154px'}}>
@@ -210,7 +214,15 @@ export default class Exam extends Component {
     })
   }
   moveToQuiz(index) {
-    this.setState({ currentIndex: index, lockSubmitBtn: false })
+    let lockBackBtn = false
+    let lockNextBtn = false
+    if (index ===  this.myTest.content.questions.length-1) {
+      lockNextBtn = true
+    }
+    if (index === 0) {
+      lockBackBtn = true
+    }
+    this.setState({ currentIndex: index, lockSubmitBtn: false, lockBackBtn, lockNextBtn })
   }
   nextQuiz() {
     const currentIndex = this.state.currentIndex    
