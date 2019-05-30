@@ -3,6 +3,7 @@
 const Tests = [
   {
     testId: 'test-01',
+    resultId: 'r-test-01',
     assignedTo: ['awesome-dev'],
     examId: 'emb-01-final-exam',
     title: 'Embedded - 01: Final Exam',
@@ -80,7 +81,12 @@ module.exports = {
           Tests.forEach(test => {
             if (test.testId === testId) {
               for (let key in props) {
-                test[key] = props[key]
+                if (typeof props[key] === 'object' && !!props[keys]) {
+                  // nested object
+                  test[key] = {...test[key], ...props[key]}
+                } else {
+                  test[key] = props[key]
+                }
               }
               updated = true
             }

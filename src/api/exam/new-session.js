@@ -20,16 +20,13 @@ function authen() {
 
 function validateAttachedSession() {
   return function(req, res, next) {
-    console.log('validateAttachedSession: hit')
     if (req.body.session) {
-      console.log('   ... request attached a session. verifying ->')
       _validateSession({
         session: req.body.session, 
         onSuccess: next,
         onFailure: err=> res.status(403).json({ explaination: 'Session is invalid or expired'})
       })
     } else {
-      console.log('   ... no attached session. skip ->')
       next()
     }
   }
@@ -37,7 +34,6 @@ function validateAttachedSession() {
 
 function getTestData(helpers) {
   return function(req, res, next) {
-    console.log('getTestData: hit')
     if (!req.body.testId) {
       res.status(400).json({ explaination: 'MIssing testId' })
       return
@@ -51,10 +47,15 @@ function getTestData(helpers) {
           if (testData.length > 0) {
             req.testData = testData[0]
             if (req.testData.assignedTo.indexOf(req.uid) === -1) {
-              res.status(401).json({ explaination:'Unauthorized' })
-            } else {
-              next()
+              res.status(403).json({ explaination:'Forbidden' })
+              return
             }
+            if (req.testData.completedAt && req.testData.completedAt[req.uid]) {
+              // user has finished this test, redirect to test result
+              res.redirect(`/result/${req.testData.resultId}`)
+              return
+            }
+            next()
           } else {
             res.status(404).json({ explaination:'Test not found' })
           }
@@ -66,18 +67,13 @@ function getTestData(helpers) {
 
 function validateStoredSession() {
   return function(req, res, next) {
-    console.log('validateStoredSession: hit')
     if (req.testData.session) {
-      console.log('   ... found stored session. verifying ->')
       if (req.body.session && req.body.session === req.testData.session) {
-        console.log('      --> Session identical')
         next()
       } else {
-        console.log('      --> Session mismatch')
         res.status(403).json({ explaination: 'Session mismatch'})
       }
     } else {
-      console.log('   ... no stored session. skip ->')
       next()
     }
   }
@@ -85,12 +81,9 @@ function validateStoredSession() {
 
 function signSessionToken(helpers) {
   return function(req, res, next) {
-    console.log('signSessionToken: hit')
     if (req.testData.session) {
-      console.log('   ... session already created. skip ->')
       next()
     } else {
-      console.log('   ... generating session ->')
       const testId = req.testId
       const token = jwt.sign({ testId }, process.env.PRIVATE_SESSION_KEY, {expiresIn: `${req.testData.duration}m`})
       req.testData.session = token
@@ -108,7 +101,6 @@ function signSessionToken(helpers) {
 
 function response() {
   return function (req, res) {
-    console.log('response: hit')
     const data = {
       title: req.testData.title,
       description: req.testData.description,
@@ -117,7 +109,7 @@ function response() {
       duration: req.testData.duration,
       startAt: req.testData.startAt
     }
-    res.status(200).json(data)
+    res.status(201).json(data)
   }
 }
 

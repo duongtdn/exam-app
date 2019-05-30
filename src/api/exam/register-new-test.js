@@ -85,8 +85,10 @@ function generateQuestions() {
 function generateTest(helpers) {
   return function(req, res, next) {
     req.testId = 't_' + Math.random().toString(36).substr(2,9)
+    req.resultId = 'r_' + Math.random().toString(36).substr(2,9)
     const test = {
       testId: req.testId,
+      resultId: req.resultId,
       assignedTo: [req.uid],
       examId: req.examId,
       title: req.exam.title,
@@ -124,7 +126,7 @@ function signTokenTestId() {
 
 function response() {
   return function(req, res) {
-    res.status(200).json({ testId: req.singedTestId })
+    res.status(201).json({ testId: req.singedTestId, resultId: req.resultId })
   }
 }
 

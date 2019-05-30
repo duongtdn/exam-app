@@ -10,7 +10,8 @@ api.add('/exam', {
 })
 
 api.add('/exam/session', {
-  post: require('./exam/new-session')
+  post: require('./exam/new-session'),
+  put: require('./exam/update-session')
 })
 
 api.add('/register/exam', {

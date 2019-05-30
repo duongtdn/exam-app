@@ -186,7 +186,7 @@ export default class Exam extends Component {
     const uid = 'awesome-dev' // fake uid for dev only
     const session = this._getSession()
     xhttp.post(`${urlBasePath}/exam/session`, {uid, testId, session}, (status, response) => {
-      if (status === 200) {
+      if (status === 201) {
         done(null, response)
       } else {
         done(status, null)
@@ -308,11 +308,12 @@ export default class Exam extends Component {
   _sendAnswers(answers, done) {
     const session = this.myTest.session
     const urlBasePath = this.props.urlBasePath || ''
+    const uid = 'awesome-dev' // fake uid for dev only
     const _to = setTimeout( () => {
       this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted next time'})
       done({returnedStatus: 408})
     }, 5000)
-    xhttp.put(`${urlBasePath}/exam/solution`, { session, questions: answers }, (status, response) => {
+    xhttp.put(`${urlBasePath}/exam/solution`, { uid, session, questions: answers }, (status, response) => {
       if (status === 200) {
         const submittedQuizzes = this.state.submittedQuizzes
         // submitting will be submitted after completed
@@ -387,7 +388,31 @@ export default class Exam extends Component {
     this.setState({ timeout: true, showEndPopup: true })
   }
   finishTest(e) {
-    this.submitAllAnswers({ override: false }).then( () => this.setState({ finish: true }) )
+    this.submitAllAnswers({ override: false })
+        .then(this.submitTestCompletion)
+        .then( () => this.setState({ finish: true }) )
+        .catch( err => console.log(err) )
+  }
+  submitTestCompletion() {
+    return new Promise((resolve, reject) => {
+      const urlBasePath = this.props.urlBasePath || ''
+      const session = this.myTest.session
+      const uid = 'awesome-dev' // fake uid for dev only
+      const _to = setTimeout( () => {
+        this.setState({toast: 'Network Error: Failed to submit test completion.'})
+        done({returnedStatus: 408})
+      }, 5000)
+      xhttp.put(`${urlBasePath}/exam/session`, { uid, session, finish: true}, (status, response) => {
+        if (status === 200) {
+          clearTimeout(_to)
+          resolve()
+        } else {
+          this.setState({toast: 'Error: Failed to submit test completion'})
+          clearTimeout(_to)
+          reject({returnedStatus: status})
+        }
+      })
+    })
   }
   _storeSession(session) {
     localStorage.setItem(SESSIONKEY, session)
