@@ -109,7 +109,6 @@ module.exports = {
             }
           })
           done && done(null)
-          console.log(JSON.stringify(Tests))
         },500)
       }
     },

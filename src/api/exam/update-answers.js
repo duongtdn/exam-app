@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 
 function authen() {
   return function(req, res, next) {
-    console.log('authen: hit')
     // jwt.verify(req.body.uid, process.env.PRIVATE_AUTH_KEY, (err, decoded) => {
     //   if (err) {
     //     res.status(401).json({ explaination: 'Unauthorized' })
