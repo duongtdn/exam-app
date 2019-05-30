@@ -105,7 +105,8 @@ function response() {
       content: req.testData.content,
       session: req.testData.session,
       duration: req.testData.duration,
-      startAt: req.testData.startAt
+      startAt: req.testData.startAt,
+      resultId: req.testData.resultId
     }
     res.status(201).json(data)
   }

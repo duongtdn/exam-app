@@ -13,7 +13,7 @@ export default class Header extends Component {
             <div className="w3-bar-item">
               Test Room
             </div>
-            <div className="w3-right w3-container">
+            <div className={`w3-right w3-container ${this.props.endgame? '' : ' w3-hide'}`}>
               <button className="w3-bar-item w3-button" onClick={this.props.endgame}> Finish </button>
             </div>
         </div>

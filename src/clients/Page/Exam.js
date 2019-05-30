@@ -121,7 +121,7 @@ export default class Exam extends Component {
       return (<Error error = {this.state.error} />)
     }
     if (this.state.finish) {
-      return (<Finish />)
+      return (<Finish resultId={this.myTest.resultId}/>)
     }
     return (
       <div>
