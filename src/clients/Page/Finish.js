@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 
 import { xhttp } from 'authenform-utils'
 
-export default class ResultPage extends Component {
+export default class Finish extends Component {
   constructor(props) {
     super(props)
   }

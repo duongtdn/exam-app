@@ -10,7 +10,7 @@ import StatusBar from './Widgets/StatusBar'
 import QuizBoard from './Widgets/QuizBoard'
 import EndPopup from './EndPopup'
 import Loading from './Loading'
-import ResultPage from './ResultPage'
+import Finish from './Finish'
 import Toast from './Toast'
 import Error from './Error'
 import Intro from './Intro'
@@ -121,7 +121,7 @@ export default class Exam extends Component {
       return (<Error error = {this.state.error} />)
     }
     if (this.state.finish) {
-      return (<ResultPage />)
+      return (<Finish />)
     }
     return (
       <div>
