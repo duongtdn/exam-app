@@ -12,7 +12,7 @@ import EndPopup from './EndPopup'
 import Loading from './Loading'
 import ResultPage from './ResultPage'
 import Toast from './Toast'
-import ErrorPage from './ErrorPage'
+import Error from './Error'
 import Intro from './Intro'
 
 const QUIZZESKEY = '__$quizzes__'
@@ -118,7 +118,7 @@ export default class Exam extends Component {
       return (<Loading loadContext = {this.state.loadContext} />)
     }
     if (this.state.error) {
-      return (<ErrorPage error = {this.state.error} />)
+      return (<Error error = {this.state.error} />)
     }
     if (this.state.finish) {
       return (<ResultPage />)
