@@ -81,7 +81,7 @@ module.exports = {
           Tests.forEach(test => {
             if (test.testId === testId) {
               for (let key in props) {
-                if (typeof props[key] === 'object' && !!props[keys]) {
+                if (typeof props[key] === 'object' && !!props[key]) {
                   // nested object
                   test[key] = {...test[key], ...props[key]}
                 } else {

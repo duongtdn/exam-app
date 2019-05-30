@@ -49,7 +49,7 @@ export default class Exam extends Component {
       'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
       'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState',
       'submitAllAnswers', 'submitAnswers', '_sendAnswers',
-      'timeout', 'finishTest', '_clearLocalStorage', 'loadTest', '_loadTest'
+      'timeout', 'finishTest', '_clearLocalStorage', 'loadTest', '_loadTest', 'submitTestCompletion'
     ]
     bindMethods.forEach( method => this[method] = this[method].bind(this) )
   }
@@ -75,11 +75,13 @@ export default class Exam extends Component {
         this.requestNewSession(testId, (err, response) => {
           if (err) {
             if (err === 403) {
-              this._clearLocalStorage()
               reject({ error: {code: err, title: 'Invalid Test Session', message: 'Invalid Test or this Test has been expired'}})
+            } else if (err === 404) {
+              reject({ error: {code: err, title: '404 - Test not found', message: 'This test has been finished'}})
             } else {
               reject({ error: {code: err, title: err, message: 'Error found when requesting new Test session'}})
             }
+            this._clearLocalStorage()
           } else {
             this.setState({ loadContext: 'Assets' })
             this.myTest = JSON.parse(response)
@@ -355,7 +357,6 @@ export default class Exam extends Component {
           submitting.push({ index: parseInt(key), userAnswers: storedQuizzes[key].answers})
         }
       }
-      console.log(submitting)
       if (submitting.length === 0) {
         resolve()
         return

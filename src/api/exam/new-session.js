@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 
 function authen() {
   return function(req, res, next) {
-    console.log('authen: hit')
     // jwt.verify(req.body.uid, process.env.PRIVATE_AUTH_KEY, (err, decoded) => {
     //   if (err) {
     //     res.status(401).json({ explaination: 'Unauthorized' })
@@ -51,8 +50,7 @@ function getTestData(helpers) {
               return
             }
             if (req.testData.completedAt && req.testData.completedAt[req.uid]) {
-              // user has finished this test, redirect to test result
-              res.redirect(`/result/${req.testData.resultId}`)
+              res.status(404).json({ explaination: 'Test has been finished'})
               return
             }
             next()
