@@ -4,7 +4,8 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    exam: ['./src/clients/scripts/exam.js']
+    exam: ['./src/clients/scripts/exam.js'],
+    result: ['./src/clients/scripts/result.js']
   },
   output: {
     path: path.resolve(__dirname, "build/"),

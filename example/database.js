@@ -69,9 +69,23 @@ const Qbanks = [
 
 module.exports = {
     Tests: {
-      find({ testId }, done) {
+      find({ testId, resultId }, projection, done) {
+        if ({}.toString.call(projection) === '[object Function]') {
+          done= projection
+        }
         setTimeout(() => {
-          done && done(Tests.filter( _test => _test.testId === testId))
+          const data = Tests.filter( _test => _test.testId === testId || _test.resultId === resultId )
+          let test = {}
+          if (data.length > 0) {
+            if ({}.toString.call(projection) === '[object Array]') {
+              projection.forEach( prop => {
+                test[prop] = data[0][prop]
+              })
+            } else {
+              test = data[0]
+            }
+          }
+          done && done([test])
         }, 500)
         return this
       },

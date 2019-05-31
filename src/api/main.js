@@ -22,4 +22,8 @@ api.add ('/exam/solution', {
   put: require('./exam/update-answers')
 })
 
+api.add ('/result', {
+  get: require('./result/get-result.js')
+})
+
 module.exports = api
