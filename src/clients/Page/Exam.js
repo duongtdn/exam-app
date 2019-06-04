@@ -391,7 +391,10 @@ export default class Exam extends Component {
   finishTest(e) {
     this.submitAllAnswers({ override: false })
         .then(this.submitTestCompletion)
-        .then( () => this.setState({ finish: true }) )
+        .then( () => {
+          this._clearLocalStorage()
+          this.setState({ finish: true })
+        })
         .catch( err => console.log(err) )
   }
   submitTestCompletion() {
