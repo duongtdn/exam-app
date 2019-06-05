@@ -59,7 +59,7 @@ export default class StatusBar extends Component {
   render() {
     const remainingTime = this.props.testDuration - this.state.eslapsedTime
     const timerColor = (this.props.testDuration/remainingTime > 3) ? 'red' : 'yellow'
-    const completion = (this.props.submittedQuizzes.length / this.props.totalQuizzes) * 100
+    const completion = Math.floor((this.props.submittedQuizzes.length / this.props.totalQuizzes) * 100)
     return(
       <div style={{margin: '8px 0'}}>
         {/* for medium screen */}
