@@ -2,7 +2,7 @@
 
 require('dotenv').config()
 
-const api = require('../src/api/main')
+const api = require('../src/server/api/main')
 
 api.helpers({ Collections: require('./database') })
 

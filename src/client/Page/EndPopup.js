@@ -14,7 +14,7 @@ export default class EndPopup extends Component {
     }
   }
   renderIfTimeout() {
-    return(      
+    return(
       <div className="w3-modal" style={{ display: this.props.show ? 'block' : 'none' }}>
          <div className="w3-modal-content">
           <div className="w3-container w3-padding">
@@ -43,7 +43,7 @@ export default class EndPopup extends Component {
             <div> <button className="w3-button w3-blue" onClick = {this.props.finish}> Submit all left answers & Finish </button> </div>
           </div>
         </div>
-      </div>              
+      </div>
     )
   }
 }

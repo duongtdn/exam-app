@@ -33,7 +33,7 @@ export default class Toast extends Component {
     return (
       <div className={`w3-red w3-padding ${this.props.top? 'w3-animate-top' : 'w3-animate-bottom'}`} style={style}>
         <span onClick={this._close} className="w3-button w3-display-topright"> X </span>
-        <p className="w3-container"> {this.props.toast} </p> 
+        <p className="w3-container"> {this.props.toast} </p>
       </div>
     )
   }
@@ -42,7 +42,7 @@ export default class Toast extends Component {
     this.props.close && this.props.close()
   }
   _startTimeout(duration) {
-    this._timer = setTimeout(() => { 
+    this._timer = setTimeout(() => {
       this.props.close && this.props.close()
     }, duration)
   }

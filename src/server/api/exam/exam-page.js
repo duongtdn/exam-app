@@ -1,6 +1,6 @@
 "use trict"
 
-const { html } = require('../html')
+const { html } = require('../../lib/html')
 
 function reponse() {
   return function(req, res) {

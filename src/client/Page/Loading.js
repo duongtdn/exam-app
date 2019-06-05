@@ -7,7 +7,7 @@ export default class Loading extends Component {
     super(props)
   }
   render() {
-    return(      
+    return(
       <div className="w3-container">
         <div style={{margin: 'auto', width: '280px', textAlign: 'center', paddingTop: '30px'}}>
           <span className='w3-large w3-text-blue'> Welcome to Test Center </span>
@@ -21,7 +21,7 @@ export default class Loading extends Component {
             <span className='w3-large w3-text-blue' style={{fontWeight: 'bold'}}> . . . </span>
           </div>
         </div>
-      </div>              
+      </div>
     )
   }
 }

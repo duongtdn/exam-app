@@ -9,9 +9,9 @@ export default class Finish extends Component {
     super(props)
   }
   render() {
-    return(      
+    return( 
       <div >
-        <Header 
+        <Header
         />
         <div className="w3-container">
           <h3 className="w3-text-blue"> Test has been completed. Thank you for your participation</h3>
@@ -20,7 +20,7 @@ export default class Finish extends Component {
             <a href={`/result/${this.props.resultId}`} className="w3-button w3-blue"> Test Result </a>
           </p>
         </div>
-      </div>              
+      </div>
     )
   }
 }

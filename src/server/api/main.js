@@ -11,7 +11,7 @@ api.add('/exam', {
 
 api.add('/exam/session', {
   post: require('./exam/new-session'),
-  put: require('./exam/update-session')
+  put: require('./exam/end-session')
 })
 
 api.add('/register/exam', {

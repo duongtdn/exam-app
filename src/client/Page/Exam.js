@@ -177,10 +177,8 @@ export default class Exam extends Component {
               />
             </div>
           </div>
-          
-          
-        </div>          
-      </div>    
+        </div>
+      </div>
     )
   }
   requestNewSession(testId, done) {
@@ -227,7 +225,7 @@ export default class Exam extends Component {
     this.setState({ currentIndex: index, lockSubmitBtn: false, lockBackBtn, lockNextBtn })
   }
   nextQuiz() {
-    const currentIndex = this.state.currentIndex    
+    const currentIndex = this.state.currentIndex
     if (currentIndex < this.myTest.content.questions.length-1) {
       this.moveToQuiz(currentIndex+1)
     } else {
@@ -246,7 +244,7 @@ export default class Exam extends Component {
       pinnedQuizzes.push(index)
       this.setState({ pinnedQuizzes })
       this._storePinnedToStorage(pinnedQuizzes)
-    }    
+    }
   }
   unpinQuiz(index) {
     const pinnedQuizzes = this.state.pinnedQuizzes.filter( _index => {

@@ -2,7 +2,7 @@
 
 "use trict"
 
-const { html } = require('../html')
+const { html } = require('../../lib/html')
 
 function authen() {
   return function(req, res, next) {

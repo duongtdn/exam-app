@@ -7,7 +7,7 @@ export default class Intro extends Component {
     super(props)
   }
   render() {
-    return(      
+    return(
       <div className="w3-container">
         <div style={{margin: 'auto', width: '280px', textAlign: 'center', paddingTop: '30px'}}>
           <span className='w3-large w3-text-blue'> Welcome to Test Center </span>
@@ -17,7 +17,7 @@ export default class Intro extends Component {
         <div className='' style={{margin: 'auto', marginTop:'30px', width: '280px', textAlign: 'center', padding: '20px'}}>
           <button className="w3-button w3-blue" onClick={this.props.enterTest}> Click here to Enter Test </button>
         </div>
-      </div>              
+      </div>
     )
   }
 }

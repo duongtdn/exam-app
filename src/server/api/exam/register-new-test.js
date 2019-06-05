@@ -80,7 +80,7 @@ function generateQuestions() {
     req.questions = questions
     next()
   }
-} 
+}
 
 function generateTest(helpers) {
   return function(req, res, next) {

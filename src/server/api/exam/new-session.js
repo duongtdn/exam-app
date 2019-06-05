@@ -21,7 +21,7 @@ function validateAttachedSession() {
   return function(req, res, next) {
     if (req.body.session) {
       _validateSession({
-        session: req.body.session, 
+        session: req.body.session,
         onSuccess: next,
         onFailure: err=> res.status(403).json({ explaination: 'Session is invalid or expired'})
       })
