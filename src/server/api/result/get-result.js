@@ -27,7 +27,7 @@ function validateParams() {
 function getResultData(helpers) {
   return function(req, res, next) {
     const resultId = req.query.r
-    helpers.Collections.Tests.find({ resultId }, ["resultId", "title", "description", "assignedTo", "result", "content.sections"], (data) => {
+    helpers.Collections.Tests.find({ resultId }, ["resultId", "title", "description", "takenAt", "assignedTo", "result", "content.sections"], (data) => {
       if (data && data.length > 0) {
         if (data[0].assignedTo.indexOf(req.uid) === -1) {
           res.status(403).json({ explaination: 'forbidden'})

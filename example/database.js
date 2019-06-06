@@ -29,8 +29,10 @@ const Tests = [
       ]
     },
     passScore: 20,
+    takenAt: "2019-06-06T23:28:45.729Z",
     result: {
-      "status":"passed","createdAt":"2019-06-06T23:28:45.729Z",
+      "status":"passed",
+      "createdAt":"2019-06-06T23:28:45.729Z",
       "detail":{
         "totalScore":20,
         "sectionScores":[

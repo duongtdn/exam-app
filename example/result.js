@@ -11,6 +11,7 @@ const __data= {
     "resultId": "r-test-01",
     "title": "Embedded - 01: Final Exam",
     "description": "Final Test for course Embedded - 01",
+    "takenAt": "2019-06-06T23:28:45.729Z",
     "assignedTo": ["awesome-dev"],
     "result": {
       "status": "passed",
