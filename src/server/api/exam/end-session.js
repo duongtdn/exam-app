@@ -38,16 +38,33 @@ function decodeSession() {
 
 function createResult(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Tests.find({ testId: req.testId }, { content, passScore, resolveMethod }, data => {
+    helpers.Collections.Tests.find({ testId: req.testId }, ['content', 'passScore', 'resolveMethod'], data => {
       if (data.length === 0) {
-        res.status(404).json({ error: 'Test not found'})
+        res.status(404).json({ error: 'Test not found' })
         return
       }
       const test = data[0]
-      const results = {}
-      results[req.uid] = {}
-      const result = results[req.uid]
-
+      const content = test.content
+      const result = {
+        status: null,
+        createdAt: new Date(),
+        detail: {
+          totalScore: 0,
+          sectionScores: content.sections.map(section => { return { id: section.id, score: 0} })
+        }
+      }
+      content.questions.forEach(question => {
+        // const {correctAnswers, userAnswers} = {...question}
+        console.log("\n# Scoring question " + question.problem)
+        if ( _matchAnswer(question) ) {
+          const section = result.detail.sectionScores.filter(s => s.id === question.section)[0]
+          section.score += question.score
+        }
+      })
+      result.detail.totalScore = result.detail.sectionScores.reduce( (acc, section) => acc.score + section.score )
+      result.status = result.detail.totalScore >= test.passScore ? 'passed' : 'failed'
+      req.result = result
+      next()
     })
   }
 }
@@ -57,7 +74,7 @@ function updateToDatabase(helpers) {
     if (req.body.finish) {
       const completedAt = {}
       completedAt[req.uid] = new Date()
-      helpers.Collections.Tests.update({testId: req.testId, completedAt}, err => {
+      helpers.Collections.Tests.update({testId: req.testId, completedAt, result: req.result}, err => {
         if (err) {
           res.status(500).json({ error: 'Access Database failed'})
         } else {
@@ -77,10 +94,18 @@ function updateToDatabase(helpers) {
      3- Number is represent by a string, for example: ^250$
      4- Boolean is represent by a string, for example: ^true$
  */
-function _matchAnswer({correctAnswer, userAnswer}) {
-  for (let key in correctAnswer) {
+function _matchAnswer({correctAnswers, userAnswers}) {
+  if (!correctAnswers) {
+    console.log({ error: 'No correct Answer found!!!' })
+    return false
+  }
+  if (!userAnswers) {
+    console.log('User not answer. match false')
+    return false
+  }
+  for (let key in correctAnswers) {
     console.log(`\nMatching item: ${key}`)
-    if (!_match(correctAnswer[key], userAnswer[key])) {
+    if ( !_match(correctAnswers[key], userAnswers[key]) ) {
       return false
     }
   }
@@ -88,7 +113,7 @@ function _matchAnswer({correctAnswer, userAnswer}) {
 }
 
 function _match(ref, item) {
-  if (is('Object')(ref)) {
+  if ( is('Object')(ref) ) {
     for (let key in ref) {
       console.log(`  Matching key: ${key}`)
       const re = new RegExp(ref[key])
@@ -109,4 +134,4 @@ function _match(ref, item) {
   }
 }
 
-module.exports = [authen, decodeSession, updateToDatabase]
+module.exports = [authen, decodeSession, createResult, updateToDatabase]
