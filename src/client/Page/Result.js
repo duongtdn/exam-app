@@ -10,7 +10,8 @@ export default class Result extends Component {
     return(
       <div >
         <div className="w3-container">
-          <h3 className="w3-text-blue"> Result Page </h3>
+          <h3 className="w3-text-blue"> Test Result Report </h3>
+          <hr />
           {
             this.props.data.result ? this._renderResult() : this._renderNoResult()
           }
@@ -26,9 +27,11 @@ export default class Result extends Component {
     )
   }
   _renderResult() {
+    const test = this.props.data
     return (
       <div>
-        <p> Result Here </p>
+        <h4 style={{fontWeight: 'bold'}}> {test.title} </h4>
+        <div className="w3-text-grey w3-large"> {test.description} </div>
       </div>
     )
   }

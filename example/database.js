@@ -28,7 +28,17 @@ const Tests = [
         },
       ]
     },
-    passScore: 20
+    passScore: 20,
+    result: {
+      "status":"passed","createdAt":"2019-06-06T23:28:45.729Z",
+      "detail":{
+        "totalScore":20,
+        "sectionScores":[
+          {"id":"sc1","score":20},
+          {"id":"sc2","score":0}
+        ]
+      }
+    }
   }
 ]
 
