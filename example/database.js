@@ -80,7 +80,16 @@ module.exports = {
           if (data.length > 0) {
             if ({}.toString.call(projection) === '[object Array]') {
               projection.forEach( prop => {
-                test[prop] = data[0][prop]
+                const p = prop.split(".")
+                if (p.length === 1) {
+                  const k = p[0]
+                  test[k] = data[0][k]
+                } else {
+                  const k = p[0]
+                  const l = p[1]
+                  if (!test[k]) { test[k] = {} }
+                  test[k][l] = data[0][k][l]
+                }
               })
             } else {
               test = data[0]
