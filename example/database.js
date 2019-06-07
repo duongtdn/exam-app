@@ -29,7 +29,7 @@ const Tests = [
       ]
     },
     passScore: 20,
-    takenAt: "2019-06-06T23:28:45.729Z",
+    startAt: 1559894402883,
     result: {
       "status":"passed",
       "createdAt":"2019-06-06T23:28:45.729Z",
@@ -104,7 +104,7 @@ module.exports = {
                 }
               })
             } else {
-              test = data[0]
+              test = {...data[0]}
             }
           }
           done && done([test])

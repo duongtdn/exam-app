@@ -48,7 +48,7 @@ export default class Result extends Component {
             <tbody>
               <tr>
                 <td className="w3-text-grey"> Taken at </td>
-                <td> {formatDate(new Date(test.takenAt))} </td>
+                <td> {formatDate(new Date(test.startAt))} </td>
               </tr>
               <tr>
                 <td className="w3-text-grey"> Result </td>

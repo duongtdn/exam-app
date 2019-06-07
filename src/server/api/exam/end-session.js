@@ -47,19 +47,19 @@ function createResult(helpers) {
       const content = test.content
       const result = {
         status: null,
-        createdAt: new Date(),
+        createdAt: (() => new Date())().getTime(),
         detail: {
           totalScore: 0,
-          sectionScores: content.sections.map(section => { return { id: section.id, score: 0} })
+          sectionScores: content.sections.map(section => { return { id: section.id, score: 0, allScore: 0} })
         }
       }
       content.questions.forEach(question => {
-        // const {correctAnswers, userAnswers} = {...question}
         console.log("\n# Scoring question " + question.problem)
+        const section = result.detail.sectionScores.filter(s => s.id === question.section)[0]
         if ( _matchAnswer(question) ) {
-          const section = result.detail.sectionScores.filter(s => s.id === question.section)[0]
           section.score += question.score
         }
+        section.allScore += question.score
       })
       result.detail.totalScore = result.detail.sectionScores.reduce( (acc, section) => acc.score + section.score )
       result.status = result.detail.totalScore >= test.passScore ? 'passed' : 'failed'
