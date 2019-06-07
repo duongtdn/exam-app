@@ -19,8 +19,8 @@ const __data= {
       "detail": {
         "totalScore":20,
         "sectionScores": [
-          {"id":"sc1","score":20},
-          {"id":"sc2","score":0}
+          {"id":"sc1","score":20, "allScore":30},
+          {"id":"sc2","score":0, "allScore":30}
         ]
       }
     },
