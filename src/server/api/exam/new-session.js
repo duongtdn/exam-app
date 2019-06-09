@@ -2,6 +2,8 @@
 
 const jwt = require('jsonwebtoken')
 
+const { now } = require('../../lib/util')
+
 function authen() {
   return function(req, res, next) {
     // jwt.verify(req.body.uid, process.env.PRIVATE_AUTH_KEY, (err, decoded) => {
@@ -85,7 +87,7 @@ function signSessionToken(helpers) {
       const testId = req.testId
       const token = jwt.sign({ testId }, process.env.PRIVATE_SESSION_KEY, {expiresIn: `${req.testData.duration}m`})
       req.testData.session = token
-      req.testData.startAt = (() => new Date())().getTime()
+      req.testData.startAt = now.timestamp()
       helpers.Collections.Tests.update({ testId, session: token, startAt: req.testData.startAt}, (err) => {
         if (err) {
           res.status(500).json({ explaination: 'Failed to create session' })

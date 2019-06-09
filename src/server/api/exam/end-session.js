@@ -2,7 +2,7 @@
 
 const jwt = require('jsonwebtoken')
 
-const { is } = require('../../lib/util')
+const { is, now } = require('../../lib/util')
 
 function authen() {
   return function(req, res, next) {
@@ -47,10 +47,10 @@ function createResult(helpers) {
       const content = test.content
       const result = {
         status: null,
-        createdAt: (() => new Date())().getTime(),
+        createdAt: now.timestamp(),
         detail: {
           totalScore: 0,
-          sectionScores: content.sections.map(section => { return { id: section.id, score: 0, allScore: 0} })
+          sectionScores: content.sections.map(section => { return { id: section.id, score: 0, points: 0} })
         }
       }
       content.questions.forEach(question => {
@@ -59,7 +59,7 @@ function createResult(helpers) {
         if ( _matchAnswer(question) ) {
           section.score += question.score
         }
-        section.allScore += question.score
+        section.points += question.score
       })
       result.detail.totalScore = result.detail.sectionScores.reduce( (acc, section) => acc.score + section.score )
       result.status = result.detail.totalScore >= test.passScore ? 'passed' : 'failed'
@@ -73,7 +73,7 @@ function updateToDatabase(helpers) {
   return function(req, res) {
     if (req.body.finish) {
       const completedAt = {}
-      completedAt[req.uid] = new Date()
+      completedAt[req.uid] = now.timestamp()
       helpers.Collections.Tests.update({testId: req.testId, completedAt, result: req.result}, err => {
         if (err) {
           res.status(500).json({ error: 'Access Database failed'})

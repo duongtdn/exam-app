@@ -2,6 +2,8 @@
 
 const jwt = require('jsonwebtoken')
 
+const { now } = require('../../lib/util')
+
 function authen() {
   return function(req, res, next) {
     // jwt.verify(req.body.uid, process.env.SHARE_AUTH_KEY, (err, decoded) => {
@@ -98,7 +100,7 @@ function generateTest(helpers) {
         sections: req.exam.sections,
         questions: req.questions
       },
-      createAt: new Date()
+      createAt: now.timestamp()
     }
     helpers.Collections.Tests.update(test, (err) => {
       if (err) {

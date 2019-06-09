@@ -26,4 +26,15 @@ api.add ('/result', {
   get: require('./result/get-result.js')
 })
 
+api.add ('/test', {
+  get: function(helpers) {
+    return function(req, res) {
+      helpers.Collections.Tests.find({ testId: 'test-01'}, data => {
+        console.log(data[0])
+        res.status(200).json({data: data[0]})
+      })
+    }
+  }
+})
+
 module.exports = api

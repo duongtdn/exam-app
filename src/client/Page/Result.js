@@ -9,6 +9,7 @@ export default class Result extends Component {
     super(props)
   }
   render() {
+    console.log(this.props.data)
     return(
       <div >
         <div className="w3-container">
@@ -81,7 +82,7 @@ export default class Result extends Component {
                       </span>
                       /
                       <span className="w3-text-grey w3-small" style={{fontWeight: 'bold'}}>
-                        {result.allScore}
+                        {result.points}
                       </span>
                       <span className="w3-text-grey" >
                         {' '} pt.

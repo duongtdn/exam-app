@@ -36,8 +36,8 @@ const Tests = [
       "detail":{
         "totalScore":20,
         "sectionScores":[
-          {"id":"sc1","score":20, "allScore":30},
-          {"id":"sc2","score":0, "allScore":30}
+          {"id":"sc1","score":20, "points":30},
+          {"id":"sc2","score":0, "points":30}
         ]
       }
     }
