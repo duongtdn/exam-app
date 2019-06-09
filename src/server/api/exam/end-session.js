@@ -38,9 +38,13 @@ function decodeSession() {
 
 function createResult(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Tests.find({ testId: req.testId }, ['content', 'passScore', 'resolveMethod'], data => {
+    helpers.Collections.Tests.find({ testId: req.testId }, ['content', 'passScore', 'resolveMethod', 'assignedTo'], data => {
       if (data.length === 0) {
         res.status(404).json({ error: 'Test not found' })
+        return
+      }
+      if (data[0].assignedTo !== req.uid) {
+        res.status(403).json({ explaination: 'forbidden'})
         return
       }
       const test = data[0]
