@@ -47,11 +47,11 @@ function getTestData(helpers) {
         helpers.Collections.Tests.find({ testId: req.testId }, (testData) => {
           if (testData.length > 0) {
             req.testData = testData[0]
-            if (req.testData.assignedTo.indexOf(req.uid) === -1) {
+            if (req.testData.assignedTo !== req.uid) {
               res.status(403).json({ explaination:'Forbidden' })
               return
             }
-            if (req.testData.completedAt && req.testData.completedAt[req.uid]) {
+            if (req.testData.completedAt) {
               res.status(404).json({ explaination: 'Test has been finished'})
               return
             }

@@ -72,8 +72,7 @@ function createResult(helpers) {
 function updateToDatabase(helpers) {
   return function(req, res) {
     if (req.body.finish) {
-      const completedAt = {}
-      completedAt[req.uid] = now.timestamp()
+      const completedAt = now.timestamp()
       helpers.Collections.Tests.update({testId: req.testId, completedAt, result: req.result}, err => {
         if (err) {
           res.status(500).json({ error: 'Access Database failed'})

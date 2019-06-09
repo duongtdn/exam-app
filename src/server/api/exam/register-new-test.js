@@ -91,7 +91,7 @@ function generateTest(helpers) {
     const test = {
       testId: req.testId,
       resultId: req.resultId,
-      assignedTo: [req.uid],
+      assignedTo: req.uid,
       examId: req.examId,
       title: req.exam.title,
       description: req.exam.description,

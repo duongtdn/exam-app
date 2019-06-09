@@ -8,7 +8,7 @@ const Tests = [
     examId: 'emb-01-final-exam',
     title: 'Embedded - 01: Final Exam',
     description: 'Final Test for course Embedded - 01',
-    createAt: new Date(),
+    createAt: (() => new Date())().getTime(),
     duration: 30,
     // session: 'session',
     content: {

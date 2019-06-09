@@ -29,7 +29,7 @@ function getResultData(helpers) {
     const resultId = req.query.r
     helpers.Collections.Tests.find({ resultId }, ["resultId", "title", "description", "startAt", "assignedTo", "result", "content.sections"], (data) => {
       if (data && data.length > 0) {
-        if (data[0].assignedTo.indexOf(req.uid) === -1) {
+        if (data[0].assignedTo !== req.uid) {
           res.status(403).json({ explaination: 'forbidden'})
         } else {
           req.data = data[0]
