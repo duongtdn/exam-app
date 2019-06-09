@@ -72,7 +72,7 @@ export default class QuizBoard extends Component {
               <button className="w3-button" onClick={this.props.previous} disabled = {this.props.lockBackBtn}>
                 <i className="fa fa-arrow-left" /> <span className="w3-hide-small" > Back </span>
               </button>
-              <button className="w3-button" onClick={this.props.next} disabled = {this.props.lockNextBtn}>
+              <button className="w3-button" onClick={this.props.next}>
                 <span className="w3-hide-small" > Next </span> <i className="fa fa-arrow-right" />
               </button>
             </div>
