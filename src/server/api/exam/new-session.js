@@ -85,7 +85,7 @@ function signSessionToken(helpers) {
       next()
     } else {
       const testId = req.testId
-      const token = jwt.sign({ testId }, process.env.PRIVATE_SESSION_KEY, {expiresIn: `${req.testData.duration}m`})
+      const token = jwt.sign({ testId }, process.env.PRIVATE_SESSION_KEY, {expiresIn: `${req.testData.duration + 5}m`})
       req.testData.session = token
       req.testData.startAt = now.timestamp()
       helpers.Collections.Tests.update({ testId, session: token, startAt: req.testData.startAt}, (err) => {

@@ -20,9 +20,8 @@ export default class EndPopup extends Component {
           <div className="w3-container w3-padding">
             <h3> End Game </h3>
 
-            <div> You have run out of time </div>
+            <p> You have run out of time. Submitting all left answers and finish... </p>
 
-            <div> <button className="w3-button w3-blue" onClick = {this.props.finish}> Submit all left answers & Finish </button> </div>
           </div>
         </div>
       </div>
@@ -35,7 +34,7 @@ export default class EndPopup extends Component {
           <div className="w3-container w3-padding">
             <h3> End Game </h3>
 
-            <div> There's still time. Dou you really one to finish your test </div>
+            <p> There's still time. Dou you really one to finish your test </p>
 
             <br />
             <div> <button className="w3-button w3-blue" onClick = {this.props.close}> Cancel </button> </div>

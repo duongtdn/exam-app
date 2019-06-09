@@ -405,6 +405,7 @@ export default class Exam extends Component {
     this._storeSubmittedToStorage(submitted)
   }
   timeout() {
+    this.finishTest()
     this.setState({ timeout: true, showEndPopup: true })
   }
   finishTest(e) {
