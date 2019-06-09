@@ -11,11 +11,11 @@ const __data= {
     "resultId": "r-test-01",
     "title": "Embedded - 01: Final Exam",
     "description": "Final Test for course Embedded - 01",
-    "startAt": "1559894402883",
+    "startAt": 1559894402883,
     "assignedTo": ["awesome-dev"],
     "result": {
       "status": "passed",
-      "createdAt": "2019-06-06T23:28:45.729Z",
+      "createdAt": 1559894402883,
       "detail": {
         "totalScore":20,
         "sectionScores": [

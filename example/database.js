@@ -4,7 +4,7 @@ const Tests = [
   {
     testId: 'test-01',
     resultId: 'r-test-01',
-    assignedTo: ['awesome-dev'],
+    assignedTo: 'awesome-dev',
     examId: 'emb-01-final-exam',
     title: 'Embedded - 01: Final Exam',
     description: 'Final Test for course Embedded - 01',
@@ -32,7 +32,7 @@ const Tests = [
     startAt: 1559894402883,
     result: {
       "status":"passed",
-      "createdAt":"2019-06-06T23:28:45.729Z",
+      "createdAt":1559894402883,
       "detail":{
         "totalScore":20,
         "sectionScores":[
