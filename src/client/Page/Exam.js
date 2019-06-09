@@ -47,7 +47,7 @@ export default class Exam extends Component {
     this.startAt = 0
     const bindMethods = [
       'nextQuiz', 'previousQuiz', 'pinQuiz', 'unpinQuiz',
-      'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState',
+      'updateAnswers', 'getSavedAnswers', 'updateInternalState', 'getSavedInternalState', '_removeSubmittedFromStorage',
       'submitAllAnswers', 'submitAnswers', '_sendAnswers',
       'timeout', 'finishTest', '_clearLocalStorage', 'loadTest', '_loadTest', 'submitTestCompletion'
     ]
@@ -227,6 +227,7 @@ export default class Exam extends Component {
   nextQuiz() {
     const currentIndex = this.state.currentIndex
     if (currentIndex < this.myTest.content.questions.length-1) {
+      this.submitAnswers()
       this.moveToQuiz(currentIndex+1)
     } else {
       console.log('Reach end of test')
@@ -235,6 +236,7 @@ export default class Exam extends Component {
   previousQuiz() {
     const currentIndex = this.state.currentIndex
     if (currentIndex > 0) {
+      this.submitAnswers()
       this.moveToQuiz(currentIndex-1)
     }
   }
@@ -286,8 +288,17 @@ export default class Exam extends Component {
   updateAnswers(answers) {
     const index = this.state.currentIndex
     const quiz = this._getQuizFromStorage(index)
+    if (JSON.stringify(answers) === JSON.stringify(quiz.answers)) {
+      // answer is identical with cached one. No update
+      return
+    }
     quiz.answers = answers
     this._storeQuizToStorage(index, quiz)
+    // since answer has been changed, need to remove it from submitted list
+    this._removeSubmittedFromStorage(index)
+    const submittedQuizzes = this._getSubmittedFromStorage()
+    this.setState({ submittedQuizzes })
+
   }
   getSavedAnswers() {
     const index = this.state.currentIndex
@@ -335,7 +346,14 @@ export default class Exam extends Component {
   }
   submitAnswers() {
     const storedQuizzes = this._getQuizFromStorage()
+    const submitted = this._getSubmittedFromStorage()
     const index = this.state.currentIndex
+    if (storedQuizzes[index] === undefined) {
+      return
+    }
+    if (submitted.indexOf(index) !== -1) {
+      return
+    }
     const submitting = [{
       index, userAnswers: storedQuizzes[index].answers
     }]
@@ -382,6 +400,15 @@ export default class Exam extends Component {
   }
   _clearAllSubmittedFromStorage() {
     localStorage.removeItem(SUBMITTEDKEY)
+  }
+  _removeSubmittedFromStorage(quizIndex) {
+    const submitted = this._getSubmittedFromStorage()
+    if (submitted.length === 0) {
+      return
+    }
+    const index = submitted.indexOf(quizIndex)
+    if (index > -1) { submitted.splice(index,1) }
+    this._storeSubmittedToStorage(submitted)
   }
   timeout() {
     this.setState({ timeout: true, showEndPopup: true })
