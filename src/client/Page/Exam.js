@@ -291,8 +291,8 @@ export default class Exam extends Component {
     // since answer has been changed, need to remove it from submitted list
     this._removeSubmittedFromStorage(index)
     const submittedQuizzes = this._getSubmittedFromStorage()
-    this.setState({ submittedQuizzes })
-
+    // this.setState({ submittedQuizzes }) // removed as trigger re-render QuizBoard cause Text Input lost its focus.
+                                           // to be enhanced: use observer pattern to let QuizBoard re-render its Title only.
   }
   getSavedAnswers() {
     const index = this.state.currentIndex

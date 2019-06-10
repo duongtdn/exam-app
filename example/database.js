@@ -26,9 +26,12 @@ const Tests = [
         {
           problem: 'dragdrop.2', correctAnswers: {'$1': {top: '^310$', left: '^20$'}, '$2': {top: '^160$', left: '^30$'}, '$3': {top: '^70$', left: '^510$'}}, score: 10, section: 'sc1'
         },
+        {
+          problem: 'text.1', correctAnswers: {'$1': 'computer', '$2': '2015'}, score: 10, section: 'sc2'
+        },
       ]
     },
-    passScore: 20,
+    passScore: 30,
     startAt: 1559894402883,
     result: {
       "status":"passed",
