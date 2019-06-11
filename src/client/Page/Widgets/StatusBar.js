@@ -127,7 +127,6 @@ export default class StatusBar extends Component {
   }
   stopEslapsedTimer() {
     clearInterval(this._timer)
-    this.props.onTimeout && this.props.onTimeout()
   }
 }
 
