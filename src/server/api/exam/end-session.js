@@ -123,18 +123,24 @@ function _match(ref, item) {
       const flags = ref[key].match(/\/[^\/]*$/)[0].replace(/^\//,'')                    // str = /computer/i -> i
       const re = new RegExp(pattern,flags)
       const matched = item[key] !== undefined && re.test(item[key])
-      console.log(`         ref[${key}]  = ${ref[key]}`)
-      console.log(`         item[${key}] = ${item[key]}`)
-      console.log(`         matched : ${matched}`)
+      console.log(`         ref[${key}]    = ${ref[key]}`)
+      console.log(`            --> pattern = ${pattern}`)
+      console.log(`            --> flags   = ${flags}`)
+      console.log(`         item[${key}]   = ${item[key]}`)
+      console.log(`         matched        : ${matched}`)
       if (!matched) { return false }
     }
     return true
   } else {
-    const re = new RegExp(ref)
+    const pattern = ref.match(/^\/.*\//)[0].replace(/^\//,'').replace(/\/$/,'')  // str = /computer/i -> computer
+    const flags = ref.match(/\/[^\/]*$/)[0].replace(/^\//,'')                    // str = /computer/i -> i
+    const re = new RegExp(pattern,flags)
     const matched = item !== undefined && re.test(item)
-    console.log(`         ref  = ${ref}`)
-    console.log(`         item = ${item}`)
-    console.log(`         matched : ${matched}`)
+    console.log(`         ref            = ${ref}`)
+    console.log(`            --> pattern = ${pattern}`)
+    console.log(`            --> flags   = ${flags}`)
+    console.log(`         item           = ${item}`)
+    console.log(`         matched        : ${matched}`)
     return matched
   }
 }
