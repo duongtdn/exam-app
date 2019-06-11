@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 
+import storage from '../../lib/storage'
+
 class CircleTag extends Component {
   constructor(props) {
     super(props)
@@ -39,7 +41,9 @@ export default class StatusBar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      eslapsedTime: 0
+      eslapsedTime: 0,
+      submitted: storage.get(storage.SUBMITTEDKEY) || [],
+      pinned: storage.get(storage.PINNEDKEY) || []
     }
   }
   componentDidMount() {
@@ -47,6 +51,14 @@ export default class StatusBar extends Component {
       this.setState({ eslapsedTime : this.props.startAt })
       this.startEslapsedTimer()
     }
+    this._sHandler = storage.observe(storage.SUBMITTEDKEY, (data) => {
+      const submitted = data || []
+      this.setState({ submitted })
+    })
+    this._pHandler = storage.observe(storage.PINNEDKEY, (data) => {
+      const pinned = data || []
+      this.setState({ pinned })
+    })
   }
   componentDidUpdate(prevProps) {
     if (this.props.timerOnOff === 'on' && prevProps.timerOnOff === 'off') {
@@ -55,18 +67,20 @@ export default class StatusBar extends Component {
   }
   componentWillUnmount() {
     this.stopEslapsedTimer()
+    storage.observe(storage.SUBMITTEDKEY, this._sHandler, false)
+    storage.observe(storage.PINNEDKEY, this._pHandler, false)
   }
   render() {
     const remainingTime = this.props.testDuration - this.state.eslapsedTime
     const timerColor = (this.props.testDuration/remainingTime > 3) ? 'red' : 'yellow'
-    const completion = Math.floor((this.props.submittedQuizzes.length / this.props.totalQuizzes) * 100)
+    const completion = Math.floor((this.state.submitted.length / this.props.totalQuizzes) * 100)
     return(
       <div style={{margin: '8px 0'}}>
         {/* for medium screen */}
         <div className="w3-hide-large w3-hide-small" >
           <div className="w3-pale-green w3-padding" style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
             <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
-            <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.props.submittedQuizzes.length}/{this.props.totalQuizzes} </div>
+            <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.state.submitted.length}/{this.props.totalQuizzes} </div>
           </div>
           <div className={`w3-pale-${timerColor} w3-padding`} style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
             <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
@@ -75,7 +89,7 @@ export default class StatusBar extends Component {
           <div className="w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{ textAlign: 'left', margin: '4px 0', width: '154px'}}>
             <div className="w3-text-blue w3-small"> Pinned questions </div>
             <div className="" style={{minHeight: '37px'}}>
-              <PinnedQuizesList pinnedQuizzes={this.props.pinnedQuizzes} moveToQuiz={this.props.moveToQuiz} />
+              <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} />
             </div>
           </div>
         </div>
@@ -84,7 +98,7 @@ export default class StatusBar extends Component {
           <div style={{ width: '310px', marginBottom: '6px'}}>
             <div className="w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', width: '154px', marginRight: '2px'}}>
               <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
-              <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.props.submittedQuizzes.length}/{this.props.totalQuizzes} </div>
+              <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.state.submitted.length}/{this.props.totalQuizzes} </div>
             </div>
             <div className={`w3-pale-${timerColor} w3-padding`} style={{display: 'inline-block', textAlign: 'center', width: '154px'}}>
               <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
@@ -94,7 +108,7 @@ export default class StatusBar extends Component {
           <div className="w3-pale-blue w3-padding w3-cell-top" style={{ textAlign: 'left', margin: '4px 0', width: '310px'}}>
             <div className="w3-text-blue w3-small"> Pinned questions </div>
             <div className="" style={{minHeight: '37px'}}>
-              <PinnedQuizesList pinnedQuizzes={this.props.pinnedQuizzes} moveToQuiz={this.props.moveToQuiz} />
+              <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} />
             </div>
           </div>
         </div>

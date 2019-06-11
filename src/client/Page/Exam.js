@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 
 import { xhttp } from 'authenform-utils'
 
+import storage from '../lib/storage'
+
 import Header from './Widgets/Header'
 import Title from './Widgets/Title'
 import StatusBar from './Widgets/StatusBar'
@@ -15,9 +17,6 @@ import Toast from './Toast'
 import Error from './Error'
 import Intro from './Intro'
 
-const QUIZZESKEY = '__$quizzes__'
-const PINNEDKEY = '__$pinned__'
-const SUBMITTEDKEY = '__$submitted__'
 const SESSIONKEY = '__$sss__'
 
 export default class Exam extends Component {
@@ -32,8 +31,6 @@ export default class Exam extends Component {
       loadContext: 'Tests',
       timerOnOff: 'off',
       currentIndex: 0,
-      pinnedQuizzes: [],
-      submittedQuizzes: [],
       showEndPopup: false,
       timeout: false,
       finish: false,
@@ -89,9 +86,7 @@ export default class Exam extends Component {
             this.loadAssets( () => {
               const course = this.myTest.courseId
               const type = this.myTest.type
-              const pinnedQuizzes = this._getPinnedFromStorage()
-              const submittedQuizzes = this._getSubmittedFromStorage()
-              resolve({ course, type, today, loading: false, timerOnOff: 'on', pinnedQuizzes, submittedQuizzes })
+              resolve({ course, type, today, loading: false, timerOnOff: 'on' })
             })
             this.startAt = this._elapsedTimeBefore()
           }
@@ -126,7 +121,6 @@ export default class Exam extends Component {
       <div>
         <EndPopup show = {this.state.showEndPopup}
                   close = {evt => this.setState({ showEndPopup: false })}
-                  submittedQuizzes = {this.state.submittedQuizzes}
                   totalQuizzes = {this.myTest.content.questions.length}
                   timeout = {this.state.timeout}
                   finish = {this.finishTest}
@@ -152,8 +146,6 @@ export default class Exam extends Component {
                           previous = {this.previousQuiz}
                           pinQuiz = {this.pinQuiz}
                           unpinQuiz = {this.unpinQuiz}
-                          pinnedQuizzes = {this.state.pinnedQuizzes}
-                          submittedQuizzes = {this.state.submittedQuizzes}
                           updateAnswers = {this.updateAnswers}
                           getSavedAnswers = {this.getSavedAnswers}
                           updateInternalState = {this.updateInternalState}
@@ -167,9 +159,7 @@ export default class Exam extends Component {
               <StatusBar  testDuration = {this.myTest.duration * 60}
                           startAt = {this.startAt}
                           timerOnOff = {this.state.timerOnOff}
-                          pinnedQuizzes = {this.state.pinnedQuizzes}
                           moveToQuiz = {index => this.moveToQuiz(index)}
-                          submittedQuizzes = {this.state.submittedQuizzes}
                           totalQuizzes = {this.myTest.content.questions.length}
                           onTimeout = {this.timeout}
               />
@@ -235,36 +225,21 @@ export default class Exam extends Component {
     }
   }
   pinQuiz(index) {
-    const pinnedQuizzes = this.state.pinnedQuizzes
+    const pinnedQuizzes = storage.get(storage.PINNEDKEY) || []
     if (pinnedQuizzes.indexOf(index) === -1) {
       pinnedQuizzes.push(index)
-      this.setState({ pinnedQuizzes })
-      this._storePinnedToStorage(pinnedQuizzes)
+      storage.update(storage.PINNEDKEY, pinnedQuizzes)
     }
   }
   unpinQuiz(index) {
-    const pinnedQuizzes = this.state.pinnedQuizzes.filter( _index => {
+    const pinnedList = storage.get(storage.PINNEDKEY) || []
+    const pinnedQuizzes = pinnedList.filter( _index => {
       return (index !== _index)
     })
-    this.setState({ pinnedQuizzes })
-    this._storePinnedToStorage(pinnedQuizzes)
-  }
-  _getPinnedFromStorage() {
-    const pinned = localStorage.getItem(PINNEDKEY)
-    if (pinned && pinned.length > 0) {
-      return JSON.parse(pinned)
-    } else {
-      return []
-    }
-  }
-  _storePinnedToStorage(pinned) {
-    localStorage.setItem(PINNEDKEY, JSON.stringify(pinned))
-  }
-  _clearAllPinnedFromStorage() {
-    localStorage.removeItem(PINNEDKEY)
+    storage.update(storage.PINNEDKEY, pinnedQuizzes)
   }
   _getQuizFromStorage(index) {
-    const quizzes = JSON.parse(localStorage.getItem(QUIZZESKEY))
+    const quizzes = storage.get(storage.QUIZZESKEY)
     if (quizzes) {
       return index !== undefined ? quizzes[index] || {} : quizzes
     } else {
@@ -272,12 +247,9 @@ export default class Exam extends Component {
     }
   }
   _storeQuizToStorage(index, quiz) {
-    const quizzes = JSON.parse(localStorage.getItem(QUIZZESKEY)) || {}
+    const quizzes = storage.get(storage.QUIZZESKEY) || {}
     quizzes[index] = quiz
-    localStorage.setItem(QUIZZESKEY, JSON.stringify(quizzes))
-  }
-  _clearAllQuizsFromStorage() {
-    localStorage.removeItem(QUIZZESKEY)
+    storage.update(storage.QUIZZESKEY, quizzes)
   }
   updateAnswers(answers) {
     const index = this.state.currentIndex
@@ -290,9 +262,6 @@ export default class Exam extends Component {
     this._storeQuizToStorage(index, quiz)
     // since answer has been changed, need to remove it from submitted list
     this._removeSubmittedFromStorage(index)
-    // const submittedQuizzes = this._getSubmittedFromStorage()
-    // this.setState({ submittedQuizzes }) // removed as trigger re-render QuizBoard cause Text Input lost its focus.
-                                           // to be enhanced: use observer pattern to let QuizBoard re-render its Title only.
   }
   getSavedAnswers() {
     const index = this.state.currentIndex
@@ -320,15 +289,14 @@ export default class Exam extends Component {
     }, 5000)
     xhttp.put(`${urlBasePath}/exam/solution`, { uid, session, questions: answers }, (status, response) => {
       if (status === 200) {
-        const submittedQuizzes = this.state.submittedQuizzes
+        const submittedQuizzes = storage.get(storage.SUBMITTEDKEY) || []
         // submitting will be submitted after completed
         answers.forEach(q => {
           if (submittedQuizzes.indexOf(q.index) === -1) {
             submittedQuizzes.push(q.index)
           }
         })
-        this.setState({ submittedQuizzes })
-        this._storeSubmittedToStorage(submittedQuizzes)
+        storage.update(storage.SUBMITTEDKEY, submittedQuizzes)
         clearTimeout(_to)
         done(null)
       } else {
@@ -340,7 +308,7 @@ export default class Exam extends Component {
   }
   submitAnswers() {
     const storedQuizzes = this._getQuizFromStorage()
-    const submitted = this._getSubmittedFromStorage()
+    const submitted = storage.get(storage.SUBMITTEDKEY) || []
     const index = this.state.currentIndex
     if (storedQuizzes[index] === undefined) {
       return
@@ -359,7 +327,7 @@ export default class Exam extends Component {
   submitAllAnswers({ override = true }) {
     return new Promise((resolve, reject) => {
       const storedQuizzes = this._getQuizFromStorage()
-      const submitted = this._getSubmittedFromStorage()
+      const submitted = storage.get(storage.SUBMITTEDKEY) || []
       // current quiz and quizzes that are in local storage but not in submitted list will be submitting
       const submitting = []
       for (let key in storedQuizzes) {
@@ -381,28 +349,14 @@ export default class Exam extends Component {
       })
     })
   }
-  _getSubmittedFromStorage() {
-    const submitted = localStorage.getItem(SUBMITTEDKEY)
-    if (submitted && submitted.length > 0) {
-      return JSON.parse(submitted)
-    } else {
-      return []
-    }
-  }
-  _storeSubmittedToStorage(submitted) {
-    localStorage.setItem(SUBMITTEDKEY, JSON.stringify(submitted))
-  }
-  _clearAllSubmittedFromStorage() {
-    localStorage.removeItem(SUBMITTEDKEY)
-  }
   _removeSubmittedFromStorage(quizIndex) {
-    const submitted = this._getSubmittedFromStorage()
-    if (submitted.length === 0) {
+    const submitted = storage.get(storage.SUBMITTEDKEY)
+    if (submitted === null) {
       return
     }
     const index = submitted.indexOf(quizIndex)
     if (index > -1) { submitted.splice(index,1) }
-    this._storeSubmittedToStorage(submitted)
+    storage.update(storage.SUBMITTEDKEY, submitted)
   }
   timeout() {
     this.finishTest()
@@ -448,9 +402,9 @@ export default class Exam extends Component {
     localStorage.removeItem(SESSIONKEY)
   }
   _clearLocalStorage() {
-    this._clearAllQuizsFromStorage()
-    this._clearAllPinnedFromStorage()
-    this._clearAllSubmittedFromStorage()
+    storage.clear(storage.QUIZZESKEY)
+    storage.clear(storage.PINNEDKEY)
+    storage.clear(storage.SUBMITTEDKEY)
     this._clearSession()
   }
 }
