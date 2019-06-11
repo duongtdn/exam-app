@@ -119,7 +119,9 @@ function _match(ref, item) {
   if ( is('Object')(ref) ) {
     for (let key in ref) {
       console.log(`  Matching key: ${key}`)
-      const re = new RegExp(ref[key])
+      const pattern = ref[key].match(/^\/.*\//)[0].replace(/^\//,'').replace(/\/$/,'')  // str = /computer/i -> computer
+      const flags = ref[key].match(/\/[^\/]*$/)[0].replace(/^\//,'')                    // str = /computer/i -> i
+      const re = new RegExp(pattern,flags)
       const matched = item[key] !== undefined && re.test(item[key])
       console.log(`         ref[${key}]  = ${ref[key]}`)
       console.log(`         item[${key}] = ${item[key]}`)
