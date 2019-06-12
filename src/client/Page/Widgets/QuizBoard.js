@@ -43,11 +43,11 @@ class Title extends Component {
           <label> Quiz {this.props.currentIndex + 1} </label>
           {
             submitted.indexOf(this.props.currentIndex) !== -1 ?
-              <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic'}}> Submitted </label>
+              <label className="w3-tag w3-green w3-small" style={{fontStyle: 'italic', marginRight: '3px'}}> Submitted </label>
               : null
           }
           { pinned.indexOf(this.props.currentIndex) !== -1 ?
-              <label className="w3-tag w3-blue w3-small" style={{fontStyle: 'italic'}}> Pinned </label>
+              <label className="w3-tag w3-blue w3-small" style={{fontStyle: 'italic', marginRight: '3px'}}> Pinned </label>
               : null
           }
         </div>
