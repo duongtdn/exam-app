@@ -131,6 +131,8 @@ export default class Exam extends Component {
                 top
         />
         <Header endgame = {evt => this.setState({ showEndPopup: true })}
+                user = {this.props.user}
+                accountClient = {this.props.accountClient}
         />
         <div className="w3-container" style={{maxWidth: '1200px', margin: 'auto'}}>
 

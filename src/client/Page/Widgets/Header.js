@@ -15,6 +15,9 @@ export default class Header extends Component {
             </div>
             <div className={`w3-right w3-container ${this.props.endgame? '' : ' w3-hide'}`}>
               <button className="w3-bar-item w3-button" onClick={this.props.endgame}> Finish </button>
+              {
+                this.props.user? <button className="w3-bar-item w3-button" onClick={evt => this.props.accountClient.signout()}> Logout </button> : null
+              }
             </div>
         </div>
       </header>

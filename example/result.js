@@ -3,7 +3,20 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 
+import AccountClient  from 'account-realm-client'
+import { UserProvider } from 'react-user'
+
 import Result from '../src/client/Page/Result'
+
+const acc = new AccountClient({
+  realm: 'realm',
+  app: 'dev',
+  baseurl: 'http://localhost:3100'
+})
+acc.sso( (err,user) => {
+  console.log(err)
+  console.log(user)
+})
 
 const __data= {
   "urlBasePath":"/api",
@@ -33,4 +46,9 @@ const __data= {
   }
 }
 
-render(<Result urlBasePath = {__data.urlBasePath} data = {__data.data} />, document.getElementById('root'))
+render(
+  <UserProvider accountClient = {acc} >
+    <Result urlBasePath = {__data.urlBasePath} data = {__data.data} />
+  </UserProvider>,
+  document.getElementById('root')
+)
