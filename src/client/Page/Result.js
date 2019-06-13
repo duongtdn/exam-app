@@ -2,9 +2,11 @@
 
 import React, { Component } from 'react'
 
+import UserNotSignedIn from './UserNotSignedIn'
+
 import { formatDate } from '../lib/date'
 
-export default class Result extends Component {
+class Result extends Component {
   constructor(props) {
     super(props)
   }
@@ -101,5 +103,25 @@ export default class Result extends Component {
 
       </div>
     )
+  }
+}
+
+
+export default class ResultApp extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    if (this.props.user) {
+      return (
+        <Result urlBasePath = {this.props.urlBasePath}
+                data = {this.props.data}
+        />
+      )
+    } else {
+      return (
+        <UserNotSignedIn />
+      )
+    }
   }
 }

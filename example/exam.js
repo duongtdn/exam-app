@@ -6,7 +6,7 @@ import { render } from 'react-dom'
 import AccountClient  from 'account-realm-client'
 import { UserProvider } from 'react-user'
 
-import Exam from '../src/client/Page/Exam'
+import ExamApp from '../src/client/Page/Exam'
 
 const acc = new AccountClient({
   realm: 'realm',
@@ -20,7 +20,7 @@ acc.sso( (err,user) => {
 
 render(
   <UserProvider accountClient = {acc} >
-    <Exam urlBasePath = '/api' urlQuizzesBasePath = '/api/quizzes' />
+    <ExamApp urlBasePath = '/api' urlQuizzesBasePath = '/api/quizzes' />
   </UserProvider>,
   document.getElementById('root')
 )

@@ -6,7 +6,7 @@ import { render } from 'react-dom'
 import AccountClient  from 'account-realm-client'
 import { UserProvider } from 'react-user'
 
-import Result from '../src/client/Page/Result'
+import ResultApp from '../src/client/Page/Result'
 
 const acc = new AccountClient({
   realm: 'realm',
@@ -48,7 +48,7 @@ const __data= {
 
 render(
   <UserProvider accountClient = {acc} >
-    <Result urlBasePath = {__data.urlBasePath} data = {__data.data} />
+    <ResultApp urlBasePath = {__data.urlBasePath} data = {__data.data} />
   </UserProvider>,
   document.getElementById('root')
 )

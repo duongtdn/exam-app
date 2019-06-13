@@ -3,6 +3,24 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 
-import Result from '../Page/Result'
+import AccountClient  from 'account-realm-client'
+import { UserProvider } from 'react-user'
 
-render(<Result urlBasePath = {__data.urlBasePath} data = {__data.data} />, document.getElementById('root'))
+import ResultApp from '../src/client/Page/Result'
+
+const acc = new AccountClient({
+  realm: 'realm',
+  app: 'dev',
+  baseurl: 'http://localhost:3100'
+})
+acc.sso( (err,user) => {
+  console.log(err)
+  console.log(user)
+})
+
+render(
+  <UserProvider accountClient = {acc} >
+    <ResultApp urlBasePath = {__data.urlBasePath} data = {__data.data} />
+  </UserProvider>,
+  document.getElementById('root')
+)

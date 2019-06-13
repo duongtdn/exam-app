@@ -16,10 +16,11 @@ import Finish from './Finish'
 import Toast from './Toast'
 import Error from './Error'
 import Intro from './Intro'
+import UserNotSignedIn from './UserNotSignedIn'
 
 const SESSIONKEY = '__$sss__'
 
-export default class Exam extends Component {
+class Exam extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -424,4 +425,23 @@ function getToday() {
   const mm = ("00" + (today.getMonth()+1)).slice(-2); //January is 0!
   const yyyy = today.getFullYear();
   return `${weekday[today.getDay()]} ${dd}-${mm}-${yyyy}`
+}
+
+export default class ExamApp extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    if (this.props.user) {
+      return (
+        <Exam urlBasePath = {this.props.urlBasePath}
+              urlQuizzesBasePath = {this.props.urlQuizzesBasePath}
+        />
+      )
+    } else {
+      return (
+        <UserNotSignedIn />
+      )
+    }
+  }
 }
