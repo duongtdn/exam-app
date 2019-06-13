@@ -13,10 +13,7 @@ const acc = new AccountClient({
   app: 'dev',
   baseurl: __data.urlAccount
 })
-acc.sso( (err,user) => {
-  console.log(err)
-  console.log(user)
-})
+acc.sso()
 
 render(
   <UserProvider accountClient = {acc} >

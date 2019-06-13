@@ -421,7 +421,7 @@ function getTestIdFromHref(href) {
 function getToday() {
   const weekday  = ['Sunday', 'Monday', "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   const today = new Date()
-  const dd = today.getDate();
+  const dd = today.getDate()
   const mm = ("00" + (today.getMonth()+1)).slice(-2); //January is 0!
   const yyyy = today.getFullYear();
   return `${weekday[today.getDay()]} ${dd}-${mm}-${yyyy}`
@@ -432,16 +432,17 @@ export default class ExamApp extends Component {
     super(props)
   }
   render() {
-    if (this.props.user) {
-      return (
-        <Exam urlBasePath = {this.props.urlBasePath}
-              urlQuizzesBasePath = {this.props.urlQuizzesBasePath}
-        />
-      )
-    } else {
-      return (
-        <UserNotSignedIn />
-      )
+    console.log(this.props.accountClient.get('user'))
+    if (this.props.user === null) {
+      return ( null )
     }
+    if (this.props.user === undefined) {
+      return ( <UserNotSignedIn /> )
+    }
+    return (
+      <Exam urlBasePath = {this.props.urlBasePath}
+            urlQuizzesBasePath = {this.props.urlQuizzesBasePath}
+      />
+    )
   }
 }

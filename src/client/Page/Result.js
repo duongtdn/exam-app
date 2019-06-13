@@ -112,16 +112,16 @@ export default class ResultApp extends Component {
     super(props)
   }
   render() {
-    if (this.props.user) {
-      return (
-        <Result urlBasePath = {this.props.urlBasePath}
-                data = {this.props.data}
-        />
-      )
-    } else {
-      return (
-        <UserNotSignedIn />
-      )
+    if (this.props.user === null) {
+      return ( null )
     }
+    if (this.props.user === undefined) {
+      return ( <UserNotSignedIn /> )
+    }
+    return (
+      <Result urlBasePath = {this.props.urlBasePath}
+              data = {this.props.data}
+      />
+    )
   }
 }

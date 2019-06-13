@@ -13,10 +13,7 @@ const acc = new AccountClient({
   app: 'dev',
   baseurl: 'http://localhost:3100'
 })
-acc.sso( (err,user) => {
-  console.log(err)
-  console.log(user)
-})
+acc.sso()
 
 render(
   <UserProvider accountClient = {acc} >
