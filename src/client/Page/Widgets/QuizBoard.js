@@ -85,12 +85,12 @@ class ActionBar extends Component {
   }
   render() {
     return (
-      <div className="w3-cell-row w3-panel w3-padding w3-border-top w3-border-grey">
+      <div className="w3-cell-row w3-border-top w3-border-grey" style={{padding: '8px 0', margin: '16px 0'}}>
         <div className="w3-cell" >
           <button className="w3-button w3-blue" onClick={this.props.submitAnswers} disabled={this.props.lockSubmitBtn}> Submit </button>
           {' '}
           { this.state.pinned.indexOf(this.props.currentIndex) === -1 ?
-            <button className="w3-button w3-text-orange" onClick={() => this.props.pinQuiz(this.props.currentIndex)}> Pin this question </button>
+            <button className="w3-button w3-text-orange" onClick={() => this.props.pinQuiz(this.props.currentIndex)}> Pin quiz </button>
             :
             <button className="w3-button w3-text-orange" onClick={() => this.props.unpinQuiz(this.props.currentIndex)}> Unpin </button>
           }
