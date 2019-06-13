@@ -121,6 +121,8 @@ export default class ResultApp extends Component {
     return (
       <Result urlBasePath = {this.props.urlBasePath}
               data = {this.props.data}
+              user = {this.props.user}
+              accountClient = {this.props.accountClient}
       />
     )
   }

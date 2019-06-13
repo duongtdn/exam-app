@@ -432,7 +432,6 @@ export default class ExamApp extends Component {
     super(props)
   }
   render() {
-    console.log(this.props.accountClient.get('user'))
     if (this.props.user === null) {
       return ( null )
     }
@@ -442,6 +441,8 @@ export default class ExamApp extends Component {
     return (
       <Exam urlBasePath = {this.props.urlBasePath}
             urlQuizzesBasePath = {this.props.urlQuizzesBasePath}
+            user = {this.props.user}
+            accountClient = {this.props.accountClient}
       />
     )
   }
