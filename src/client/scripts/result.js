@@ -17,7 +17,7 @@ acc.sso()
 
 render(
   <UserProvider accountClient = {acc} >
-    <ResultApp urlBasePath = {__data.urlBasePath} data = {__data.data} />
+    <ResultApp urlBasePath = {__data.urlBasePath} data = {__data.data} template = {__data.template} />
   </UserProvider>,
   document.getElementById('root')
 )

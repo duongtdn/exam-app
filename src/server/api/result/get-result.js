@@ -50,7 +50,8 @@ function response() {
       script: `${process.env.CDN}/result.js`,
       data: {
         urlBasePath: process.env.URL_BASE_PATH,
-        data: req.data
+        data: req.data,
+        template: { avata: {male: process.env.DEFAULT_AVATA_MALE, female: process.env.DEFAULT_AVATA_FEMALE} }
       }
     }))
   }

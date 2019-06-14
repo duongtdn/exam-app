@@ -12,7 +12,8 @@ function reponse() {
         script: `${process.env.CDN}/exam.js`,
         data: {
           urlBasePath: process.env.URL_BASE_PATH,
-          urlQuizzesBasePath: process.env.URL_QUIZZES_BASE_PATH
+          urlQuizzesBasePath: process.env.URL_QUIZZES_BASE_PATH,
+          template: { avata: {male: process.env.DEFAULT_AVATA_MALE, female: process.env.DEFAULT_AVATA_FEMALE} }
         }
       }))
     } else {

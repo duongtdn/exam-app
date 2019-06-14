@@ -43,12 +43,18 @@ const __data= {
         {"id":"sc2","title":"Section 2","description":"Here is the section 2"}
       ]
     }
+  },
+  template: {
+    avata: {
+      male: 'https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100',
+      female: 'https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100'
+    }
   }
 }
 
 render(
   <UserProvider accountClient = {acc} >
-    <ResultApp urlBasePath = {__data.urlBasePath} data = {__data.data} />
+    <ResultApp urlBasePath = {__data.urlBasePath} data = {__data.data} template = {__data.template} />
   </UserProvider>,
   document.getElementById('root')
 )

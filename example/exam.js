@@ -8,6 +8,13 @@ import { UserProvider } from 'react-user'
 
 import ExamApp from '../src/client/Page/Exam'
 
+const template = {
+  avata: {
+    male: 'https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100',
+    female: 'https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100'
+  }
+}
+
 const acc = new AccountClient({
   realm: 'realm',
   app: 'dev',
@@ -20,7 +27,7 @@ acc.sso( (err,user) => {
 
 render(
   <UserProvider accountClient = {acc} >
-    <ExamApp urlBasePath = '/api' urlQuizzesBasePath = '/api/quizzes' />
+    <ExamApp urlBasePath = '/api' urlQuizzesBasePath = '/api/quizzes'  template = {template}  />
   </UserProvider>,
   document.getElementById('root')
 )

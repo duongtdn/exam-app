@@ -38,7 +38,7 @@ class Result extends Component {
     return (
       <div>
         <h4 style={{fontWeight: 'bold'}}>
-          <img className="w3-circle"style={{width: '40px'}} src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100" />
+          <img className="w3-circle"style={{width: '40px'}} src={this.props.template.avata.male} />
           {' '} {user.profile.fullName}
         </h4>
 
@@ -123,6 +123,7 @@ export default class ResultApp extends Component {
               data = {this.props.data}
               user = {this.props.user}
               accountClient = {this.props.accountClient}
+              template = {this.props.template}
       />
     )
   }

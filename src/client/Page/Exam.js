@@ -443,6 +443,7 @@ export default class ExamApp extends Component {
             urlQuizzesBasePath = {this.props.urlQuizzesBasePath}
             user = {this.props.user}
             accountClient = {this.props.accountClient}
+            template = {this.props.template}
       />
     )
   }
