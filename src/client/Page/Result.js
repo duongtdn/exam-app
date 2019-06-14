@@ -33,12 +33,13 @@ class Result extends Component {
   }
   _renderResult() {
     const test = this.props.data
+    const user = this.props.user
     const tag = `w3-tag ${test.result.status==='passed'?'w3-green':'w3-red'}`
     return (
       <div>
         <h4 style={{fontWeight: 'bold'}}>
           <img className="w3-circle"style={{width: '40px'}} src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100" />
-          {' '} User Name Here
+          {' '} {user.profile.fullName}
         </h4>
 
         <div style={{margin: '24px 0'}}>
@@ -58,7 +59,7 @@ class Result extends Component {
                 <td> <span className={tag}> {test.result.status.toUpperCase()} </span> </td>
               </tr>
               <tr>
-                <td className="w3-text-grey"> Score </td>
+                <td className="w3-text-grey"> Total Score </td>
                 <td> <span > {test.result.detail.totalScore} </span> {' '} pt. </td>
               </tr>
             </tbody>
@@ -67,9 +68,8 @@ class Result extends Component {
 
         <div style={{margin: '24px 0'}}>
           <p className="w3-text-blue-grey w3-small w3-border-bottom"> Result Detail </p>
-          <p className="w3-text-grey" style={{fontStyle: 'italic'}}> Score for each section </p>
           <table className="w3-table">
-            <tbody className="w3-border-top">{
+            <tbody className="">{
               test.content.sections.map(section => {
                 const result = test.result.detail.sectionScores.filter(s => s.id === section.id)[0]
                 return (
