@@ -2,20 +2,6 @@
 
 const jwt = require('jsonwebtoken')
 
-function authen() {
-  return function(req, res, next) {
-    // jwt.verify(req.body.uid, process.env.PRIVATE_AUTH_KEY, (err, decoded) => {
-    //   if (err) {
-    //     res.status(401).json({ explaination: 'Unauthorized' })
-    //   } else {
-    //     req.uid = decoded.uid
-    //     next()
-    //   }
-    // })
-    next()
-  }
-}
-
 function decodeSession() {
   return function(req, res, next) {
     if (req.body.session) {
@@ -49,4 +35,4 @@ function updateAnswers(helpers) {
   }
 }
 
-module.exports = [authen, decodeSession, updateAnswers]
+module.exports = [decodeSession, updateAnswers]

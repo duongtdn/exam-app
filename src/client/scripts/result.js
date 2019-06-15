@@ -6,12 +6,12 @@ import { render } from 'react-dom'
 import AccountClient  from 'account-realm-client'
 import { UserProvider } from 'react-user'
 
-import ResultApp from '../src/client/Page/Result'
+import ResultApp from '../Page/Result'
 
 const acc = new AccountClient({
   realm: 'realm',
   app: 'dev',
-  baseurl: 'http://localhost:3100'
+  baseurl: __data.urlAccount
 })
 acc.sso()
 

@@ -4,7 +4,7 @@ const Tests = [
   {
     testId: 'test-01',
     resultId: 'r-test-01',
-    assignedTo: 'awesome-dev',
+    assignedTo: '72da0740-8f14-11e9-9fee-cd51c02d8af7', //awesome@team.com
     examId: 'emb-01-final-exam',
     title: 'Embedded - 01: Final Exam',
     description: 'Final Test for course Embedded - 01',

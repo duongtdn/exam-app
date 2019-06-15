@@ -174,7 +174,7 @@ class Exam extends Component {
   }
   requestNewSession(testId, done) {
     const urlBasePath = this.props.urlBasePath || ''
-    const uid = 'awesome-dev' // fake uid for dev only
+    const uid = this.props.accountClient.get('token')
     const session = this._getSession()
     xhttp.post(`${urlBasePath}/exam/session`, {uid, testId, session}, (status, response) => {
       if (status === 201) {
@@ -285,7 +285,7 @@ class Exam extends Component {
   _sendAnswers(answers, done) {
     const session = this.myTest.session
     const urlBasePath = this.props.urlBasePath || ''
-    const uid = 'awesome-dev' // fake uid for dev only
+    const uid = this.props.accountClient.get('token')
     const _to = setTimeout( () => {
       this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted next time'})
       done({returnedStatus: 408})
@@ -378,7 +378,7 @@ class Exam extends Component {
     return new Promise((resolve, reject) => {
       const urlBasePath = this.props.urlBasePath || ''
       const session = this.myTest.session
-      const uid = 'awesome-dev' // fake uid for dev only
+      const uid = this.props.accountClient.get('token')
       const _to = setTimeout( () => {
         this.setState({toast: 'Network Error: Failed to submit test completion.'})
         done({returnedStatus: 408})

@@ -1,6 +1,5 @@
 "use strict"
 
-
 const Builder = require('express-api-builder')
 
 const api = Builder()
