@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 
+import { xhttp } from 'authenform-utils'
+
 import UserNotSignedIn from './UserNotSignedIn'
 
 import { formatDate } from '../lib/date'
@@ -9,16 +11,33 @@ import { formatDate } from '../lib/date'
 class Result extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      data: null,
+      error: null,
+      loading: true
+    }
+  }
+  componentDidMount() {
+    this._loadResult()
   }
   render() {
-    console.log(this.props.data)
+    if (this.state.loading) { return (null) }
+    if (this.state.error) {
+      return (
+        <div >
+          <div className="w3-container">
+            <h3 className="w3-text-red" style={{ padding: '32px 0px'}}> Error: {this.state.error} </h3>
+          </div>
+        </div>
+      )
+    }
     return(
       <div >
         <div className="w3-container">
           <h3 className="w3-text-blue"> <i className="fa fa-calendar" /> Test Result Report </h3>
           <hr />
           {
-            this.props.data.result ? this._renderResult() : this._renderNoResult()
+            this.state.data ? this._renderResult() : this._renderNoResult()
           }
         </div>
       </div>
@@ -32,7 +51,7 @@ class Result extends Component {
     )
   }
   _renderResult() {
-    const test = this.props.data
+    const test = this.state.data
     const user = this.props.user
     const tag = `w3-tag ${test.result.status==='passed'?'w3-green':'w3-red'}`
     return (
@@ -104,6 +123,22 @@ class Result extends Component {
       </div>
     )
   }
+  _loadResult() {
+    const urlBasePath = this.props.urlBasePath || ''
+    const resultId = this.props.resultId
+    xhttp.get( `${urlBasePath}/result?r=${resultId}`,
+      { authen: true },
+      (status, response) => {
+        const loading = false
+        if (status === 200) {
+          const data = JSON.parse(response).data
+          this.setState({ data, loading })
+        } else {
+          this.setState({ error: status, loading })
+        }
+      }
+    )
+  }
 }
 
 
@@ -120,10 +155,10 @@ export default class ResultApp extends Component {
     }
     return (
       <Result urlBasePath = {this.props.urlBasePath}
-              data = {this.props.data}
+              template = {this.props.template}
+              resultId = {this.props.resultId}
               user = {this.props.user}
               accountClient = {this.props.accountClient}
-              template = {this.props.template}
       />
     )
   }

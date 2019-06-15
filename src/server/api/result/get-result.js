@@ -1,9 +1,6 @@
 "use strict"
 
-"use trict"
-
 const { html } = require('../../lib/html')
-
 const { authen } = require('../../lib/util')
 
 function validateParams() {
@@ -16,7 +13,7 @@ function validateParams() {
         data: {
           urlBasePath: process.env.URL_BASE_PATH,
           urlAccount: process.env.URL_ACCOUNT,
-          data: req.data,
+          resultId: req.query.p,
           template: { avata: {male: process.env.DEFAULT_AVATA_MALE, female: process.env.DEFAULT_AVATA_FEMALE} }
         }
       }))
@@ -38,6 +35,7 @@ function responseResultData(helpers) {
         if (data[0].assignedTo !== req.uid) {
           res.status(403).json({ explaination: 'forbidden'})
         } else {
+          delete data[0].assignedTo
           res.status(200).json({data: data[0]})
         }
       } else {
