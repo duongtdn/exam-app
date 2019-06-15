@@ -2,20 +2,7 @@
 
 const jwt = require('jsonwebtoken')
 
-const { is, now } = require('../../lib/util')
-
-function authen() {
-  return function(req, res, next) {
-    jwt.verify(req.body.uid, process.env.PRIVATE_AUTH_KEY, (err, decoded) => {
-      if (err) {
-        res.status(401).json({ explaination: 'Unauthorized' })
-      } else {
-        req.uid = decoded.uid
-        next()
-      }
-    })
-  }
-}
+const { is, now, authen} = require('../../lib/util')
 
 function decodeSession() {
   return function(req, res, next) {

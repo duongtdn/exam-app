@@ -174,15 +174,18 @@ class Exam extends Component {
   }
   requestNewSession(testId, done) {
     const urlBasePath = this.props.urlBasePath || ''
-    const uid = this.props.accountClient.get('token')
     const session = this._getSession()
-    xhttp.post(`${urlBasePath}/exam/session`, {uid, testId, session}, (status, response) => {
-      if (status === 201) {
-        done(null, response)
-      } else {
-        done(status, null)
+    xhttp.post( `${urlBasePath}/exam/session`,
+      { testId, session },
+      { authen: true },
+      (status, response) => {
+        if (status === 201) {
+          done(null, response)
+        } else {
+          done(status, null)
+        }
       }
-    })
+    )
   }
   loadAssets(done) {
     const promises = []
@@ -285,29 +288,31 @@ class Exam extends Component {
   _sendAnswers(answers, done) {
     const session = this.myTest.session
     const urlBasePath = this.props.urlBasePath || ''
-    const uid = this.props.accountClient.get('token')
     const _to = setTimeout( () => {
       this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted next time'})
       done({returnedStatus: 408})
     }, 5000)
-    xhttp.put(`${urlBasePath}/exam/solution`, { uid, session, questions: answers }, (status, response) => {
-      if (status === 200) {
-        const submittedQuizzes = storage.get(storage.SUBMITTEDKEY) || []
-        // submitting will be submitted after completed
-        answers.forEach(q => {
-          if (submittedQuizzes.indexOf(q.index) === -1) {
-            submittedQuizzes.push(q.index)
-          }
-        })
-        storage.update(storage.SUBMITTEDKEY, submittedQuizzes)
-        clearTimeout(_to)
-        done(null)
-      } else {
-        this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted next time'})
-        clearTimeout(_to)
-        done({returnedStatus: status})
+    xhttp.put(`${urlBasePath}/exam/solution`,
+      { session, questions: answers },
+      { authen: true },
+      (status) => {
+        if (status === 200) {
+          const submittedQuizzes = storage.get(storage.SUBMITTEDKEY) || []
+          answers.forEach(q => {
+            if (submittedQuizzes.indexOf(q.index) === -1) {
+              submittedQuizzes.push(q.index)
+            }
+          })
+          storage.update(storage.SUBMITTEDKEY, submittedQuizzes)
+          clearTimeout(_to)
+          done(null)
+        } else {
+          this.setState({toast: 'Failed to submit answer. Please continue with your test. Your answers will be submitted next time'})
+          clearTimeout(_to)
+          done({returnedStatus: status})
+        }
       }
-    })
+    )
   }
   submitAnswers() {
     const storedQuizzes = this._getQuizFromStorage()
@@ -378,21 +383,24 @@ class Exam extends Component {
     return new Promise((resolve, reject) => {
       const urlBasePath = this.props.urlBasePath || ''
       const session = this.myTest.session
-      const uid = this.props.accountClient.get('token')
       const _to = setTimeout( () => {
         this.setState({toast: 'Network Error: Failed to submit test completion.'})
         done({returnedStatus: 408})
       }, 5000)
-      xhttp.put(`${urlBasePath}/exam/session`, { uid, session, finish: true}, (status, response) => {
-        if (status === 200) {
-          clearTimeout(_to)
-          resolve()
-        } else {
-          this.setState({toast: 'Error: Failed to submit test completion'})
-          clearTimeout(_to)
-          reject({returnedStatus: status})
+      xhttp.put(`${urlBasePath}/exam/session`,
+        { session, finish: true},
+        { authen: true },
+        (status, response) => {
+          if (status === 200) {
+            clearTimeout(_to)
+            resolve()
+          } else {
+            this.setState({toast: 'Error: Failed to submit test completion'})
+            clearTimeout(_to)
+            reject({returnedStatus: status})
+          }
         }
-      })
+      )
     })
   }
   _storeSession(session) {
