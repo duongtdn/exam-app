@@ -25,15 +25,28 @@ class PinnedQuizesList extends Component {
     super(props)
   }
   render() {
-    return (
-      <div>
-        {
-          this.props.pinnedQuizzes.map( i => (
-            <CircleTag key={i} value = {i} onClick={ e => this.props.moveToQuiz(i)} />
-          ))
-        }
-      </div>
-    )
+    if (this.props.pinnedQuizzes.length > 0) {
+      return (
+        <div className="">
+          {
+            this.props.pinnedQuizzes.map( i => (
+              <CircleTag  key={i} value = {i}
+                          onClick={ e => {
+                            this.props.onClick && this.props.onClick()
+                            this.props.moveToQuiz(i)
+                          }}
+              />
+            ))
+          }
+        </div>
+      )
+    } else {
+      return (
+        <div className="w3-text-blue w3-small" style={{fontStyle: 'italic'}}>
+          There is no pinned quiz
+        </div>
+      )
+    }
   }
 }
 
@@ -43,7 +56,8 @@ export default class StatusBar extends Component {
     this.state = {
       eslapsedTime: 0,
       submitted: storage.get(storage.SUBMITTEDKEY) || [],
-      pinned: storage.get(storage.PINNEDKEY) || []
+      pinned: storage.get(storage.PINNEDKEY) || [],
+      showPinnedQuizzesInSmallScreen: false
     }
   }
   componentDidMount() {
@@ -78,7 +92,7 @@ export default class StatusBar extends Component {
       <div style={{margin: '8px 0'}}>
         {this._renderForLargeScreen({remainingTime, timerColor, completion})}
         {this._renderForMediumScreen({remainingTime, timerColor, completion})}
-        {this._renderForSmallScreen({remainingTime, timerColor, completion})}
+        {this._renderForSmallScreen({remainingTime, timerColor})}
       </div>
     )
   }
@@ -124,34 +138,32 @@ export default class StatusBar extends Component {
       </div>
     )
   }
-  _renderForSmallScreen({remainingTime, timerColor, completion}) {
-    console.log('render small screen')
+  _renderForSmallScreen({remainingTime, timerColor}) {
     return (
-      <div className="w3-hide-medium w3-hide-large" style={{marginBottom: '6px'}}>
-        <div className="w3-pale-green w3-padding w3-small" style={{display: 'inline-block', textAlign: 'center', marginRight: '3px'}}>
+      <div className="w3-hide-medium w3-hide-large" style={{marginBottom: '6px', position: 'relative'}}>
+        <div className="w3-pale-green w3-small" style={{display: 'inline-block', textAlign: 'center', padding: '8px 12px', marginRight: '6px'}}>
           <i className="fa fa-check w3-text-green" />
           { ' '}
           <span className="w3-text-green" style={{fontWeight: 'bold', marginTop: 0}}>
             {this.state.submitted.length}/{this.props.totalQuizzes}
           </span>
           {' '}
-          <span className="w3-text-green " style={{fontWeight: 'bold', marginTop: 0}}>
-            ({completion}%)
-          </span>
+
         </div>
-        <div className={`w3-pale-${timerColor} w3-padding w3-small`} style={{display: 'inline-block', textAlign: 'center', marginRight: '3px'}}>
+        <div className={`w3-pale-${timerColor} w3-small`} style={{display: 'inline-block', textAlign: 'center', padding: '8px 12px', marginRight: '6px'}}>
           <i className={`fa fa-hourglass-o w3-text-${timerColor}`} />
           {' '}
           <span className={`w3-text-${timerColor} `} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </span>
         </div>
-        <div className="w3-pale-blue w3-padding w3-cell-top w3-small" style={{display: 'inline-block', textAlign: 'left'}}>
+        <div className="w3-pale-blue w3-cell-top w3-small" style={{display: 'inline-block', textAlign: 'left', padding: '8px 12px',}}
+             onClick={e => this.setState({ showPinnedQuizzesInSmallScreen: !this.state.showPinnedQuizzesInSmallScreen})}>
           <i className="fa fa-map-pin w3-text-blue" /> {' '}
           <span className="w3-text-blue" style={{fontWeight: 'bold', marginTop: 0}}>
-            Q
+            Quiz
           </span>
-          {/* <div className="" style={{minHeight: '37px'}}>
-            <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} />
-          </div> */}
+        </div>
+        <div className={`w3-pale-blue w3-padding ${this.state.showPinnedQuizzesInSmallScreen? '' : 'w3-hide'}`} style={{minHeight: '37px', position: 'absolute', width: '100%'}}>
+          <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} onClick={e => this.setState({ showPinnedQuizzesInSmallScreen: false})}/>
         </div>
       </div>
     )
