@@ -30,7 +30,6 @@ function authen() {
         res.status(401).json({ explaination: 'Unauthorized' })
       } else {
         req.uid = decoded.uid
-        console.log(req.uid)
         next()
       }
     })

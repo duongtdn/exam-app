@@ -76,41 +76,82 @@ export default class StatusBar extends Component {
     const completion = Math.floor((this.state.submitted.length / this.props.totalQuizzes) * 100)
     return(
       <div style={{margin: '8px 0'}}>
-        {/* for medium screen */}
-        <div className="w3-hide-large w3-hide-small" >
-          <div className="w3-pale-green w3-padding" style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
+        {this._renderForLargeScreen({remainingTime, timerColor, completion})}
+        {this._renderForMediumScreen({remainingTime, timerColor, completion})}
+        {this._renderForSmallScreen({remainingTime, timerColor, completion})}
+      </div>
+    )
+  }
+  _renderForMediumScreen({remainingTime, timerColor, completion}) {
+    return (
+      <div className="w3-hide-large w3-hide-small" >
+        <div className="w3-pale-green w3-padding" style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
+          <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
+          <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.state.submitted.length}/{this.props.totalQuizzes} </div>
+        </div>
+        <div className={`w3-pale-${timerColor} w3-padding`} style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
+          <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
+          <div className={`w3-text-${timerColor} w3-large`} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </div>
+        </div>
+        <div className="w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{ textAlign: 'left', margin: '4px 0', width: '154px'}}>
+          <div className="w3-text-blue w3-small"> Pinned questions </div>
+          <div className="" style={{minHeight: '37px'}}>
+            <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} />
+          </div>
+        </div>
+      </div>
+    )
+  }
+  _renderForLargeScreen({remainingTime, timerColor, completion}) {
+    return (
+      <div className="w3-hide-medium w3-hide-small">
+        <div style={{ width: '310px', marginBottom: '6px'}}>
+          <div className="w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', width: '154px', marginRight: '2px'}}>
             <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
             <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.state.submitted.length}/{this.props.totalQuizzes} </div>
           </div>
-          <div className={`w3-pale-${timerColor} w3-padding`} style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
+          <div className={`w3-pale-${timerColor} w3-padding`} style={{display: 'inline-block', textAlign: 'center', width: '154px'}}>
             <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
             <div className={`w3-text-${timerColor} w3-large`} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </div>
           </div>
-          <div className="w3-pale-blue w3-padding  w3-cell-top w3-hide-small" style={{ textAlign: 'left', margin: '4px 0', width: '154px'}}>
-            <div className="w3-text-blue w3-small"> Pinned questions </div>
-            <div className="" style={{minHeight: '37px'}}>
-              <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} />
-            </div>
+        </div>
+        <div className="w3-pale-blue w3-padding w3-cell-top" style={{ textAlign: 'left', margin: '4px 0', width: '310px'}}>
+          <div className="w3-text-blue w3-small"> Pinned questions </div>
+          <div className="" style={{minHeight: '37px'}}>
+            <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} />
           </div>
         </div>
-        {/* for large screen */}
-        <div className="w3-hide-medium w3-hide-small">
-          <div style={{ width: '310px', marginBottom: '6px'}}>
-            <div className="w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', width: '154px', marginRight: '2px'}}>
-              <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
-              <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.state.submitted.length}/{this.props.totalQuizzes} </div>
-            </div>
-            <div className={`w3-pale-${timerColor} w3-padding`} style={{display: 'inline-block', textAlign: 'center', width: '154px'}}>
-              <div className={`w3-text-${timerColor} w3-small`}> Time Left </div>
-              <div className={`w3-text-${timerColor} w3-large`} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </div>
-            </div>
-          </div>
-          <div className="w3-pale-blue w3-padding w3-cell-top" style={{ textAlign: 'left', margin: '4px 0', width: '310px'}}>
-            <div className="w3-text-blue w3-small"> Pinned questions </div>
-            <div className="" style={{minHeight: '37px'}}>
-              <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} />
-            </div>
-          </div>
+      </div>
+    )
+  }
+  _renderForSmallScreen({remainingTime, timerColor, completion}) {
+    console.log('render small screen')
+    return (
+      <div className="w3-hide-medium w3-hide-large" style={{marginBottom: '6px'}}>
+        <div className="w3-pale-green w3-padding w3-small" style={{display: 'inline-block', textAlign: 'center', marginRight: '3px'}}>
+          <i className="fa fa-check w3-text-green" />
+          { ' '}
+          <span className="w3-text-green" style={{fontWeight: 'bold', marginTop: 0}}>
+            {this.state.submitted.length}/{this.props.totalQuizzes}
+          </span>
+          {' '}
+          <span className="w3-text-green " style={{fontWeight: 'bold', marginTop: 0}}>
+            ({completion}%)
+          </span>
+        </div>
+        <div className={`w3-pale-${timerColor} w3-padding w3-small`} style={{display: 'inline-block', textAlign: 'center', marginRight: '3px'}}>
+          <i className={`fa fa-hourglass-o w3-text-${timerColor}`} />
+          {' '}
+          <span className={`w3-text-${timerColor} `} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </span>
+        </div>
+        <div className="w3-pale-blue w3-padding w3-cell-top w3-small" style={{display: 'inline-block', textAlign: 'left'}}>
+          <i className="fa fa-map-pin w3-text-blue" /> {' '}
+          <span className="w3-text-blue" style={{fontWeight: 'bold', marginTop: 0}}>
+            Q
+          </span>
+          {/* <div className="" style={{minHeight: '37px'}}>
+            <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} />
+          </div> */}
         </div>
       </div>
     )

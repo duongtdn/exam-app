@@ -143,6 +143,15 @@ class Exam extends Component {
 
           <div className="w3-cell-row">
             <div className="w3-cell" style={{verticalAlign: 'top'}}>
+              <div className="w3-hide-medium w3-hide-large">
+                <StatusBar  testDuration = {this.myTest.duration * 60}
+                            startAt = {this.startAt}
+                            timerOnOff = {this.state.timerOnOff}
+                            moveToQuiz = {index => this.moveToQuiz(index)}
+                            totalQuizzes = {this.myTest.content.questions.length}
+                            onTimeout = {this.timeout}
+                />
+              </div>
               <QuizBoard  tests = {this.myTest}
                           currentIndex = {this.state.currentIndex}
                           next = {this.nextQuiz}
