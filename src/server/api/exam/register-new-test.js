@@ -4,38 +4,40 @@ const jwt = require('jsonwebtoken')
 
 const { now } = require('../../lib/util')
 
-function authen() {
+function validatepParams() {
   return function(req, res, next) {
-    // jwt.verify(req.body.uid, process.env.SHARE_AUTH_KEY, (err, decoded) => {
-    //   if (err) {
-    //     res.status(401).json({ explaination: 'Unauthorized' })
-    //   } else {
-    //     req.uid = decoded.uid
-    //     req.examId = decoded.examId
-    //     next()
-    //   }
-    // })
-    req.uid = req.body.uid || 'awesome-dev'
-    req.examId = req.body.examId || 'emb-01-final-exam'
-    next()
+    jwt.verify(req.body.params, process.env.SHARE_AUTH_KEY, (err, decoded) => {
+      if (err) {
+        res.status(400).json({ explaination: 'Bad Parameters' })
+      } else {
+        req.ownerId = decoded.ownerId
+        req.uid = decoded.uid
+        req.examId = decoded.examId
+        next()
+      }
+    })
   }
 }
 
 function getExamStructure(helpers) {
   return function(req, res, next) {
     const examId = req.examId
-    if (examId) {
-      helpers.Collections.Exams.find({ examId }, exams => {
-        if (exams.length > 0) {
-          req.exam = exams[0]
-          next()
-        } else {
-          res.status(404).json({ explaination: 'Exam not found'})
-        }
-      })
-    } else {
+    if (!examId) {
       res.status(400).json({ explaination: 'Missing exam id'})
     }
+    helpers.Collections.Exams.find({ examId }, exams => {
+      if (exams.length === 0) {
+        res.status(404).json({ explaination: 'Exam not found' })
+        return
+      }
+      if (exams[0].owners && exams[0].owners.indexOf(req.ownerId) !== -1) {
+        req.exam = exams[0]
+        next()
+      } else {
+        res.status(403).json({ explaination: 'Forbidden' })
+        return
+      }
+    })
   }
 }
 
@@ -44,7 +46,7 @@ function getQuizzes(helpers) {
     const qbankIds = req.exam.questions.map(question => {
       return question.qbankId
     })
-    helpers.Collections.Qbanks.find({ qbankIds }, quizzes => {
+    helpers.Collections.Qbanks.find({ qbankIds }, ['qbankId', 'questions'], quizzes => {
       if (quizzes.length > 0) {
         req.quizzes = quizzes
         next()
@@ -145,4 +147,4 @@ function _rand(length) {
   return Math.floor(Math.random() * length)
 }
 
-module.exports = [authen, getExamStructure, getQuizzes, generateQuestions, generateTest, signTokenTestId, response]
+module.exports = [validatepParams, getExamStructure, getQuizzes, generateQuestions, generateTest, signTokenTestId, response]

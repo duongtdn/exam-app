@@ -61,7 +61,8 @@ const Exams = [
       // {qbankId: 'qb2', number: 1, score: 10, section: 'sc1'},
       // {qbankId: 'qb3', number: 2, score: 10, section: 'sc2'},
     ],
-    duration: 30
+    duration: 30,
+    owners: ['app-id']
   }
 ]
 
@@ -160,9 +161,37 @@ module.exports = {
       }
     },
     Qbanks: {
-      find({qbankIds}, done) {
+      find({qbankIds}, projection, done) {
+        if ({}.toString.call(projection) === '[object Function]') {
+          done= projection
+        }
         setTimeout(() => {
-          done && done(Qbanks.filter( _qt => qbankIds.indexOf(_qt.qbankId) !== -1 ))
+          const data = Qbanks.filter( _qt => qbankIds.indexOf(_qt.qbankId) !== -1 )
+          if (data.length === 0) {
+            done && done([])
+            return
+          }
+          const quizzes = data.map( _data => {
+            if ({}.toString.call(projection) === '[object Array]') {
+              const quiz = {}
+              projection.forEach( prop => {
+                const p = prop.split(".")
+                if (p.length === 1) {
+                  const k = p[0]
+                  quiz[k] =_data[k]
+                } else {
+                  const k = p[0]
+                  const l = p[1]
+                  if (!quiz[k]) { quiz[k] = {} }
+                  quiz[k][l] = _data[k][l]
+                }
+              })
+              return {...quiz}
+            } else {
+              return {..._data}
+            }
+          })
+          done && done(quizzes)
         }, 500)
         return this
       }
