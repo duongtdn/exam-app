@@ -98,6 +98,7 @@ function generateTest(helpers) {
       title: req.exam.title,
       description: req.exam.description,
       duration: req.exam.duration,
+      passScore: req.exam.passScore,
       content: {
         sections: req.exam.sections,
         questions: req.questions

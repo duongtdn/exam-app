@@ -18,9 +18,12 @@ acc.sso( (err,user) => {
   console.log(user)
 })
 
+const href = window.location.href
+const resultId = href.match(/(?<=\=).*/)[0]
+
 const __data= {
   "urlBasePath":"/api",
-  "resultId": "r-test-01",
+  "resultId": resultId,
   "template": {
     "avata": {
       "male": 'https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100',

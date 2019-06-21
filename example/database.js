@@ -1,5 +1,7 @@
 "use strict"
 
+const fs = require('fs')
+
 const Tests = [
   {
     testId: 'test-01',
@@ -53,36 +55,33 @@ const Exams = [
     title: 'Final Test',
     description: 'This exam test your knowledge and skill after course Embedded ARM Programming for Beginner',
     sections: [
-      {id: 'sc1', title: 'Section 1', description: 'Here is the section 1'},
-      {id: 'sc2', title: 'Section 2', description: 'Here is the section 2'}
+      {id: 'sc1', title: 'Section 1', description: 'Section 1 composed 10 quizzes about Text'},
+      {id: 'sc2', title: 'Section 2', description: 'Section 1 composed 10 quizzes about Choice'},
+      {id: 'sc3', title: 'Section 3', description: 'Section 3 composed 5 quizzes about DragDrop'}
     ],
     questions: [
-      {qbankId: 'qb1', number: 2, score: 10, section: 'sc1'},
-      // {qbankId: 'qb2', number: 1, score: 10, section: 'sc1'},
-      // {qbankId: 'qb3', number: 2, score: 10, section: 'sc2'},
+      {qbankId: '_qtxt_0_', number: 6, score: 10, section: 'sc1'},
+      {qbankId: '_qtxt_1_', number: 4, score: 10, section: 'sc1'},
+      {qbankId: '_qmch_0_', number: 6, score: 10, section: 'sc2'},
+      {qbankId: '_qmch_1_', number: 4, score: 10, section: 'sc2'},
+      {qbankId: '_qdrd_0_', number: 5, score: 10, section: 'sc3'},
     ],
     duration: 30,
+    passScore: 200,
     owners: ['app-id']
   }
 ]
 
-const Qbanks = [
-  {
-    qbankId: 'qb1',
-    topicId: 'Embedded',
-    title: 'Question using DragDrop addon',
-    questions: [
-      {
-        problem: 'dragdrop.1',
-        answer: ''
-      },
-      {
-        problem: 'dragdrop.2',
-        answer: ''
-      },
-    ]
-  }
-]
+// Get Qbanks
+const Qbanks =  JSON.parse(fs.readFileSync('example/quizzes/qbanks.json',  'utf8'))
+console.log('Found QBANKS')
+console.log(`Found ${Qbanks.length} records in Qbanks\n`)
+for (let i = 0; i < Qbanks.length; i++) {
+  const qbank = Qbanks[i]
+  console.log(`+ qbankId: ${qbank.qbankId} / ${qbank.title}`)
+  console.log(`  ${qbank.questions.length} quizzes\n`)
+}
+console.log('')
 
 module.exports = {
     Tests: {
