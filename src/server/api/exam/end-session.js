@@ -46,11 +46,11 @@ function createResult(helpers) {
         console.log("\n# Scoring question " + question.problem)
         const section = result.detail.sectionScores.filter(s => s.id === question.section)[0]
         if ( _matchAnswer(question) ) {
-          section.score += question.score
+          section.score += parseInt(question.score)
         }
-        section.points += question.score
+        section.points += parseInt(question.score)
       })
-      result.detail.totalScore = result.detail.sectionScores.reduce( (acc, section) => acc.score + section.score )
+      result.detail.sectionScores.forEach( section =>  result.detail.totalScore += section.score )
       result.status = result.detail.totalScore >= test.passScore ? 'passed' : 'failed'
       req.result = result
       next()
