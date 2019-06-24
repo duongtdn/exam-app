@@ -24,7 +24,7 @@ export default class AllQuizzesPopup extends Component {
       <div className="w3-modal" style={{ display: this.props.show ? 'block' : 'none' }} >
         <div className="w3-modal-content">
           <div className="w3-container w3-padding">
-            <span onClick={this.props.close} className="w3-button w3-display-topright">&times;</span>
+            <span onClick={this.props.close} className="w3-button w3-display-topright w3-red">&times;</span>
             <h4> Submitted {this.state.submitted.length}/{content.questions.length} </h4>
             {
               content.sections.map(section => {
@@ -34,7 +34,7 @@ export default class AllQuizzesPopup extends Component {
                     {
                       content.questions.map((question, index) => {
                         if (question.section === section.id) {
-                          let color = 'grey'
+                          let color = 'pale-red'
                           if (this.state.submitted.indexOf(index) !== -1) {
                             color = 'green'
                           }
