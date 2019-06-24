@@ -17,6 +17,7 @@ import Toast from './Toast'
 import Error from './Error'
 import Intro from './Intro'
 import UserNotSignedIn from './UserNotSignedIn'
+import AllQuizzesPopup from './AllQuizzesPopup'
 
 const SESSIONKEY = '__$sss__'
 
@@ -33,6 +34,7 @@ class Exam extends Component {
       timerOnOff: 'off',
       currentIndex: 0,
       showEndPopup: false,
+      showAllQuizzesPopup: false,
       timeout: false,
       finish: false,
       toast: '',
@@ -126,6 +128,11 @@ class Exam extends Component {
                   timeout = {this.state.timeout}
                   finish = {this.finishTest}
         />
+        <AllQuizzesPopup  show = {this.state.showAllQuizzesPopup}
+                          close = {e => this.setState({ showAllQuizzesPopup: false })}
+                          test = {this.myTest}
+                          moveToQuiz = {index => this.moveToQuiz(index)}
+        />
         <Toast  show = { this.state.toast.length > 0 }
                 toast = {this.state.toast}
                 close = { () => this.setState({ toast: '' }) }
@@ -140,6 +147,12 @@ class Exam extends Component {
           <Title  title = {this.myTest.title}
                   today = {this.state.today}
           />
+
+          <div className="w3-bar">
+            <button className = "w3-bar-item w3-button" onClick={e => this.setState({showAllQuizzesPopup: true})}> <i className="fa fa-bars" /> </button>
+            {' '}
+            <button className = "w3-bar-item w3-button"> Submit & finish Test </button>
+          </div>
 
           <div className="w3-cell-row">
             <div className="w3-cell" style={{verticalAlign: 'top'}}>

@@ -3,22 +3,7 @@
 import React, { Component } from 'react'
 
 import storage from '../../lib/storage'
-
-class CircleTag extends Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    const i = this.props.value
-    return (
-      <div  className="w3-blue" key={i}
-            style={{height: '30px', width: '30px', borderRadius: '50%', textAlign: 'center', display: 'inline-block', margin: '8px 4px 0 0', cursor: 'pointer', padding: '2px 0px'}}
-            onClick = {this.props.onClick}>
-        <span className="w3-small"> {i+1} </span>
-      </div>
-    )
-  }
-}
+import CircleTag from './CircleTag'
 
 class PinnedQuizesList extends Component {
   constructor(props) {
