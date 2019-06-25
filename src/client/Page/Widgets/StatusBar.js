@@ -84,7 +84,10 @@ export default class StatusBar extends Component {
   _renderForMediumScreen({remainingTime, timerColor, completion}) {
     return (
       <div className="w3-hide-large w3-hide-small" >
-        <div className="w3-pale-green w3-padding" style={{textAlign: 'center', width: '154px', marginBottom: '6px'}}>
+        <button className = "w3-light-grey w3-text-blue-grey w3-padding w3-button" style={{width: '154px', marginBottom: '6px', cursor: 'pointer'}} onClick={this.props.finishTest}>
+          <i className="fa fa-flag-checkered" /> Finish Test
+        </button>
+        <div className="w3-pale-green w3-padding w3-button" style={{textAlign: 'center', width: '154px', marginBottom: '6px', cursor: 'pointer'}} onClick={this.props.showAllQuizzesPopup}>
           <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
           <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.state.submitted.length}/{this.props.totalQuizzes} </div>
         </div>
@@ -105,7 +108,10 @@ export default class StatusBar extends Component {
     return (
       <div className="w3-hide-medium w3-hide-small">
         <div style={{ width: '310px', marginBottom: '6px'}}>
-          <div className="w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', width: '154px', marginRight: '2px'}}>
+          <button className = "w3-light-grey w3-text-blue-grey w3-padding w3-button" style={{width: '310px', marginBottom: '6px', cursor: 'pointer'}} onClick={this.props.finishTest}>
+            <i className="fa fa-flag-checkered" /> Finish Test
+          </button>
+          <div className="w3-pale-green w3-padding" style={{display: 'inline-block', textAlign: 'center', width: '154px', marginRight: '2px', cursor: 'pointer'}} onClick={this.props.showAllQuizzesPopup}>
             <div className="w3-text-green w3-small"> Completion ({completion}%) </div>
             <div className="w3-text-green w3-large" style={{fontWeight: 'bold', marginTop: 0}}> {this.state.submitted.length}/{this.props.totalQuizzes} </div>
           </div>
@@ -126,7 +132,7 @@ export default class StatusBar extends Component {
   _renderForSmallScreen({remainingTime, timerColor}) {
     return (
       <div className="w3-hide-medium w3-hide-large" style={{marginBottom: '6px', position: 'relative'}}>
-        <div className="w3-pale-green w3-small" style={{display: 'inline-block', textAlign: 'center', padding: '8px 12px', marginRight: '6px'}}>
+        <div className="w3-pale-green w3-small" style={{display: 'inline-block', textAlign: 'center', padding: '8px 12px', marginRight: '6px', cursor: 'pointer'}} onClick={this.props.showAllQuizzesPopup}>
           <i className="fa fa-check w3-text-green" />
           { ' '}
           <span className="w3-text-green" style={{fontWeight: 'bold', marginTop: 0}}>
@@ -140,14 +146,18 @@ export default class StatusBar extends Component {
           {' '}
           <span className={`w3-text-${timerColor} `} style={{fontWeight: 'bold', marginTop: 0}}> {formatTime(remainingTime)} </span>
         </div>
-        <div className="w3-pale-blue w3-cell-top w3-small" style={{display: 'inline-block', textAlign: 'left', padding: '8px 12px',}}
+        <div className="w3-pale-blue w3-cell-top w3-small" style={{display: 'inline-block', textAlign: 'left', padding: '8px 12px', marginRight: '6px'}}
              onClick={e => this.setState({ showPinnedQuizzesInSmallScreen: !this.state.showPinnedQuizzesInSmallScreen})}>
           <i className="fa fa-map-pin w3-text-blue" /> {' '}
           <span className="w3-text-blue" style={{fontWeight: 'bold', marginTop: 0}}>
             Quiz
           </span>
         </div>
-        <div className={`w3-pale-blue w3-padding ${this.state.showPinnedQuizzesInSmallScreen? '' : 'w3-hide'}`} style={{minHeight: '37px', position: 'absolute', width: '100%'}}>
+        <div className={`w3-light-gray w3-small`} style={{display: 'inline-block', textAlign: 'center', padding: '8px 12px', marginRight: '2px'}} onClick={this.props.finishTest}>
+          <i className={`fa fa-flag-checkered w3-text-blue-grey`} />
+          <span className={`w3-text-${timerColor} `} style={{fontWeight: 'bold', marginTop: 0}}>  </span>
+        </div>
+        <div className={`w3-border-left w3-border-bottom w3-border-right w3-border-blue w3-pale-blue w3-padding ${this.state.showPinnedQuizzesInSmallScreen? '' : 'w3-hide'}`} style={{minHeight: '37px', position: 'absolute', width: '100%'}}>
           <PinnedQuizesList pinnedQuizzes={this.state.pinned} moveToQuiz={this.props.moveToQuiz} onClick={e => this.setState({ showPinnedQuizzesInSmallScreen: false})}/>
         </div>
       </div>

@@ -148,12 +148,6 @@ class Exam extends Component {
                   today = {this.state.today}
           />
 
-          <div className="w3-bar">
-            <button className = "w3-bar-item w3-button" onClick={e => this.setState({showAllQuizzesPopup: true})}> <i className="fa fa-bars" /> </button>
-            {' '}
-            <button className = "w3-bar-item w3-button"> Submit & finish Test </button>
-          </div>
-
           <div className="w3-cell-row">
             <div className="w3-cell" style={{verticalAlign: 'top'}}>
               <div className="w3-hide-medium w3-hide-large">
@@ -163,6 +157,8 @@ class Exam extends Component {
                             moveToQuiz = {index => this.moveToQuiz(index)}
                             totalQuizzes = {this.myTest.content.questions.length}
                             onTimeout = {this.timeout}
+                            showAllQuizzesPopup = {e => this.setState({showAllQuizzesPopup: true})}
+                            finishTest = {e => this.setState({ showEndPopup: true })}
                 />
               </div>
               <QuizBoard  tests = {this.myTest}
@@ -187,6 +183,8 @@ class Exam extends Component {
                           moveToQuiz = {index => this.moveToQuiz(index)}
                           totalQuizzes = {this.myTest.content.questions.length}
                           onTimeout = {this.timeout}
+                          showAllQuizzesPopup = {e => this.setState({showAllQuizzesPopup: true})}
+                          finishTest = {e => this.setState({ showEndPopup: true })}
               />
             </div>
           </div>

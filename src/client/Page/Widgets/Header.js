@@ -20,8 +20,6 @@ class UserSnipet extends Component {
         </span>
         {/* <button className="w3-button" onClick={evt => this.props.accountClient.signout()}> Logout </button> */}
         <div className={`${this.state.show? 'w3-show': ''} w3-dropdown-content w3-bar-block w3-border`} style={{margin: '3px 0px 3px -16px', minWidth: '131px'}}>
-          <button className="w3-bar-item w3-button" onClick={this.props.endgame}> Finish Test </button>
-          <hr />
           <button className="w3-bar-item w3-button" onClick={evt => this.props.accountClient.signout()}> Logout </button>
         </div>
       </div>
