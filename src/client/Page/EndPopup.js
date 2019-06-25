@@ -17,6 +17,9 @@ export default class EndPopup extends Component {
       this.setState({ submitted })
     })
   }
+  componentWillUnmount() {
+    storage.observe(storage.SUBMITTEDKEY, this._sHandler, false)
+  }
   render() {
     const quizzesLeft = this.props.totalQuizzes - this.state.submitted.length
     if (this.props.timeout) {
@@ -30,7 +33,7 @@ export default class EndPopup extends Component {
       <div className="w3-modal" style={{ display: this.props.show ? 'block' : 'none' }}>
          <div className="w3-modal-content">
           <div className="w3-container w3-padding">
-            <span onClick={this.props.close} className="w3-button w3-display-topright w3-red">&times;</span>
+            <span onClick={this.props.close} className="w3-button w3-display-topright">&times;</span>
             <h4 className="w3-text-blue" style={{marginTop: '32px'}}> This test is ending </h4>
 
             <p className="w3-text-dark-grey"> Submitting all left answers and finish. Please do not close the broswer </p>
@@ -45,7 +48,7 @@ export default class EndPopup extends Component {
       <div className="w3-modal" style={{ display: this.props.show ? 'block' : 'none' }}>
          <div className="w3-modal-content">
           <div className="w3-container w3-padding">
-            <span onClick={this.props.close} className="w3-button w3-display-topright w3-red">&times;</span>
+            <span onClick={this.props.close} className="w3-button w3-display-topright">&times;</span>
             <h4 className="w3-text-blue" style={{marginTop: '32px'}}> Dou you really want to finish your test? </h4>
 
             {

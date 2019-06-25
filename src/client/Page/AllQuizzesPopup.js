@@ -18,6 +18,9 @@ export default class AllQuizzesPopup extends Component {
       this.setState({ submitted })
     })
   }
+  componentWillUnmount() {
+    storage.observe(storage.SUBMITTEDKEY, this._sHandler, false)
+  }
   render() {
     const content = this.props.test.content
     return (
