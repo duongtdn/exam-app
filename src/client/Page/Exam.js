@@ -30,13 +30,13 @@ class Exam extends Component {
       error: null,
       intro: true,
       loading: false,
+      finish: false,
       loadContext: 'Tests',
       timerOnOff: 'off',
       currentIndex: 0,
       showEndPopup: false,
       showAllQuizzesPopup: false,
       timeout: false,
-      finish: false,
       toast: '',
       lockSubmitBtn: false,
       lockBackBtn: true,
@@ -74,9 +74,9 @@ class Exam extends Component {
         this.requestNewSession(testId, (err, response) => {
           if (err) {
             if (err === 403) {
-              reject({ error: {code: err, title: 'Invalid Test Session', message: 'Invalid Test or this Test has been expired'}})
+              reject({ error: {code: err, title: '403 - Forbidden', message: 'Not authorized'}})
             } else if (err === 404) {
-              reject({ error: {code: err, title: '404 - Test not found', message: 'This test has been finished'}})
+              reject({ error: {code: err, title: '404 - Test not found', message: 'This test is invalid or has been finished'}})
             } else {
               reject({ error: {code: err, title: err, message: 'Error found when requesting new Test session'}})
             }
@@ -118,7 +118,7 @@ class Exam extends Component {
       return (<Error error = {this.state.error} />)
     }
     if (this.state.finish) {
-      return (<Finish resultId={this.myTest.resultId}/>)
+      return (<Finish resultId={this.myTest.resultId} user = {this.props.user} accountClient = {this.props.accountClient} template = {this.props.template}/>)
     }
     return (
       <div>
@@ -141,6 +141,7 @@ class Exam extends Component {
         <Header endgame = {evt => this.setState({ showEndPopup: true })}
                 user = {this.props.user}
                 accountClient = {this.props.accountClient}
+                template = {this.props.template}
         />
         <div className="w3-container" style={{maxWidth: '1200px', margin: 'auto'}}>
 

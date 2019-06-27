@@ -9,15 +9,15 @@ export default class Finish extends Component {
     super(props)
   }
   render() {
-    return( 
+    return(
       <div >
-        <Header
+        <Header user = {this.props.user} accountClient = {this.props.accountClient} template = {this.props.template}
         />
-        <div className="w3-container">
+        <div className="w3-container" style={{maxWidth: '1200px', margin: 'auto'}}>
           <h3 className="w3-text-blue"> Test has been completed. Thank you for your participation</h3>
           <p> To access test result, click here </p>
           <p>
-            <a href={`/result?r=${this.props.resultId}`} className="w3-button w3-blue"> Test Result </a>
+            <a href={`/result?p=${this.props.resultId}`} className="w3-button w3-blue"> Test Result </a>
           </p>
         </div>
       </div>

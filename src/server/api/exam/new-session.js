@@ -10,7 +10,7 @@ function validateAttachedSession() {
       _validateSession({
         session: req.body.session,
         onSuccess: next,
-        onFailure: err=> res.status(403).json({ explaination: 'Session is invalid or expired'})
+        onFailure: err=> res.status(404).json({ explaination: 'Session is invalid or expired'})
       })
     } else {
       next()
@@ -21,12 +21,12 @@ function validateAttachedSession() {
 function getTestData(helpers) {
   return function(req, res, next) {
     if (!req.body.testId) {
-      res.status(400).json({ explaination: 'MIssing testId' })
+      res.status(400).json({ explaination: 'Missing testId' })
       return
     }
     jwt.verify(req.body.testId, process.env.PRIVATE_TEST_KEY, (err, decoded) => {
       if (err) {
-        res.status(403).json({ explaination: 'Forbidden - Invalid testId or Test has been expired'})
+        res.status(404).json({ explaination: 'Invalid Test or Test has been expired'})
       } else {
         req.testId = decoded.testId
         helpers.Collections.Tests.find({ testId: req.testId }, (testData) => {
@@ -56,7 +56,7 @@ function validateStoredSession() {
       if (req.body.session && req.body.session === req.testData.session) {
         next()
       } else {
-        res.status(403).json({ explaination: 'Session mismatch'})
+        res.status(404).json({ explaination: 'Session mismatch'})
       }
     } else {
       next()
