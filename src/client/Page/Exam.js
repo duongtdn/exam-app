@@ -18,6 +18,7 @@ import Error from './Error'
 import Intro from './Intro'
 import UserNotSignedIn from './UserNotSignedIn'
 import AllQuizzesPopup from './AllQuizzesPopup'
+import Overview from './Overview'
 
 const SESSIONKEY = '__$sss__'
 
@@ -29,6 +30,7 @@ class Exam extends Component {
       type: undefined,
       error: null,
       intro: true,
+      overview: false,
       loading: false,
       finish: false,
       loadContext: 'Tests',
@@ -85,11 +87,12 @@ class Exam extends Component {
             this.setState({ loadContext: 'Assets' })
             this.myTest = JSON.parse(response)
             console.log(this.myTest)
+            const overview = this._getSession() ? false : true
             this._storeSession(this.myTest.session)
             this.loadAssets( () => {
               const course = this.myTest.courseId
               const type = this.myTest.type
-              resolve({ course, type, today, loading: false, timerOnOff: 'on' })
+              resolve({ course, type, today, loading: false, overview, timerOnOff: 'on' })
             })
             this.startAt = this._elapsedTimeBefore()
           }
@@ -113,6 +116,9 @@ class Exam extends Component {
     }
     if (this.state.loading) {
       return (<Loading loadContext = {this.state.loadContext} />)
+    }
+    if (this.state.overview) {
+      return (<Overview enterTest = {e => this.setState({ overview: false })} />)
     }
     if (this.state.error) {
       return (<Error error = {this.state.error} />)
